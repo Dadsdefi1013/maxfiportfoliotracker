@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DadsDeFiSpace — MaxFi Portfolio Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg-primary:#ffffff;--bg-secondary:#f5f5f4;--bg-tertiary:#efede8;
+    --text-primary:#1a1a18;--text-secondary:#73726c;--text-tertiary:#9c9a92;
+    --border:rgba(0,0,0,0.12);--border-md:rgba(0,0,0,0.20);
+    --radius-md:8px;--radius-lg:12px;
+    --green:#1D9E75;--green-bg:#E1F5EE;--green-txt:#0F6E56;
+    --amber:#EF9F27;--amber-bg:#FAEEDA;--amber-txt:#854F0B;
+    --red:#E24B4A;--red-bg:#FCEBEB;--red-txt:#A32D2D;
+    --blue:#378ADD;--blue-dark:#185FA5;--blue-bg:#E6F1FB;--blue-txt:#0C447C;
+    --purple:#534AB7;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --bg-primary:#1c1c1a;--bg-secondary:#252523;--bg-tertiary:#2c2c2a;
+      --text-primary:#e8e6e0;--text-secondary:#9c9a92;--text-tertiary:#73726c;
+      --border:rgba(255,255,255,0.10);--border-md:rgba(255,255,255,0.18);
+      --green:#5DCAA5;--green-bg:#085041;--green-txt:#9FE1CB;
+      --amber:#EF9F27;--amber-bg:#633806;--amber-txt:#FAC775;
+      --red:#F09595;--red-bg:#791F1F;--red-txt:#F7C1C1;
+      --blue:#85B7EB;--blue-dark:#B5D4F4;--blue-bg:#0C447C;--blue-txt:#B5D4F4;
+    }
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-tertiary);color:var(--text-primary);min-height:100vh}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ── Top bar ── */
+  .topbar{background:var(--bg-primary);border-bottom:0.5px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:12px;height:54px;position:sticky;top:0;z-index:100}
+  .logo{font-size:15px;font-weight:600;flex:1;color:var(--text-primary)}
+  .logo span{color:var(--green)}
+  .wpill{display:flex;align-items:center;gap:7px;background:var(--bg-secondary);border:0.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text-secondary);font-family:monospace}
+  .wdot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+  .cbadge{background:var(--blue-bg);color:var(--blue-txt);font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600}
+  .updated{font-size:11px;color:var(--text-tertiary)}
+  .topbar-right{display:flex;align-items:center;gap:8px}
+
+  /* ── Nav ── */
+  .nav{background:var(--bg-primary);border-bottom:0.5px solid var(--border);padding:0 24px;display:flex;gap:0;overflow-x:auto}
+  .navbtn{padding:11px 18px;font-size:12px;font-weight:500;color:var(--text-secondary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color .15s}
+  .navbtn.active{color:var(--text-primary);border-bottom-color:var(--blue)}
+  .navbtn:hover:not(.active){color:var(--text-primary)}
+
+  /* ── Pages ── */
+  .page{display:none;padding:20px 24px 48px;max-width:1100px;margin:0 auto}
+  .page.active{display:block}
+
+  /* ── KPI strip ── */
+  .krow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+  @media(max-width:860px){.krow{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:500px){.krow{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--bg-secondary);border-radius:var(--radius-md);padding:14px 16px}
+  .kl{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;font-weight:500}
+  .kv{font-size:22px;font-weight:600;line-height:1.1}
+  .ks{font-size:11px;color:var(--text-secondary);margin-top:3px}
+
+  /* ── Section label ── */
+  .slab{font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
+
+  /* ── Cards ── */
+  .card{background:var(--bg-primary);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.g2,.g3{grid-template-columns:1fr}}
+  .mb{margin-bottom:14px}
+
+  /* ── Position cards ── */
+  .pcard{background:var(--bg-primary);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:12px;position:relative}
+  .rstripe{position:absolute;left:0;top:0;bottom:0;width:4px}
+  .pinner{padding:16px 18px 0 22px}
+  .ptop{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .picon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+  .pname{font-size:15px;font-weight:600}
+  .pmeta{font-size:11px;color:var(--text-secondary);margin-top:2px}
+  .pbadges{margin-left:auto;display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+
+  /* ── Badges ── */
+  .badge{font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+  .bg{background:var(--green-bg);color:var(--green-txt)}
+  .ba{background:var(--amber-bg);color:var(--amber-txt)}
+  .br{background:var(--red-bg);color:var(--red-txt)}
+  .bb{background:var(--blue-bg);color:var(--blue-txt)}
+  .rdot{width:6px;height:6px;border-radius:50%;display:inline-block}
+
+  /* ── Metrics grid ── */
+  .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  @media(max-width:480px){.pg{grid-template-columns:repeat(2,1fr)}}
+  .pm{display:flex;flex-direction:column;gap:2px}
+  .pml{font-size:9px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+  .pmv{font-size:14px;font-weight:600}
+  .pms{font-size:11px;color:var(--text-secondary)}
+
+  /* ── Range bar ── */
+  .rwrap{margin-bottom:14px}
+  .rlbls{display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-bottom:5px}
+  .rbar{height:6px;background:var(--bg-secondary);border-radius:3px;position:relative}
+  .rfill{height:100%;border-radius:3px;background:var(--blue-bg)}
+  .rtick{position:absolute;top:-4px;width:2px;height:14px;border-radius:1px;transform:translateX(-50%)}
+
+  /* ── IL + Break-even ── */
+  .ilbe{display:grid;grid-template-columns:1fr 1fr;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border)}
+  .ils{padding:12px 14px;border-right:0.5px solid var(--border)}
+  .bes{padding:12px 14px}
+  .isl{font-size:9px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;font-weight:500;margin-bottom:8px}
+  .il4{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .ili{display:flex;flex-direction:column;gap:1px}
+  .ill{font-size:9px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
+  .ilv{font-size:13px;font-weight:600}
+  .bedays{font-size:22px;font-weight:700}
+  .bebar{height:5px;background:var(--bg-secondary);border-radius:3px;margin:6px 0 4px;overflow:hidden}
+  .befill{height:100%;border-radius:3px}
+
+  /* ── Position allocation bar ── */
+  .palrow{padding:12px 14px;border-top:0.5px solid var(--border)}
+  .palseg-wrap{display:flex;gap:3px;height:7px;border-radius:4px;overflow:hidden;margin:6px 0 5px}
+  .palseg{height:7px;min-width:4px}
+  .palleg{display:flex;gap:10px;flex-wrap:wrap}
+  .pali{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-secondary)}
+  .paldot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+  /* ── Donut chart ── */
+  .dwrap{position:relative;width:140px;height:140px;margin:10px auto 0}
+  .dcenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .dtotal{font-size:17px;font-weight:700}
+  .dsub{font-size:10px;color:var(--text-secondary)}
+  .dleg{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+  .dlegrow{display:flex;align-items:center;gap:7px;font-size:12px}
+  .dlegdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .dlegname{flex:1;color:var(--text-primary)}
+  .dlegpct{font-weight:600;font-size:12px;color:var(--text-primary)}
+
+  /* ── Yield table ── */
+  .ytbl{width:100%;font-size:13px;border-collapse:collapse;margin-top:10px}
+  .ytbl th{font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:4px 0 6px;border-bottom:0.5px solid var(--border)}
+  .ytbl td{padding:8px 0;border-bottom:0.5px solid var(--border)}
+  .ytbl tr:last-child td{border-bottom:none}
+  .yd{font-weight:600}.yp{color:var(--green);font-size:11px;margin-top:2px}
+
+  /* ── Risk scorecard ── */
+  .rsrow{padding:14px 0;border-bottom:0.5px solid var(--border)}
+  .rsrow:last-child{border-bottom:none}
+  .rshead{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .rsname{font-size:14px;font-weight:600;flex:1}
+  .rsscore{font-size:20px;font-weight:700}
+  .rsbar{height:5px;background:var(--bg-secondary);border-radius:3px;margin-bottom:10px;overflow:hidden}
+  .rsfill{height:100%;border-radius:3px}
+  .rsfacts{display:flex;flex-direction:column;gap:4px}
+  .rsfrow{display:flex;align-items:center;gap:8px}
+  .rsfname{font-size:10px;color:var(--text-secondary);min-width:95px;font-weight:500}
+  .rsfsbar{flex:1;height:3px;background:var(--bg-secondary);border-radius:2px;overflow:hidden}
+  .rsfsfill{height:100%;border-radius:2px}
+  .rsfscore{font-size:10px;font-weight:700;min-width:16px;text-align:right;color:var(--text-primary)}
+  .rsfnote{font-size:10px;color:var(--text-secondary);flex:2;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ── Misc ── */
+  .arch-note{background:var(--bg-secondary);border:0.5px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;font-size:12px;color:var(--text-secondary);line-height:1.7}
+  .arch-note strong{color:var(--text-primary)}
+  code{background:var(--bg-tertiary);padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace}
+  .footer{text-align:center;padding:32px 24px 16px;font-size:12px;color:var(--text-tertiary)}
+  .rktier{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .rktile{flex:1;min-width:160px;border-radius:var(--radius-md);padding:14px;text-align:center;border:0.5px solid var(--border)}
+  .rktile-v{font-size:20px;font-weight:700}
+  .rktile-l{font-size:11px;margin-top:3px;font-weight:500}
+  .rktile-s{font-size:10px;margin-top:2px;opacity:.8}
+  .fbox{background:var(--bg-secondary);border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:8px}
+  .fbox strong{color:var(--text-primary)}
+
+  @media print{.topbar,.nav{position:static}.page{padding:10px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">DadsDeFi<span>Space</span> — MaxFi Dashboard</div>
+  <div class="topbar-right">
+    <div class="wpill"><span class="wdot"></span>0x1b80...3aE0</div>
+    <span class="cbadge">Base</span>
+    <span class="updated">Jun 24, 2026</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="navbtn active" onclick="showPage('overview')">Overview</button>
+  <button class="navbtn" onclick="showPage('positions')">Positions</button>
+  <button class="navbtn" onclick="showPage('risk')">Risk</button>
+  <button class="navbtn" onclick="showPage('yield')">Yield</button>
+  <button class="navbtn" onclick="showPage('allocation')">Allocation</button>
+</div>
+
+<div id="page-overview" class="page active"></div>
+<div id="page-positions" class="page"></div>
+<div id="page-risk" class="page"></div>
+<div id="page-yield" class="page"></div>
+<div id="page-allocation" class="page"></div>
+
+<div class="footer">
+  Built by <a href="https://dadsdefispace.org" target="_blank">DadsDeFiSpace</a> &nbsp;·&nbsp;
+  Powered by <a href="https://maxfi.tech" target="_blank">MaxFi</a> &nbsp;·&nbsp;
+  Education-first DeFi &nbsp;·&nbsp; Not financial advice &nbsp;·&nbsp;
+  Bitcoin is the foundation. DeFi is the amplifier. Process is the edge.
+</div>
+
+<script>
+const WALLET = "0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0";
+const DATE_LABEL = "Jun 24, 2026";
+
+const ACOLORS = {BTC:"#F7A93B",ETH:"#627EEA",SOL:"#9945FF",Stables:"#27B77A",Other:"#8896A8"};
+const RCOL = {low:"#1D9E75",mid:"#EF9F27",high:"#E24B4A"};
+const RBGCOL = {low:"#E1F5EE",mid:"#FAEEDA",high:"#FCEBEB"};
+const RTXTCOL = {low:"#0F6E56",mid:"#854F0B",high:"#A32D2D"};
+const FCOLS = ["#378ADD","#9945FF","#EF9F27","#1D9E75","#E24B4A"];
+const FLABELS = ["Volatility","IL exposure","Range prox.","Pool maturity","Net vs hold"];
+
+const P = [
+  {id:"2044566",pair:"USDC/cbBTC",dex:"PancakeSwap",days:14,
+   value:172.10,dpd:0.51,apr:107.8,rebals:5,
+   collected:4.81,uncollected:2.52,earned:7.33,
+   qtyA:40.0,tokA:"USDC",pxAe:1.00,pxAn:1.00,
+   qtyB:0.00208,tokB:"cbBTC",pxBe:66049,pxBn:63522,
+   lower:62934,upper:65503,cur:63522,inRange:true,
+   factors:{vol:{s:1,n:"Stable+BTC pair"},il:{s:1,n:"BTC moved ~4% vs USDC"},rng:{s:0,n:"Comfortably mid-range"},mat:{s:0,n:"Proven PancakeSwap V3 pool"},net:{s:1,n:"Fees closing gap on IL"}},
+   posAlloc:[{n:"USDC",p:37,c:"#27B77A"},{n:"cbBTC",p:63,c:"#F7A93B"}],
+   portAlloc:{Stables:37,BTC:63},col:"#378ADD"},
+  {id:"2042097",pair:"WETH/cbBTC",dex:"PancakeSwap",days:19,
+   value:161.23,dpd:0.25,apr:56.5,rebals:12,
+   collected:2.84,uncollected:1.83,earned:4.67,
+   qtyA:0.0274,tokA:"WETH",pxAe:1776.65,pxAn:1713.57,
+   qtyB:0.00180,tokB:"cbBTC",pxBe:66000,pxBn:63522,
+   lower:0.026038,upper:0.027372,cur:0.026976,inRange:true,
+   factors:{vol:{s:1,n:"Both blue chips, correlated"},il:{s:1,n:"High correlation, low IL"},rng:{s:1,n:"Within 15% of upper bound"},mat:{s:0,n:"12 successful rebalances"},net:{s:0,n:"LP ahead of hold"}},
+   posAlloc:[{n:"WETH",p:29,c:"#627EEA"},{n:"cbBTC",p:71,c:"#F7A93B"}],
+   portAlloc:{ETH:29,BTC:71},col:"#185FA5"},
+  {id:"72276604",pair:"WETH/uSOL",dex:"Aerodrome",days:3,
+   value:117.12,dpd:0.26,apr:79.8,rebals:1,
+   collected:0.35,uncollected:0.43,earned:0.78,
+   qtyA:0.0382,tokA:"WETH",pxAe:2450,pxAn:1713.57,
+   qtyB:0.722,tokB:"uSOL",pxBe:102.64,pxBn:71.43,
+   lower:23.57,upper:24.53,cur:23.99,inRange:true,
+   factors:{vol:{s:2,n:"SOL mid-cap, higher volatility"},il:{s:2,n:"WETH -30%, uSOL -30% since entry"},rng:{s:0,n:"Price mid-range"},mat:{s:2,n:"Only 3 days old"},net:{s:1,n:"Break-even in progress"}},
+   posAlloc:[{n:"WETH",p:46,c:"#627EEA"},{n:"uSOL",p:54,c:"#9945FF"}],
+   portAlloc:{ETH:46,SOL:54},col:"#9945FF"},
+  {id:"72244032",pair:"WETH/VVV",dex:"Aerodrome",days:10,
+   value:73.69,dpd:0.72,apr:355.8,rebals:3,
+   collected:5.90,uncollected:1.31,earned:7.21,
+   qtyA:0.0162,tokA:"WETH",pxAe:2400,pxAn:1713.57,
+   qtyB:3.13,tokB:"VVV",pxBe:20.46,pxBn:14.68,
+   lower:111.0,upper:120.3,cur:116.7,inRange:true,
+   factors:{vol:{s:3,n:"VVV small-cap, high volatility"},il:{s:2,n:"VVV -28% since entry"},rng:{s:1,n:"116.7 near upper 120.3"},mat:{s:1,n:"Pool ~10d, lower TVL"},net:{s:0,n:"Fees beat IL — LP winning"}},
+   posAlloc:[{n:"WETH",p:24,c:"#627EEA"},{n:"VVV",p:76,c:"#EF9F27"}],
+   portAlloc:{ETH:24,Other:76},col:"#EF9F27"},
+];
+
+function fmtScore(p){const s=["vol","il","rng","mat","net"].reduce((a,k)=>a+p.factors[k].s,0);return{score:s,tier:s<=4?"low":s<=7?"mid":"high"};}
+function calcIL(p){const hold=p.qtyA*p.pxAn+p.qtyB*p.pxBn;const il=p.value-hold;return{hold,il,net:il+p.earned};}
+function calcBE(p){const{net}=calcIL(p);if(net>=0)return{status:"achieved",days:0,pct:100};const rem=Math.abs(net);const dL=p.dpd>0?rem/p.dpd:9999;const tot=p.earned/p.dpd+dL;return{status:"pending",days:dL,pct:Math.min(99,Math.round(p.days/tot*100))};}
+function rngPct(p){return Math.min(100,Math.max(0,(p.cur-p.lower)/(p.upper-p.lower)*100));}
+function fmtC(p,n=0){return p.lower>1?"$"+p.cur.toLocaleString("en-US",{maximumFractionDigits:n}):p.cur.toFixed(6);}
+function fmtL(p){return p.lower>1?"$"+p.lower.toLocaleString("en-US",{maximumFractionDigits:0}):p.lower.toFixed(6);}
+function fmtU(p){return p.upper>1?"$"+p.upper.toLocaleString("en-US",{maximumFractionDigits:0}):p.upper.toFixed(6);}
+function f(n,d=2){return typeof n==="number"?n.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d}):"—";}
+function fS(n){return(n>=0?"+$":"-$")+f(Math.abs(n));}
+function fP(n){return f(n,1)+"%";}
+
+const enriched = P.map(p=>{const{score,tier}=fmtScore(p);return{...p,score,tier,il:calcIL(p),be:calcBE(p)};});
+const totVal = enriched.reduce((s,p)=>s+p.value,0);
+const totEarn = enriched.reduce((s,p)=>s+p.earned,0);
+const totUncol = enriched.reduce((s,p)=>s+p.uncollected,0);
+const totDpd = enriched.reduce((s,p)=>s+p.dpd,0);
+const wApr = enriched.reduce((s,p)=>s+p.value*p.apr,0)/totVal;
+const totNet = enriched.reduce((s,p)=>s+p.il.net,0);
+const totIL = enriched.reduce((s,p)=>s+p.il.il,0);
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".navbtn").forEach(el=>el.classList.remove("active"));
+  document.getElementById("page-"+id).classList.add("active");
+  document.querySelectorAll(".navbtn").forEach(el=>{if(el.textContent.toLowerCase().startsWith(id))el.classList.add("active");});
+}
+
+function badge(tier){
+  const cls={low:"bg",mid:"ba",high:"br"}[tier];
+  const lbl={low:"Low risk",mid:"Mid risk",high:"High risk"}[tier];
+  return`<span class="badge ${cls}">${lbl}</span>`;
+}
+
+function donut(canvasId,segments,totalLabel,subLabel,legendId){
+  const ctx=document.getElementById(canvasId).getContext("2d");
+  const tot=segments.reduce((s,x)=>s+x.v,0);
+  new Chart(ctx,{type:"doughnut",data:{labels:segments.map(x=>x.l),datasets:[{data:segments.map(x=>x.v),backgroundColor:segments.map(x=>x.c),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.raw/tot*100).toFixed(1)}%`}}}}});
+  document.getElementById("donut-total-"+canvasId).textContent=totalLabel;
+  document.getElementById("donut-sub-"+canvasId).textContent=subLabel;
+  document.getElementById(legendId).innerHTML=segments.map(x=>`<div class="dlegrow"><span class="dlegdot" style="background:${x.c}"></span><span class="dlegname">${x.l}</span><span class="dlegpct">${(x.v/tot*100).toFixed(1)}%</span></div>`).join("");
+}
+
+function rangebar(p){
+  const rp=rngPct(p);
+  const tc=p.inRange?"#378ADD":"#E24B4A";
+  return`<div class="rwrap">
+    <div class="rlbls"><span>${fmtL(p)}</span><span style="font-weight:600;color:${tc}">Now: ${fmtC(p)}</span><span>${fmtU(p)}</span></div>
+    <div class="rbar"><div class="rfill" style="width:${rp.toFixed(1)}%"></div><div class="rtick" style="left:${rp.toFixed(1)}%;background:${tc}"></div></div>
+  </div>`;
+}
+
+function ilbeBlock(p){
+  const{hold,il,net}=p.il;
+  const be=p.be;
+  const ic=il>=0?"var(--green)":"var(--red)";
+  const nc=net>=0?"var(--green)":"var(--red)";
+  const bc=be.status==="achieved"?"var(--green)":"var(--blue)";
+  const daysLbl=be.status==="achieved"?"Done ✓":be.days<1?"&lt;1 day":Math.ceil(be.days)+"d";
+  return`<div class="ilbe">
+    <div class="ils">
+      <div class="isl">Impermanent loss</div>
+      <div class="il4">
+        <div class="ili"><div class="ill">Hold now</div><div class="ilv">$${f(hold)}</div></div>
+        <div class="ili"><div class="ill">IL ($)</div><div class="ilv" style="color:${ic}">${fS(il)}</div></div>
+        <div class="ili"><div class="ill">Fees</div><div class="ilv" style="color:var(--green)">$${f(p.earned)}</div></div>
+        <div class="ili"><div class="ill">Net vs hold</div><div class="ilv" style="color:${nc}">${fS(net)}</div></div>
+      </div>
+    </div>
+    <div class="bes">
+      <div class="isl">Break-even</div>
+      <div class="bedays" style="color:${bc}">${daysLbl}</div>
+      <div class="bebar"><div class="befill" style="width:${be.pct}%;background:${bc}"></div></div>
+      <div style="font-size:10px;color:var(--text-secondary)">${be.pct}% of the way · $${f(p.dpd)}/day</div>
+    </div>
+  </div>`;
+}
+
+function posAllocBlock(p){
+  const segs=p.posAlloc.map(a=>`<div class="palseg" style="width:${a.p}%;background:${a.c}" title="${a.n}: ${a.p}%"></div>`).join("");
+  const leg=p.posAlloc.map(a=>`<div class="pali"><span class="paldot" style="background:${a.c}"></span>${a.n} ${a.p}%</div>`).join("");
+  return`<div class="palrow"><div class="isl" style="margin-bottom:0">Token allocation</div><div class="palseg-wrap">${segs}</div><div class="palleg">${leg}</div></div>`;
+}
+
+function posCard(p){
+  const qA=p.qtyA>1?p.qtyA.toFixed(2):p.qtyA.toFixed(4);
+  const qB=p.qtyB>1?p.qtyB.toFixed(3):p.qtyB.toFixed(5);
+  return`<div class="pcard">
+    <div class="rstripe" style="background:${RCOL[p.tier]}"></div>
+    <div class="pinner">
+      <div class="ptop">
+        <div class="picon" style="background:${p.col}18;color:${p.col}">${p.tokA[0]}${p.tokB[0]}</div>
+        <div><div class="pname">${p.pair}</div><div class="pmeta">#${p.id} · ${p.dex} · ${p.days}d old</div></div>
+        <div class="pbadges">
+          <span class="badge ${p.inRange?"bg":"br"}"><span class="rdot" style="background:${p.inRange?"var(--green)":"var(--red)"}"></span>${p.inRange?"In range":"Out of range"}</span>
+          ${badge(p.tier)}
+        </div>
+      </div>
+      <div class="pg">
+        <div class="pm"><div class="pml">Value</div><div class="pmv">$${f(p.value)}</div><div class="pms">${qA} ${p.tokA} + ${qB} ${p.tokB}</div></div>
+        <div class="pm"><div class="pml">APR (shown)</div><div class="pmv" style="color:var(--green)">${fP(p.apr)}</div><div class="pms">$${f(p.dpd)}/day</div></div>
+        <div class="pm"><div class="pml">Annual yield</div><div class="pmv" style="color:var(--blue-dark)">$${f(p.dpd*365,0)}</div><div class="pms">${fP(p.dpd*365/p.value*100)} APR</div></div>
+        <div class="pm"><div class="pml">Monthly yield</div><div class="pmv">$${f(p.dpd*30.4)}</div><div class="pms">${fP(p.dpd*30.4/p.value*100)} APR</div></div>
+        <div class="pm"><div class="pml">Earned total</div><div class="pmv" style="color:var(--green)">$${f(p.earned)}</div><div class="pms">$${f(p.uncollected)} pending</div></div>
+        <div class="pm"><div class="pml">Rebalances</div><div class="pmv">${p.rebals}</div><div class="pms">lifetime</div></div>
+      </div>
+      ${rangebar(p)}
+      ${ilbeBlock(p)}
+      ${posAllocBlock(p)}
+    </div>
+  </div>`;
+}
+
+/* ── Page builders ── */
+function buildOverview(){
+  const byT={low:0,mid:0,high:0};enriched.forEach(p=>byT[p.tier]+=p.value);
+  document.getElementById("page-overview").innerHTML=`
+    <div class="krow mb">
+      <div class="kpi"><div class="kl">Total value</div><div class="kv" style="color:var(--blue-dark)">$${f(totVal)}</div><div class="ks">4 active positions</div></div>
+      <div class="kpi"><div class="kl">Total earned</div><div class="kv" style="color:var(--green)">$${f(totEarn)}</div><div class="ks">$${f(totUncol)} pending</div></div>
+      <div class="kpi"><div class="kl">Proj $/day</div><div class="kv">$${f(totDpd)}</div><div class="ks">$${f(totDpd*365,0)}/yr at this rate</div></div>
+      <div class="kpi"><div class="kl">Weighted APR</div><div class="kv" style="color:var(--green)">${fP(wApr)}</div><div class="ks">portfolio yield</div></div>
+      <div class="kpi"><div class="kl">Net vs hold</div><div class="kv" style="color:${totNet>=0?"var(--green)":"var(--red)"}">${fS(totNet)}</div><div class="ks">${totNet>=0?"LP winning ✓":"Hold winning"}</div></div>
+    </div>
+    <div class="g3 mb">
+      <div class="card"><div class="slab">Portfolio allocation</div>
+        <div class="dwrap"><canvas id="d-port" width="140" height="140" aria-label="Portfolio allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-port"></div><div class="dsub" id="donut-sub-d-port"></div></div></div>
+        <div class="dleg" id="dleg-port"></div>
+      </div>
+      <div class="card"><div class="slab">Risk allocation</div>
+        <div class="dwrap"><canvas id="d-risk" width="140" height="140" aria-label="Risk allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-risk"></div><div class="dsub" id="donut-sub-d-risk"></div></div></div>
+        <div class="dleg" id="dleg-risk"></div>
+      </div>
+      <div class="card"><div class="slab">Yield projection</div>
+        <table class="ytbl">
+          <thead><tr><th>Period</th><th>Yield ($)</th><th>APR</th></tr></thead>
+          <tbody>${[["Daily",1],["Weekly",7],["Monthly",30.4],["Yearly",365]].map(([l,m])=>`<tr><td style="color:var(--text-secondary)">${l}</td><td><div class="yd">$${f(totDpd*m)}</div></td><td><div class="yp">${fP(totDpd*m/totVal*100)}</div></td></tr>`).join("")}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="slab">All positions</div>
+    ${enriched.map(p=>{const rp=rngPct(p);const tc=p.inRange?"var(--blue)":"var(--red)";const nc=p.il.net>=0?"var(--green)":"var(--red)";
+      return`<div class="card mb" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:150px">
+          <div style="width:4px;height:36px;border-radius:2px;background:${RCOL[p.tier]};flex-shrink:0"></div>
+          <div><div style="font-size:14px;font-weight:600">${p.pair}</div><div style="font-size:11px;color:var(--text-secondary)">${p.dex} · #${p.id}</div></div>
+        </div>
+        <div style="text-align:center;min-width:58px"><div style="font-size:11px;color:var(--text-secondary)">Value</div><div style="font-size:15px;font-weight:600">$${f(p.value)}</div></div>
+        <div style="text-align:center;min-width:55px"><div style="font-size:11px;color:var(--text-secondary)">APR</div><div style="font-size:15px;font-weight:600;color:var(--green)">${fP(p.apr)}</div></div>
+        <div style="text-align:center;min-width:55px"><div style="font-size:11px;color:var(--text-secondary)">Earned</div><div style="font-size:15px;font-weight:600;color:var(--green)">$${f(p.earned)}</div></div>
+        <div style="text-align:center;min-width:65px"><div style="font-size:11px;color:var(--text-secondary)">Net vs hold</div><div style="font-size:14px;font-weight:600;color:${nc}">${fS(p.il.net)}</div></div>
+        <div style="min-width:110px"><div style="font-size:10px;color:var(--text-secondary);margin-bottom:4px">Range position</div>
+          <div style="height:5px;background:var(--bg-secondary);border-radius:3px;position:relative">
+            <div style="width:${rp.toFixed(1)}%;height:100%;background:var(--blue-bg);border-radius:3px"></div>
+            <div style="position:absolute;top:-3px;left:${rp.toFixed(1)}%;width:2px;height:11px;background:${tc};border-radius:1px;transform:translateX(-50%)"></div>
+          </div>
+        </div>
+        ${badge(p.tier)}
+      </div>`;
+    }).join("")}
+    <div class="arch-note" style="margin-top:8px">
+      <strong>About this dashboard</strong> — Built by <a href="https://dadsdefispace.org" target="_blank">DadsDeFiSpace</a> using Jun 24, 2026 MaxFi snapshot data for wallet <code>${WALLET.slice(0,8)}...${WALLET.slice(-4)}</code> on Base chain.
+      Metrics: IL = LP Value − Hold Value Now &nbsp;·&nbsp; Break-even = |Net vs Hold| ÷ $/day &nbsp;·&nbsp; Risk scored across 5 factors (0–12 scale).
+      Not financial advice. Always do your own research. <a href="https://maxfi.tech" target="_blank">MaxFi.tech</a>
+    </div>`;
+}
+
+function buildPositions(){
+  document.getElementById("page-positions").innerHTML=`
+    <div class="krow mb">
+      <div class="kpi"><div class="kl">Total value</div><div class="kv" style="color:var(--blue-dark)">$${f(totVal)}</div><div class="ks">4 positions</div></div>
+      <div class="kpi"><div class="kl">Total IL</div><div class="kv" style="color:${totIL>=0?"var(--green)":"var(--red)"}">${fS(totIL)}</div><div class="ks">across all positions</div></div>
+      <div class="kpi"><div class="kl">Total fees</div><div class="kv" style="color:var(--green)">$${f(totEarn)}</div><div class="ks">$${f(totUncol)} uncollected</div></div>
+      <div class="kpi"><div class="kl">Net vs hold</div><div class="kv" style="color:${totNet>=0?"var(--green)":"var(--red)"}">${fS(totNet)}</div><div class="ks">${totNet>=0?"LP winning ✓":""}</div></div>
+      <div class="kpi"><div class="kl">Total rebalances</div><div class="kv">${enriched.reduce((s,p)=>s+p.rebals,0)}</div><div class="ks">lifetime</div></div>
+    </div>
+    ${enriched.map(posCard).join("")}`;
+}
+
+function buildRisk(){
+  const byT={low:{val:0,dpd:0,cnt:0},mid:{val:0,dpd:0,cnt:0},high:{val:0,dpd:0,cnt:0}};
+  enriched.forEach(p=>{byT[p.tier].val+=p.value;byT[p.tier].dpd+=p.dpd;byT[p.tier].cnt++;});
+  document.getElementById("page-risk").innerHTML=`
+    <div class="rktier mb">
+      ${["low","mid","high"].map(t=>`<div class="rktile" style="background:${RBGCOL[t]};border-color:${RCOL[t]}40">
+        <div class="rktile-v" style="color:${RCOL[t]}">$${f(byT[t].val)}</div>
+        <div class="rktile-l" style="color:${RTXTCOL[t]}">${t==="low"?"Low":t==="mid"?"Mid":"High"} risk · ${byT[t].cnt} position${byT[t].cnt!==1?"s":""}</div>
+        <div class="rktile-s" style="color:${RTXTCOL[t]}">${(byT[t].val/totVal*100).toFixed(1)}% of capital · $${f(byT[t].dpd)}/day</div>
+      </div>`).join("")}
+    </div>
+    <div class="g2 mb">
+      <div class="card"><div class="slab">Capital by risk tier</div>
+        <div class="dwrap"><canvas id="d-rk" width="140" height="140" aria-label="Capital risk tier donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-rk"></div><div class="dsub" id="donut-sub-d-rk"></div></div></div>
+        <div class="dleg" id="dleg-rk"></div>
+      </div>
+      <div class="card"><div class="slab">Yield ($/day) by risk tier</div>
+        <div class="dwrap"><canvas id="d-rky" width="140" height="140" aria-label="Yield risk tier donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-rky"></div><div class="dsub" id="donut-sub-d-rky"></div></div></div>
+        <div class="dleg" id="dleg-rky"></div>
+      </div>
+    </div>
+    <div class="card mb"><div class="slab">Position risk scorecard</div>
+      ${enriched.map(p=>{const fkeys=["vol","il","rng","mat","net"];const fmax=[3,3,2,2,2];
+        return`<div class="rsrow">
+          <div class="rshead">
+            <div class="rsname">${p.pair} <span style="font-size:11px;font-weight:400;color:var(--text-secondary)">#${p.id} · ${p.dex}</span></div>
+            <span class="rsscore" style="color:${RCOL[p.tier]}">${p.score}</span><span style="font-size:11px;color:var(--text-secondary)">/12</span>
+            ${badge(p.tier)}
+          </div>
+          <div class="rsbar"><div class="rsfill" style="width:${(p.score/12*100).toFixed(0)}%;background:${RCOL[p.tier]}"></div></div>
+          <div class="rsfacts">
+            ${fkeys.map((k,i)=>`<div class="rsfrow">
+              <div class="rsfname" style="color:${FCOLS[i]}">${FLABELS[i]}</div>
+              <div class="rsfsbar"><div class="rsfsfill" style="width:${(p.factors[k].s/fmax[i]*100).toFixed(0)}%;background:${FCOLS[i]}"></div></div>
+              <div class="rsfscore">${p.factors[k].s}</div>
+              <div class="rsfnote">${p.factors[k].n}</div>
+            </div>`).join("")}
+          </div>
+        </div>`;}).join("")}
+    </div>
+    <div class="card"><div class="slab">Scoring methodology</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:6px">
+        ${[["Volatility","0–3","Stablecoin=0 · Blue chip=1 · Mid-cap=2 · Small-cap=3"],["IL exposure","0–3","Correlated=0–1 · Diverging=2 · Uncorrelated=3"],["Range proximity","0–2","Mid-range=0 · Within 20%=1 · Within 10%=2"],["Pool maturity","0–2","Proven=0 · Established=1 · New/low-TVL=2"],["Net vs hold","0–2","LP winning=0 · Break-even=1 · LP behind=2"]].map(([t,r,d])=>`<div class="fbox"><strong>${t}</strong> (${r})<br>${d}</div>`).join("")}
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">Total 0–4 = <strong style="color:var(--green)">Low</strong> &nbsp;·&nbsp; 5–7 = <strong style="color:var(--amber)">Mid</strong> &nbsp;·&nbsp; 8–12 = <strong style="color:var(--red)">High</strong></div>
+    </div>`;
+  setTimeout(()=>{
+    donut("d-rk",[{l:"Low risk",v:byT.low.val,c:RCOL.low},{l:"Mid risk",v:byT.mid.val,c:RCOL.mid},{l:"High risk",v:byT.high.val,c:RCOL.high}].filter(x=>x.v>0),"$"+f(totVal,0),"total","dleg-rk");
+    donut("d-rky",[{l:"Low risk",v:byT.low.dpd,c:RCOL.low},{l:"Mid risk",v:byT.mid.dpd,c:RCOL.mid},{l:"High risk",v:byT.high.dpd,c:RCOL.high}].filter(x=>x.v>0),"$"+totDpd.toFixed(2),"/day","dleg-rky");
+  },50);
+}
+
+function buildYield(){
+  document.getElementById("page-yield").innerHTML=`
+    <div class="krow mb">
+      ${[["Daily","$"+f(totDpd)],["Weekly","$"+f(totDpd*7)],["Monthly","$"+f(totDpd*30.4)],["Yearly","$"+f(totDpd*365)],["Weighted APR",fP(wApr)]].map(([l,v])=>`<div class="kpi"><div class="kl">${l}</div><div class="kv" style="color:var(--green)">${v}</div></div>`).join("")}
+    </div>
+    <div class="card mb"><div class="slab">Per-position yield breakdown</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:13px;border-collapse:collapse;min-width:520px">
+          <thead><tr>${["Pair","Value","APR %","$/day","Annual $","Annual %","Monthly $","Monthly %"].map(h=>`<th style="font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;text-align:left;padding:4px 8px 7px 0;border-bottom:0.5px solid var(--border);letter-spacing:.05em">${h}</th>`).join("")}</tr></thead>
+          <tbody>${enriched.map((p,i)=>{const bg=i%2===0?"var(--bg-secondary)":"transparent";const yr=p.dpd*365;const mo=p.dpd*30.4;
+            return`<tr style="background:${bg}"><td style="padding:8px 8px 8px 0;font-weight:600;border-bottom:0.5px solid var(--border)">${p.pair}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">$${f(p.value)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border);color:var(--green)">${fP(p.apr)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">$${f(p.dpd)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border);font-weight:600;color:var(--blue-dark)">$${f(yr,0)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border);color:var(--green)">${fP(yr/p.value*100)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">$${f(mo)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border);color:var(--green)">${fP(mo/p.value*100)}</td></tr>`;
+          }).join("")}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card"><div class="slab">Cumulative yield projection (365 days)</div>
+      <div style="position:relative;width:100%;height:220px"><canvas id="ch-yield" aria-label="Cumulative yield line chart over 365 days"></canvas></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:11px;color:var(--text-secondary)">
+        ${enriched.map(p=>`<span style="display:flex;align-items:center;gap:5px"><span style="width:12px;height:2px;background:${p.col};display:inline-block;border-radius:1px"></span>${p.pair}</span>`).join("")}
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:12px;height:3px;background:var(--text-primary);display:inline-block;border-radius:1px"></span>Portfolio total</span>
+      </div>
+    </div>`;
+  setTimeout(()=>{
+    const days=Array.from({length:13},(_,i)=>Math.round(i*30.4+1));
+    new Chart(document.getElementById("ch-yield").getContext("2d"),{type:"line",data:{labels:days.map(d=>d===1?"Day 1":"Day "+d),datasets:[...enriched.map(p=>({label:p.pair,data:days.map(d=>+(p.dpd*d).toFixed(2)),borderColor:p.col,backgroundColor:p.col+"18",borderWidth:1.5,pointRadius:2,tension:.3,fill:false})),{label:"Total",data:days.map(d=>+(totDpd*d).toFixed(2)),borderColor:"#1a1a18",backgroundColor:"#1a1a1810",borderWidth:2.5,pointRadius:0,tension:.3,fill:false}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{color:"rgba(128,128,128,0.06)"},ticks:{font:{size:10},maxRotation:0,maxTicksLimit:7}},y:{grid:{color:"rgba(128,128,128,0.06)"},ticks:{font:{size:10},callback:v=>"$"+v}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}}}});
+  },50);
+}
+
+function buildAllocation(){
+  const buckets={};enriched.forEach(p=>Object.entries(p.portAlloc).forEach(([k,pct])=>{buckets[k]=(buckets[k]||0)+(p.value*pct/100);}));
+  const tot=Object.values(buckets).reduce((a,b)=>a+b,0);
+  const entries=Object.entries(buckets).sort((a,b)=>b[1]-a[1]);
+  document.getElementById("page-allocation").innerHTML=`
+    <div class="g2 mb">
+      <div class="card"><div class="slab">Portfolio allocation (asset class)</div>
+        <div class="dwrap"><canvas id="d-alloc" width="140" height="140" aria-label="Portfolio allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-alloc"></div><div class="dsub" id="donut-sub-d-alloc"></div></div></div>
+        <div class="dleg" id="dleg-alloc"></div>
+      </div>
+      <div class="card"><div class="slab">Allocation breakdown</div>
+        ${entries.map(([k,v])=>{const pct=(v/tot*100);const c=ACOLORS[k]||"#8896A8";
+          return`<div style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="width:8px;height:8px;border-radius:50%;background:${c};flex-shrink:0"></span><span style="font-size:13px;font-weight:600;flex:1">${k}</span><span style="font-size:13px;font-weight:600">${pct.toFixed(1)}%</span><span style="font-size:12px;color:var(--text-secondary)">$${f(v)}</span></div><div style="height:5px;background:var(--bg-secondary);border-radius:3px;overflow:hidden"><div style="width:${pct.toFixed(1)}%;height:100%;background:${c};border-radius:3px"></div></div></div>`;
+        }).join("")}
+      </div>
+    </div>
+    <div class="card mb"><div class="slab">Per-position token allocation</div>
+      ${enriched.map(p=>`<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid var(--border)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:7px"><div style="width:3px;height:24px;background:${RCOL[p.tier]};border-radius:2px;flex-shrink:0"></div><div style="font-size:14px;font-weight:600;flex:1">${p.pair}</div><span style="font-size:12px;color:var(--text-secondary)">$${f(p.value)}</span></div><div style="display:flex;gap:3px;height:8px;border-radius:4px;overflow:hidden;margin-bottom:6px">${p.posAlloc.map(a=>`<div style="width:${a.p}%;background:${a.c};min-width:4px" title="${a.n}: ${a.p}%"></div>`).join("")}</div><div style="display:flex;gap:14px;flex-wrap:wrap">${p.posAlloc.map(a=>`<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-secondary)"><span style="width:7px;height:7px;border-radius:50%;background:${a.c};flex-shrink:0"></span>${a.n}: ${a.p}% ($${f(p.value*a.p/100)})</div>`).join("")}</div></div>`).join("")}
+    </div>
+    <div class="card"><div class="slab">Risk vs allocation matrix</div>
+      <div style="overflow-x:auto"><table style="width:100%;font-size:13px;border-collapse:collapse;min-width:400px">
+        <thead><tr>${["Position","Risk","Value","% portfolio","Dominant asset","Annual yield"].map(h=>`<th style="font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;padding:4px 8px 7px 0;text-align:left;border-bottom:0.5px solid var(--border);letter-spacing:.05em">${h}</th>`).join("")}</tr></thead>
+        <tbody>${enriched.map(p=>`<tr><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border);font-weight:600">${p.pair}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">${badge(p.tier)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">$${f(p.value)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">${fP(p.value/totVal*100)}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border)">${p.posAlloc.sort((a,b)=>b.p-a.p)[0].n}</td><td style="padding:8px 8px 8px 0;border-bottom:0.5px solid var(--border);color:var(--green);font-weight:600">$${f(p.dpd*365,0)}</td></tr>`).join("")}</tbody>
+      </table></div>
+    </div>`;
+  setTimeout(()=>{
+    donut("d-alloc",entries.map(([k,v])=>({l:k,v,c:ACOLORS[k]||"#8896A8"})),"$"+f(tot,0),"portfolio","dleg-alloc");
+  },50);
+}
+
+buildOverview();buildPositions();buildRisk();buildYield();buildAllocation();
+
+setTimeout(()=>{
+  const pb={};enriched.forEach(p=>Object.entries(p.portAlloc).forEach(([k,pct])=>{pb[k]=(pb[k]||0)+(p.value*pct/100);}));
+  const pt=Object.values(pb).reduce((a,b)=>a+b,0);
+  donut("d-port",Object.entries(pb).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({l:k,v,c:ACOLORS[k]||"#8896A8"})),"$"+f(pt,0),"portfolio","dleg-port");
+  const byT={low:0,mid:0,high:0};enriched.forEach(p=>byT[p.tier]+=p.value);
+  donut("d-risk",[{l:"Low",v:byT.low,c:RCOL.low},{l:"Mid",v:byT.mid,c:RCOL.mid},{l:"High",v:byT.high,c:RCOL.high}].filter(x=>x.v>0),"$"+f(totVal,0),"by risk","dleg-risk");
+},100);
+</script>
+</body>
+</html>

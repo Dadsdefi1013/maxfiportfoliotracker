@@ -16,7 +16,7 @@
   --amber:#EF9F27;--abg:#FAEEDA;--atxt:#854F0B;
   --red:#E24B4A;--rbg:#FCEBEB;--rtxt:#A32D2D;
   --blue:#378ADD;--bludk:#185FA5;--bbg:#E6F1FB;--btxt:#0C447C;
-  --purp:#534AB7;
+  --purp:#534AB7;--pbg:#EEEDFE;--ptxt:#3C3489;
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#1c1c1a;--bg2:#252523;--bg3:#2c2c2a;
@@ -26,12 +26,13 @@
   --amber:#EF9F27;--abg:#633806;--atxt:#FAC775;
   --red:#F09595;--rbg:#791F1F;--rtxt:#F7C1C1;
   --blue:#85B7EB;--bludk:#B5D4F4;--bbg:#0C447C;--btxt:#B5D4F4;
+  --purp:#AFA9EC;--pbg:#26215C;--ptxt:#CECBF6;
 }}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--txt);min-height:100vh}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
 
-.topbar{background:var(--bg);border-bottom:0.5px solid var(--bdr);padding:0 24px;display:flex;align-items:center;gap:10px;height:52px;position:sticky;top:0;z-index:100}
+/* topbar */
+.topbar{background:var(--bg);border-bottom:0.5px solid var(--bdr);padding:0 20px;display:flex;align-items:center;gap:10px;height:52px;position:sticky;top:0;z-index:100}
 .logo{font-size:14px;font-weight:600;flex:1}.logo span{color:var(--green)}
 .wpill{display:flex;align-items:center;gap:6px;background:var(--bg2);border:0.5px solid var(--bdr);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--txt2);font-family:monospace}
 .wdot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
@@ -39,15 +40,18 @@ a:hover{text-decoration:underline}
 .btn-sm{padding:6px 12px;background:var(--bg2);color:var(--txt);border:0.5px solid var(--bdr2);border-radius:var(--rm);font-size:11px;font-weight:500;cursor:pointer}
 .btn-sm:hover{background:var(--bg3)}
 
-.nav{background:var(--bg);border-bottom:0.5px solid var(--bdr);padding:0 24px;display:flex;overflow-x:auto}
-.navbtn{padding:10px 16px;font-size:12px;font-weight:500;color:var(--txt2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+/* nav */
+.nav{background:var(--bg);border-bottom:0.5px solid var(--bdr);padding:0 20px;display:flex;overflow-x:auto;gap:0}
+.navbtn{padding:10px 14px;font-size:12px;font-weight:500;color:var(--txt2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
 .navbtn.active{color:var(--txt);border-bottom-color:var(--blue)}
 .navbtn:hover:not(.active){color:var(--txt)}
 
-.page{display:none;padding:20px 24px 48px;max-width:1060px;margin:0 auto}
+/* pages */
+.page{display:none;padding:16px 20px 48px;max-width:1080px;margin:0 auto}
 .page.active{display:block}
 
-.onboard{max-width:640px;margin:48px auto;background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rl);overflow:hidden}
+/* onboarding */
+.onboard{max-width:660px;margin:40px auto;background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rl);overflow:hidden}
 .ob-head{background:var(--bg2);padding:20px 24px;border-bottom:0.5px solid var(--bdr)}
 .ob-title{font-size:17px;font-weight:600;margin-bottom:4px}
 .ob-sub{font-size:13px;color:var(--txt2);line-height:1.6}
@@ -57,7 +61,6 @@ a:hover{text-decoration:underline}
 .ob-num{width:26px;height:26px;border-radius:50%;background:var(--bbg);color:var(--btxt);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .ob-txt{font-size:13px;color:var(--txt2);line-height:1.6;flex:1}
 .ob-txt strong{color:var(--txt)}
-
 .snapshot-area{margin:16px 0 0}
 .snapshot-area label{display:block;font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
 .snapshot-area textarea{width:100%;height:200px;padding:12px 14px;border:0.5px solid var(--bdr2);border-radius:var(--rm);background:var(--bg2);color:var(--txt);font-size:12px;font-family:monospace;resize:vertical;line-height:1.5}
@@ -69,13 +72,10 @@ a:hover{text-decoration:underline}
 .btn-secondary:hover{background:var(--bg3)}
 .parse-err{background:var(--rbg);color:var(--rtxt);border-radius:var(--rm);padding:10px 14px;font-size:12px;margin-top:10px;display:none;line-height:1.6}
 .parse-ok{background:var(--gbg);color:var(--gtxt);border-radius:var(--rm);padding:10px 14px;font-size:12px;margin-top:10px;display:none}
-.format-guide{margin-top:16px;background:var(--bg2);border-radius:var(--rm);padding:14px;font-size:12px;color:var(--txt2);line-height:1.7}
-.format-guide strong{color:var(--txt);display:block;margin-bottom:6px}
 code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace;color:var(--txt)}
 
-.krow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
-@media(max-width:800px){.krow{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:480px){.krow{grid-template-columns:repeat(2,1fr)}}
+/* layout helpers */
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px}
 .kpi{background:var(--bg2);border-radius:var(--rm);padding:12px 14px}
 .kl{font-size:10px;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;font-weight:500}
 .kv{font-size:20px;font-weight:700;line-height:1.1}
@@ -87,16 +87,18 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 @media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
 .mb{margin-bottom:12px}
 
+/* position cards */
 .pcard{background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rl);overflow:hidden;margin-bottom:10px;position:relative}
 .rstripe{position:absolute;left:0;top:0;bottom:0;width:4px}
 .pinner{padding:14px 16px 0 20px}
 .ptop{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .picon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.pname{font-size:14px;font-weight:600}
-.pmeta{font-size:11px;color:var(--txt2);margin-top:1px}
+.pname{font-size:14px;font-weight:600}.pmeta{font-size:11px;color:var(--txt2);margin-top:1px}
 .pbadges{margin-left:auto;display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
 .badge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
-.bg{background:var(--gbg);color:var(--gtxt)}.ba{background:var(--abg);color:var(--atxt)}.br{background:var(--rbg);color:var(--rtxt)}.bb{background:var(--bbg);color:var(--btxt)}
+.bg{background:var(--gbg);color:var(--gtxt)}.ba{background:var(--abg);color:var(--atxt)}
+.br{background:var(--rbg);color:var(--rtxt)}.bb{background:var(--bbg);color:var(--btxt)}
+.bp{background:var(--pbg);color:var(--ptxt)}
 .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 @media(max-width:460px){.pg{grid-template-columns:repeat(2,1fr)}}
 .pm{display:flex;flex-direction:column;gap:2px}
@@ -107,6 +109,8 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 .rbar{height:5px;background:var(--bg2);border-radius:3px;position:relative}
 .rfill{height:100%;border-radius:3px;background:var(--bbg)}
 .rtick{position:absolute;top:-4px;width:2px;height:13px;border-radius:1px;transform:translateX(-50%)}
+
+/* IL + break-even */
 .ilbe{display:grid;grid-template-columns:1fr 1fr;border-top:0.5px solid var(--bdr);border-bottom:0.5px solid var(--bdr)}
 .ils{padding:10px 12px;border-right:0.5px solid var(--bdr)}.bes{padding:10px 12px}
 .isl{font-size:9px;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;font-weight:500;margin-bottom:6px}
@@ -117,6 +121,9 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 .bedays{font-size:20px;font-weight:700}
 .bebar{height:4px;background:var(--bg2);border-radius:2px;margin:5px 0 3px;overflow:hidden}
 .befill{height:100%;border-radius:2px}
+
+/* compounding section */
+.compound-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:0.5px solid var(--bdr);padding:10px 12px;gap:10px}
 .palrow{padding:10px 12px}
 .palseg-wrap{display:flex;gap:2px;height:7px;border-radius:4px;overflow:hidden;margin:5px 0 4px}
 .palseg{height:7px;min-width:4px}
@@ -124,22 +131,38 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 .pali{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--txt2)}
 .paldot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
-.dwrap{position:relative;width:130px;height:130px;margin:8px auto 0}
+/* health score */
+.health-ring{position:relative;width:90px;height:90px;flex-shrink:0}
+.health-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.health-big{font-size:22px;font-weight:700}
+.health-lbl{font-size:9px;color:var(--txt2)}
+
+/* donuts */
+.dwrap{position:relative;width:120px;height:120px;margin:8px auto 0}
 .dcenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.dtotal{font-size:16px;font-weight:700}.dsub{font-size:10px;color:var(--txt2)}
+.dtotal{font-size:15px;font-weight:700}.dsub{font-size:10px;color:var(--txt2)}
 .dleg{display:flex;flex-direction:column;gap:5px;margin-top:10px}
 .dlegrow{display:flex;align-items:center;gap:6px;font-size:11px}
 .dlegdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .dlegname{flex:1;color:var(--txt)}.dlegpct{font-weight:600;font-size:11px}
 
-.ytbl{width:100%;font-size:12px;border-collapse:collapse;margin-top:8px}
-.ytbl th{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:3px 0 5px;border-bottom:0.5px solid var(--bdr)}
-.ytbl td{padding:6px 0;border-bottom:0.5px solid var(--bdr)}
-.ytbl tr:last-child td{border-bottom:none}
-.yd{font-weight:600}.yp{color:var(--green);font-size:11px;margin-top:1px}
+/* tables */
+.dtbl{width:100%;font-size:12px;border-collapse:collapse}
+.dtbl th{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:4px 8px 6px 0;border-bottom:0.5px solid var(--bdr)}
+.dtbl td{padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr)}
+.dtbl tr:last-child td{border-bottom:none}
 
+/* scenario */
+.scen-tabs{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.stab{padding:8px 16px;border-radius:var(--rm);border:0.5px solid var(--bdr2);background:var(--bg2);color:var(--txt2);font-size:12px;font-weight:500;cursor:pointer}
+.stab.ab{background:var(--rbg);color:var(--rtxt);border-color:#F09595}
+.stab.abase{background:var(--bbg);color:var(--btxt);border-color:#85B7EB}
+.stab.abull{background:var(--gbg);color:var(--gtxt);border-color:#5DCAA5}
+.stab.aall{background:var(--pbg);color:var(--ptxt);border-color:var(--purp)}
+
+/* risk */
 .rktier{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.rktile{flex:1;min-width:150px;border-radius:var(--rm);padding:12px;text-align:center}
+.rktile{flex:1;min-width:140px;border-radius:var(--rm);padding:12px;text-align:center}
 .rktile-v{font-size:18px;font-weight:700}.rktile-l{font-size:11px;font-weight:500;margin-top:2px}.rktile-s{font-size:10px;margin-top:1px;opacity:.85}
 .rsrow{padding:12px 0;border-bottom:0.5px solid var(--bdr)}.rsrow:last-child{border-bottom:none}
 .rshead{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
@@ -156,22 +179,25 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 .fbox{background:var(--bg2);border-radius:var(--rm);padding:10px 12px;font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:8px}
 .fbox strong{color:var(--txt)}
 
-/* ── Footer ── */
-.site-footer{background:var(--bg);border-top:0.5px solid var(--bdr);padding:28px 24px 24px;margin-top:24px}
-.footer-inner{max-width:1060px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:20px}
-@media(max-width:600px){.footer-top{grid-template-columns:1fr}}
-.footer-col-label{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
-.footer-link{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border:0.5px solid var(--bdr);border-radius:var(--rm);text-decoration:none;color:var(--txt);font-size:13px;font-weight:500;margin-bottom:8px;transition:background .15s}
-.footer-link:hover{background:var(--bg3);text-decoration:none}
-.footer-link-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.footer-link-sub{font-size:11px;color:var(--txt2);margin-top:1px;font-weight:400}
-.footer-divider{border:none;border-top:0.5px solid var(--bdr);margin:0 0 16px}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.footer-brand{font-size:13px;font-weight:600;color:var(--txt)}
-.footer-brand span{color:var(--green)}
-.footer-tagline{font-size:11px;color:var(--txt3);font-style:italic}
-.footer-disclaimer{font-size:11px;color:var(--txt3)}
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:11px;color:var(--txt2)}
+.leg-item{display:flex;align-items:center;gap:4px}
+.leg-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.note{background:var(--bg2);border-radius:var(--rm);padding:12px 14px;font-size:12px;color:var(--txt2);line-height:1.7;margin-top:12px}
+.note strong{color:var(--txt)}
+
+/* footer */
+.site-footer{background:var(--bg);border-top:0.5px solid var(--bdr);padding:24px 20px 20px;margin-top:24px}
+.footer-inner{max-width:1080px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:16px}
+.footer-col-label{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.flink{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border:0.5px solid var(--bdr);border-radius:var(--rm);text-decoration:none;color:var(--txt);font-size:12px;font-weight:500;margin-bottom:6px}
+.flink:hover{background:var(--bg3);text-decoration:none}
+.flink-icon{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.flink-sub{font-size:10px;color:var(--txt2);margin-top:1px;font-weight:400}
+.footer-bottom{border-top:0.5px solid var(--bdr);padding-top:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.footer-brand{font-size:13px;font-weight:600}.footer-brand span{color:var(--green)}
+.footer-tag{font-size:11px;color:var(--txt3);font-style:italic}
+.footer-disc{font-size:11px;color:var(--txt3)}
 </style>
 </head>
 <body>
@@ -188,25 +214,26 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 <div class="nav" id="main-nav" style="display:none">
   <button class="navbtn active" onclick="showPage('overview')">Overview</button>
   <button class="navbtn" onclick="showPage('positions')">Positions</button>
+  <button class="navbtn" onclick="showPage('cashflow')">Cashflow</button>
   <button class="navbtn" onclick="showPage('risk')">Risk</button>
-  <button class="navbtn" onclick="showPage('yield')">Yield</button>
   <button class="navbtn" onclick="showPage('allocation')">Allocation</button>
+  <button class="navbtn" onclick="showPage('scenarios')">Scenarios</button>
 </div>
 
 <!-- ONBOARDING -->
-<div id="onboard-screen" style="padding:20px 24px">
+<div id="onboard-screen" style="padding:20px">
   <div class="onboard">
     <div class="ob-head">
       <div class="ob-title">DadsDeFiSpace — MaxFi Portfolio Dashboard</div>
-      <div class="ob-sub">Paste your MaxFi position data below to generate your personal dashboard. Works for any wallet on Base chain. Nothing is stored or sent anywhere.</div>
+      <div class="ob-sub">Paste your MaxFi position data to generate your personal dashboard. Works for any Base chain wallet. Nothing is stored or sent anywhere.</div>
     </div>
     <div class="ob-body">
-      <div class="ob-step"><div class="ob-num">1</div><div class="ob-txt"><strong>Open MaxFi</strong> at <a href="https://www.maxfi.tech/deposit?ref=0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0" target="_blank">maxfi.tech</a> and log in with your wallet.</div></div>
-      <div class="ob-step"><div class="ob-num">2</div><div class="ob-txt"><strong>Use the DadsDeFiSpace prompt</strong> — paste your MaxFi data or screenshots into Claude using our community prompt to get the JSON format below.</div></div>
-      <div class="ob-step"><div class="ob-num">3</div><div class="ob-txt"><strong>Paste the JSON here</strong> and hit Generate — your IL, APR, risk ratings, yield projections, and allocation charts render instantly.</div></div>
-
+      <div class="ob-step"><div class="ob-num">1</div><div class="ob-txt"><strong>Open MaxFi</strong> at <a href="https://www.maxfi.tech/deposit?ref=0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0" target="_blank">maxfi.tech</a> and go to your positions page.</div></div>
+      <div class="ob-step"><div class="ob-num">2</div><div class="ob-txt"><strong>Use the DadsDeFiSpace Claude prompt</strong> — screenshot or copy your position cards, paste into Claude with our community prompt, get back clean JSON automatically.</div></div>
+      <div class="ob-step"><div class="ob-num">3</div><div class="ob-txt"><strong>Paste JSON below</strong> and hit Generate. Your IL, APR, cashflow, risk, scenarios, and allocation render instantly.</div></div>
+      <div class="ob-step"><div class="ob-num">4</div><div class="ob-txt"><strong>Add compounding info</strong> — set <code>autoCompound: true</code> on positions that compound automatically. MaxFi compounds 50% to your wallet, 50% back into the position.</div></div>
       <div class="snapshot-area">
-        <label>Paste your position data (JSON)</label>
+        <label>Paste your position JSON</label>
         <textarea id="snapshot-input" placeholder='[
   {
     "pair": "WETH/USDC",
@@ -221,6 +248,7 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
     "dpd": 1.20,
     "rebalances": 2,
     "inRange": true,
+    "autoCompound": true,
     "tokenA": "WETH",
     "qtyA": 0.14,
     "entryPriceA": 0,
@@ -238,81 +266,83 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
         <div id="parse-ok" class="parse-ok"></div>
         <div class="ob-actions">
           <button class="btn-primary" onclick="parseAndRender()">Generate dashboard</button>
-          <button class="btn-secondary" onclick="loadDemo()">Load demo (Kevin's Jun 25 data)</button>
+          <button class="btn-secondary" onclick="loadDemo()">Load Kevin's Jun 25 data</button>
         </div>
       </div>
-
-      <div class="format-guide">
-        <strong>Need help formatting your data?</strong>
-        Use the <a href="https://t.me/DADSDefiSpace" target="_blank">DadsDeFiSpace Telegram</a> to get the community Claude prompt — paste your MaxFi screenshots and it builds the JSON for you automatically. Required fields: pair, value, earned, apr, dpd, tokenA, tokenB, qtyA, qtyB, rangeLower, rangeUpper, rangeCurrentPrice.
+      <div style="margin-top:14px;background:var(--bg2);border-radius:var(--rm);padding:12px;font-size:12px;color:var(--txt2);line-height:1.7">
+        <strong style="color:var(--txt)">Field reference:</strong> pair, positionId, dex, daysOld, value, earned, uncollected, collected, apr, dpd, rebalances, inRange, <strong style="color:var(--purp)">autoCompound</strong>, tokenA, qtyA, entryPriceA, currentPriceA, tokenB, qtyB, entryPriceB, currentPriceB, rangeLower, rangeUpper, rangeCurrentPrice. Get the community prompt in our <a href="https://t.me/DADSDefiSpace" target="_blank">Telegram</a>.
       </div>
     </div>
   </div>
 </div>
 
-<div id="page-overview" class="page"></div>
-<div id="page-positions" class="page"></div>
-<div id="page-risk" class="page"></div>
-<div id="page-yield" class="page"></div>
+<div id="page-overview"   class="page"></div>
+<div id="page-positions"  class="page"></div>
+<div id="page-cashflow"   class="page"></div>
+<div id="page-risk"       class="page"></div>
 <div id="page-allocation" class="page"></div>
+<div id="page-scenarios"  class="page"></div>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-top">
+    <div class="footer-grid">
       <div>
-        <div class="footer-col-label">Get started with MaxFi</div>
-        <a class="footer-link" href="https://www.maxfi.tech/deposit?ref=0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0" target="_blank" rel="noopener">
-          <div class="footer-link-icon" style="background:#1A1F2E;color:#378ADD">M</div>
-          <div>
-            <div>Open a MaxFi position</div>
-            <div class="footer-link-sub">Automated LP on Base · Use Kevin's referral link</div>
-          </div>
+        <div class="footer-col-label">Start with MaxFi</div>
+        <a class="flink" href="https://www.maxfi.tech/deposit?ref=0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:#1A1F2E;color:#378ADD">M</div>
+          <div><div>Open a MaxFi position</div><div class="flink-sub">Kevin's referral · Automated LP on Base</div></div>
         </a>
       </div>
       <div>
-        <div class="footer-col-label">DadsDeFiSpace community</div>
-        <a class="footer-link" href="https://t.me/DADSDefiSpace" target="_blank" rel="noopener">
-          <div class="footer-link-icon" style="background:#229ED9;color:#fff">✈</div>
-          <div>
-            <div>Telegram</div>
-            <div class="footer-link-sub">t.me/DADSDefiSpace · Education &amp; discussion</div>
-          </div>
+        <div class="footer-col-label">Community</div>
+        <a class="flink" href="https://t.me/DADSDefiSpace" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:#229ED9;color:#fff">✈</div>
+          <div><div>Telegram</div><div class="flink-sub">Free community · t.me/DADSDefiSpace</div></div>
         </a>
-        <a class="footer-link" href="https://x.com/cryptozone1013" target="_blank" rel="noopener">
-          <div class="footer-link-icon" style="background:#000;color:#fff">𝕏</div>
-          <div>
-            <div>X / Twitter</div>
-            <div class="footer-link-sub">@cryptozone1013 · Market analysis &amp; updates</div>
-          </div>
+        <a class="flink" href="https://x.com/cryptozone1013" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:#000;color:#fff">𝕏</div>
+          <div><div>X / Twitter</div><div class="flink-sub">@cryptozone1013</div></div>
         </a>
       </div>
       <div>
-        <div class="footer-col-label">About this tool</div>
-        <div style="font-size:12px;color:var(--txt2);line-height:1.7">
-          Built by <strong style="color:var(--txt)">DadsDeFiSpace</strong> for the MaxFi community on Base chain.<br><br>
-          Tracks APR, IL, break-even days, risk ratings, yield projections, and portfolio allocation from your weekly MaxFi snapshot.<br><br>
-          <a href="https://dadsdefispace.org" target="_blank">dadsdefispace.org</a>
-        </div>
+        <div class="footer-col-label">Learn DeFi</div>
+        <a class="flink" href="https://www.dadsdefispace.org/challenges" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:var(--gbg);color:var(--gtxt)">📚</div>
+          <div><div>Free DeFi Course</div><div class="flink-sub">dadsdefispace.org/challenges</div></div>
+        </a>
+        <a class="flink" href="https://paragraph.com/@daddefispace" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:var(--abg);color:var(--atxt)">✍</div>
+          <div><div>Paragraph Newsletter</div><div class="flink-sub">paragraph.com/@daddefispace</div></div>
+        </a>
+      </div>
+      <div>
+        <div class="footer-col-label">Web3 Social</div>
+        <a class="flink" href="https://farcaster.xyz/thecaptain1013" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:#8A63D2;color:#fff">🟣</div>
+          <div><div>Farcaster</div><div class="flink-sub">thecaptain1013</div></div>
+        </a>
+        <a class="flink" href="https://base.app/profile/dadsdefispace" target="_blank" rel="noopener">
+          <div class="flink-icon" style="background:#0052FF;color:#fff">🔵</div>
+          <div><div>Base App</div><div class="flink-sub">dadsdefispace</div></div>
+        </a>
       </div>
     </div>
-    <hr class="footer-divider">
     <div class="footer-bottom">
-      <div>
-        <div class="footer-brand">DadsDeFi<span>Space</span></div>
-        <div class="footer-tagline">Bitcoin is the foundation. DeFi is the amplifier. Process is the edge.</div>
-      </div>
-      <div class="footer-disclaimer">Education only · Not financial advice · Always DYOR</div>
+      <div><div class="footer-brand">DadsDeFi<span>Space</span></div><div class="footer-tag">Bitcoin is the foundation. DeFi is the amplifier. Process is the edge.</div></div>
+      <div class="footer-disc">Education only · Not financial advice · Always DYOR</div>
     </div>
   </div>
 </footer>
 
 <script>
-const DEMO_DATA=[
-  {pair:"USDC/cbBTC",positionId:"2048241",dex:"PancakeSwap",daysOld:15,value:170.33,earned:7.18,uncollected:0.23,collected:6.95,apr:100.2,dpd:0.47,rebalances:6,inRange:true,tokenA:"USDC",qtyA:15.7,entryPriceA:1.00,currentPriceA:1.00,tokenB:"cbBTC",qtyB:0.00247,entryPriceB:66049,currentPriceB:62608,rangeLower:62377,rangeUpper:64922,rangeCurrentPrice:62608},
-  {pair:"WETH/cbBTC",positionId:"2042097",dex:"PancakeSwap",daysOld:20,value:157.54,earned:4.82,uncollected:2.04,collected:2.79,apr:56.9,dpd:0.25,rebalances:12,inRange:true,tokenA:"WETH",qtyA:0.0564,entryPriceA:1776.65,currentPriceA:1663,tokenB:"cbBTC",qtyB:0.00102,entryPriceB:66000,currentPriceB:62608,rangeLower:0.026038,rangeUpper:0.027372,rangeCurrentPrice:0.026569},
-  {pair:"WETH/uSOL",positionId:"72276604",dex:"Aerodrome",daysOld:4,value:113.94,earned:1.06,uncollected:0.74,collected:0.32,apr:84.7,dpd:0.26,rebalances:1,inRange:true,tokenA:"WETH",qtyA:0.0481,entryPriceA:2450,currentPriceA:1663,tokenB:"uSOL",qtyB:0.486,entryPriceB:102.64,currentPriceB:69.75,rangeLower:23.57,rangeUpper:24.53,rangeCurrentPrice:23.85},
-  {pair:"WETH/VVV",positionId:"72244032",dex:"Aerodrome",daysOld:11,value:67.91,earned:7.27,uncollected:1.70,collected:5.57,apr:355.3,dpd:0.66,rebalances:3,inRange:false,tokenA:"WETH",qtyA:0.0,entryPriceA:2400,currentPriceA:1663,tokenB:"VVV",qtyB:5.05,entryPriceB:20.46,currentPriceB:13.46,rangeLower:111.0,rangeUpper:120.3,rangeCurrentPrice:123.6},
+const WALLET="0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0";
+const DEMO=[
+  {pair:"SOL/WETH",positionId:"2048441",dex:"PancakeSwap",daysOld:0,value:256.07,earned:0,uncollected:0,collected:0,apr:0,dpd:0,rebalances:0,inRange:true,autoCompound:true,tokenA:"SOL",qtyA:1.80,entryPriceA:69.57,currentPriceA:69.57,tokenB:"WETH",qtyB:0.0786,entryPriceB:1668.42,currentPriceB:1668.42,rangeLower:0.041043,rangeUpper:0.042293,rangeCurrentPrice:0.041675},
+  {pair:"USDC/cbBTC",positionId:"2048241",dex:"PancakeSwap",daysOld:15,value:170.43,earned:7.21,uncollected:0.25,collected:6.95,apr:100.2,dpd:0.47,rebalances:6,inRange:true,autoCompound:true,tokenA:"USDC",qtyA:18.5,entryPriceA:1.0,currentPriceA:1.0,tokenB:"cbBTC",qtyB:0.00242,entryPriceB:62608,currentPriceB:62652,rangeLower:62377,rangeUpper:64922,rangeCurrentPrice:62652},
+  {pair:"WETH/cbBTC",positionId:"2042097",dex:"PancakeSwap",daysOld:20,value:157.72,earned:4.84,uncollected:2.05,collected:2.79,apr:56.9,dpd:0.25,rebalances:12,inRange:true,autoCompound:false,tokenA:"WETH",qtyA:0.0539,entryPriceA:1776.65,currentPriceA:1668.42,tokenB:"cbBTC",qtyB:0.00108,entryPriceB:66000,currentPriceB:62652,rangeLower:0.026038,rangeUpper:0.027372,rangeCurrentPrice:0.026601},
+  {pair:"WETH/uSOL",positionId:"72276604",dex:"Aerodrome",daysOld:4,value:114.18,earned:1.09,uncollected:0.76,collected:0.32,apr:85.9,dpd:0.27,rebalances:1,inRange:true,autoCompound:false,tokenA:"WETH",qtyA:0.0487,entryPriceA:2450,currentPriceA:1668.42,tokenB:"uSOL",qtyB:0.473,entryPriceB:102.64,currentPriceB:69.98,rangeLower:23.57,rangeUpper:24.53,rangeCurrentPrice:23.84},
+  {pair:"WETH/VVV",positionId:"72244032",dex:"Aerodrome",daysOld:11,value:67.99,earned:7.28,uncollected:1.70,collected:5.58,apr:354.2,dpd:0.66,rebalances:3,inRange:false,autoCompound:true,tokenA:"WETH",qtyA:0.0,entryPriceA:2400,currentPriceA:1668.42,tokenB:"VVV",qtyB:5.05,entryPriceB:20.46,currentPriceB:13.49,rangeLower:111.0,rangeUpper:120.3,rangeCurrentPrice:123.7},
 ];
 
 const TCOLORS={USDC:"#27B77A",USDT:"#26A17B",DAI:"#F5AC37",WETH:"#627EEA",ETH:"#627EEA",WBTC:"#F7A93B",cbBTC:"#F7A93B",BTC:"#F7A93B",SOL:"#9945FF",uSOL:"#9945FF",AERO:"#0052FF",CAKE:"#D1884F",VVV:"#EF9F27",VIRTUAL:"#7F77DD",DEFAULT:"#8896A8"};
@@ -322,6 +352,11 @@ const RBGCOL={low:"#E1F5EE",mid:"#FAEEDA",high:"#FCEBEB"};
 const RTXTCOL={low:"#0F6E56",mid:"#854F0B",high:"#A32D2D"};
 const FCOLS=["#378ADD","#9945FF","#EF9F27","#1D9E75","#E24B4A"];
 const FLABELS=["Volatility","IL exposure","Range prox.","Pool maturity","Net vs hold"];
+const SCEN={
+  bear:{label:"Bearish",color:"#E24B4A",cbg:"#FCEBEB",ctxt:"#A32D2D",priceSh:-0.20,feeMul:0.60,ilMul:1.6,oorPct:0.35,desc:"−20% prices · 60% fee rate · 35% out-of-range time"},
+  base:{label:"Base",   color:"#378ADD",cbg:"#E6F1FB",ctxt:"#185FA5",priceSh:0.00, feeMul:1.00,ilMul:1.0,oorPct:0.10,desc:"Flat prices · 100% fee rate · 10% out-of-range time"},
+  bull:{label:"Bullish",color:"#1D9E75",cbg:"#E1F5EE",ctxt:"#0F6E56",priceSh:+0.25,feeMul:1.50,ilMul:0.6,oorPct:0.05,desc:"+25% prices · 150% fee rate · 5% out-of-range time"},
+};
 
 function classifyToken(s){
   const t=s.toUpperCase();
@@ -335,13 +370,9 @@ function autoScore(p){
   const stables=["USDC","USDT","DAI","FRAX","EURC"];
   const blue=["WETH","ETH","WBTC","CBBTC","BTC","SOL","USOL"];
   const tA=p.tokenA.toUpperCase(),tB=p.tokenB.toUpperCase();
-  const isStA=stables.includes(tA),isStB=stables.includes(tB);
-  const isBluA=blue.includes(tA),isBluB=blue.includes(tB);
-  let vol=0;
-  if(isStA&&isStB)vol=0;
-  else if((isStA||isBluA)&&(isStB||isBluB))vol=1;
-  else if(isBluA||isBluB)vol=2;
-  else vol=3;
+  const sA=stables.includes(tA),sB=stables.includes(tB);
+  const bA=blue.includes(tA),bB=blue.includes(tB);
+  let vol=sA&&sB?0:(sA||bA)&&(sB||bB)?1:bA||bB?2:3;
   const il=calcIL(p);
   const ilPct=il.il!==null?Math.abs(il.il)/p.value*100:5;
   const ilS=ilPct<1?0:ilPct<5?1:ilPct<15?2:3;
@@ -352,10 +383,10 @@ function autoScore(p){
   const net=netV===null?1:netV>=0?0:Math.abs(netV)<p.earned*0.5?1:2;
   const score=vol+ilS+rng+mat+net;
   return{score,tier:score<=4?"low":score<=7?"mid":"high",factors:{
-    vol:{s:vol,n:vol===0?"Stable/stable pair":vol===1?"Blue chip pair":vol===2?"Mid-cap present":"Small-cap token"},
-    il:{s:ilS,n:ilS===0?"Minimal IL":ilS===1?"Low IL":ilS===2?"Moderate IL (~"+ilPct.toFixed(1)+"%)":"High IL ("+ilPct.toFixed(1)+"%)"},
-    rng:{s:rng,n:rng===0?"Mid-range":rng===1?"Within 20% of bound":"Within 10% of bound — watch this"},
-    mat:{s:mat,n:mat===0?"Well established":mat===1?"<30 days old":"<7 days old"},
+    vol:{s:vol,n:vol===0?"Stable/stable pair":vol===1?"Blue chip correlated":vol===2?"Mid-cap present":"Small-cap token"},
+    il:{s:ilS,n:"IL: ~"+ilPct.toFixed(1)+"% of position"},
+    rng:{s:rng,n:rng===0?"Mid-range":rng===1?"Within 20% of bound":"Within 10% — watch this"},
+    mat:{s:mat,n:mat===0?"Well established":mat===1?"<30 days":"<7 days — new position"},
     net:{s:net,n:net===0?"LP beating hold":net===1?"Close to break-even":"LP behind hold"},
   }};
 }
@@ -377,38 +408,68 @@ function calcBE(p){
 function rngPct(p){return Math.min(100,Math.max(0,(p.rangeCurrentPrice-p.rangeLower)/(p.rangeUpper-p.rangeLower)*100));}
 function fmtB(p,v){return v>1?"$"+v.toLocaleString("en-US",{maximumFractionDigits:0}):v.toFixed(6);}
 function f(n,d=2){return typeof n==="number"?n.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d}):"—";}
-function fS(n){if(n===null)return"n/a";return(n>=0?"+$":"-$")+f(Math.abs(n));}
+function fS(n){if(n===null||n===undefined)return"n/a";return(n>=0?"+$":"-$")+f(Math.abs(n));}
 function fP(n){return f(n,1)+"%";}
+
+// Compounding: autoCompound=true → 50% to wallet, 50% back into position
+function compoundSplit(p){
+  if(!p.autoCompound)return{toWallet:p.dpd,toPosition:0};
+  return{toWallet:p.dpd*0.5,toPosition:p.dpd*0.5};
+}
+function rebalEfficiency(p){
+  if(!p.rebalances||p.rebalances===0)return null;
+  return p.earned/p.rebalances;
+}
+function capitalEfficiency(p){
+  if(!p.value||p.value===0)return 0;
+  return(p.dpd*365/p.value*100);
+}
+function rangePctUtil(p){
+  return rngPct(p).toFixed(0)+"%";
+}
+function uncollectedPct(p){
+  if(!p.value)return 0;
+  return(p.uncollected/p.value*100);
+}
+function healthScore(p,sc){
+  let s=100;
+  if(!p.inRange)s-=25;
+  const rp=rngPct(p);
+  if(rp<10||rp>90)s-=15;
+  else if(rp<20||rp>80)s-=8;
+  const il=calcIL(p);
+  if(il.net!==null&&il.net<0)s-=10;
+  if(sc.tier==="high")s-=15;
+  else if(sc.tier==="mid")s-=7;
+  if(p.daysOld<7)s-=8;
+  if(uncollectedPct(p)>5)s-=5;
+  return Math.max(0,Math.min(100,Math.round(s)));
+}
 
 function posAlloc(p){
   let pA=50,pB=50;
   if(p.currentPriceA>0&&p.currentPriceB>0){const vA=p.qtyA*p.currentPriceA,vB=p.qtyB*p.currentPriceB,tot=vA+vB;if(tot>0){pA=Math.round(vA/tot*100);pB=100-pA;}}
-  const cA=TCOLORS[p.tokenA.toUpperCase()]||TCOLORS.DEFAULT;
-  const cB=TCOLORS[p.tokenB.toUpperCase()]||TCOLORS.DEFAULT;
-  return[{n:p.tokenA,p:pA,c:cA},{n:p.tokenB,p:pB,c:cB}];
+  return[{n:p.tokenA,p:pA,c:TCOLORS[p.tokenA.toUpperCase()]||TCOLORS.DEFAULT},{n:p.tokenB,p:pB,c:TCOLORS[p.tokenB.toUpperCase()]||TCOLORS.DEFAULT}];
 }
 function portAlloc(p){
-  const alloc={};posAlloc(p).forEach(a=>{
-    const cls=classifyToken(a.n);alloc[cls]=(alloc[cls]||0)+a.p;
-  });return alloc;
-}
-function badge(tier){
-  const c={low:"bg",mid:"ba",high:"br"}[tier];
-  return`<span class="badge ${c}">${{low:"Low risk",mid:"Mid risk",high:"High risk"}[tier]}</span>`;
-}
-function rangeDot(ir){
-  return`<span class="badge ${ir?"bg":"br"}"><span style="width:6px;height:6px;border-radius:50%;background:${ir?"var(--green)":"var(--red)"};display:inline-block"></span>${ir?"In range":"Out of range"}</span>`;
+  const a={};posAlloc(p).forEach(x=>{const cls=classifyToken(x.n);a[cls]=(a[cls]||0)+x.p;});return a;
 }
 
-let chartInstances={};
-function donut(canvasId,segments,totalLabel,subLabel,legendId){
-  if(chartInstances[canvasId])chartInstances[canvasId].destroy();
+function badge(tier){const c={low:"bg",mid:"ba",high:"br"}[tier];return`<span class="badge ${c}">${{low:"Low",mid:"Mid",high:"High"}[tier]} risk</span>`;}
+function rangeDot(ir){return`<span class="badge ${ir?"bg":"br"}"><span style="width:6px;height:6px;border-radius:50%;background:${ir?"var(--green)":"var(--red)"};display:inline-block"></span>${ir?"In range":"Out of range"}</span>`;}
+function compBadge(p){return p.autoCompound?`<span class="badge bp">Auto-compound</span>`:"";}
+
+let charts={};
+function dc(id){if(charts[id]){try{charts[id].destroy();}catch(e){}delete charts[id];}}
+
+function donut(canvasId,segs,total,sub,legId){
+  dc(canvasId);
   const ctx=document.getElementById(canvasId).getContext("2d");
-  const tot=segments.reduce((s,x)=>s+x.v,0);
-  chartInstances[canvasId]=new Chart(ctx,{type:"doughnut",data:{labels:segments.map(x=>x.l),datasets:[{data:segments.map(x=>x.v),backgroundColor:segments.map(x=>x.c),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.raw/tot*100).toFixed(1)}%`}}}}});
-  document.getElementById("donut-total-"+canvasId).textContent=totalLabel;
-  document.getElementById("donut-sub-"+canvasId).textContent=subLabel;
-  document.getElementById(legendId).innerHTML=segments.map(x=>`<div class="dlegrow"><span class="dlegdot" style="background:${x.c}"></span><span class="dlegname">${x.l}</span><span class="dlegpct">${(x.v/tot*100).toFixed(1)}%</span></div>`).join("");
+  const tot=segs.reduce((s,x)=>s+x.v,0);
+  charts[canvasId]=new Chart(ctx,{type:"doughnut",data:{labels:segs.map(x=>x.l),datasets:[{data:segs.map(x=>x.v),backgroundColor:segs.map(x=>x.c),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.raw/tot*100).toFixed(1)}%`}}}}});
+  document.getElementById("donut-total-"+canvasId).textContent=total;
+  document.getElementById("donut-sub-"+canvasId).textContent=sub;
+  document.getElementById(legId).innerHTML=segs.map(x=>`<div class="dlegrow"><span class="dlegdot" style="background:${x.c}"></span><span class="dlegname">${x.l}</span><span class="dlegpct">${(x.v/tot*100).toFixed(1)}%</span></div>`).join("");
 }
 
 function posCard(p,sc){
@@ -424,26 +485,36 @@ function posCard(p,sc){
   const col=TCOLORS[p.tokenA.toUpperCase()]||TCOLORS.DEFAULT;
   const qA=p.qtyA>1?p.qtyA.toFixed(2):p.qtyA.toFixed(4);
   const qB=p.qtyB>1?p.qtyB.toFixed(3):p.qtyB.toFixed(5);
+  const cs=compoundSplit(p);
+  const re=rebalEfficiency(p);
+  const ce=capitalEfficiency(p);
+  const hs=healthScore(p,sc);
+  const hColor=hs>=75?"var(--green)":hs>=50?"var(--amber)":"var(--red)";
+  const uPct=uncollectedPct(p);
+
   return`<div class="pcard">
     <div class="rstripe" style="background:${RCOL[sc.tier]}"></div>
     <div class="pinner">
       <div class="ptop">
         <div class="picon" style="background:${col}18;color:${col}">${p.tokenA[0]}${p.tokenB[0]}</div>
         <div><div class="pname">${p.pair}</div><div class="pmeta">#${p.positionId} · ${p.dex} · ${p.daysOld}d old</div></div>
-        <div class="pbadges">${rangeDot(p.inRange)}${badge(sc.tier)}</div>
+        <div class="pbadges">${rangeDot(p.inRange)}${badge(sc.tier)}${compBadge(p)}</div>
       </div>
+
       <div class="pg">
         <div class="pm"><div class="pml">Value</div><div class="pmv">$${f(p.value)}</div><div class="pms">${qA} ${p.tokenA} + ${qB} ${p.tokenB}</div></div>
-        <div class="pm"><div class="pml">APR (shown)</div><div class="pmv" style="color:var(--green)">${fP(p.apr)}</div><div class="pms">$${f(p.dpd)}/day</div></div>
-        <div class="pm"><div class="pml">Annual yield</div><div class="pmv" style="color:var(--bludk)">$${f(p.dpd*365,0)}</div><div class="pms">${fP(p.dpd*365/p.value*100)} APR</div></div>
+        <div class="pm"><div class="pml">APR (shown)</div><div class="pmv" style="color:var(--green)">${fP(p.apr)}</div><div class="pms">$${f(p.dpd)}/day total</div></div>
+        <div class="pm"><div class="pml">Annual yield</div><div class="pmv" style="color:var(--bludk)">$${f(p.dpd*365,0)}</div><div class="pms">${fP(ce)} capital eff.</div></div>
         <div class="pm"><div class="pml">Monthly yield</div><div class="pmv">$${f(p.dpd*30.4)}</div><div class="pms">${fP(p.dpd*30.4/p.value*100)} APR</div></div>
-        <div class="pm"><div class="pml">Earned total</div><div class="pmv" style="color:var(--green)">$${f(p.earned)}</div><div class="pms">$${f(p.uncollected)} pending</div></div>
-        <div class="pm"><div class="pml">Rebalances</div><div class="pmv">${p.rebalances}</div><div class="pms">lifetime</div></div>
+        <div class="pm"><div class="pml">Earned total</div><div class="pmv" style="color:var(--green)">$${f(p.earned)}</div><div class="pms">$${f(p.uncollected)} pending${uPct>5?" ⚠":""}</div></div>
+        <div class="pm"><div class="pml">Health score</div><div class="pmv" style="color:${hColor}">${hs}/100</div><div class="pms">${hs>=75?"Strong":hs>=50?"Moderate":"Needs attention"}</div></div>
       </div>
+
       <div class="rwrap">
-        <div class="rlbls"><span>${fmtB(p,p.rangeLower)}</span><span style="font-weight:600;color:${tc}">Now: ${fmtB(p,p.rangeCurrentPrice)}</span><span>${fmtB(p,p.rangeUpper)}</span></div>
+        <div class="rlbls"><span>${fmtB(p,p.rangeLower)}</span><span style="font-weight:600;color:${tc}">Now: ${fmtB(p,p.rangeCurrentPrice)} (${rangePctUtil(p)} thru)</span><span>${fmtB(p,p.rangeUpper)}</span></div>
         <div class="rbar"><div class="rfill" style="width:${rp.toFixed(1)}%"></div><div class="rtick" style="left:${rp.toFixed(1)}%;background:${tc}"></div></div>
       </div>
+
       <div class="ilbe">
         <div class="ils"><div class="isl">Impermanent loss</div>
           <div class="il4">
@@ -459,6 +530,13 @@ function posCard(p,sc){
           <div style="font-size:10px;color:var(--txt2)">${be.pct}% of the way · $${f(p.dpd)}/day</div>
         </div>
       </div>
+
+      <div class="compound-row">
+        <div class="pm"><div class="pml">${p.autoCompound?"To wallet (50%)":"$/day (manual)"}</div><div class="pmv" style="color:var(--green)">$${f(cs.toWallet)}/day</div><div class="pms">${p.autoCompound?"Sent to your wallet":"Claim manually"}</div></div>
+        <div class="pm"><div class="pml">${p.autoCompound?"To position (50%)":"Uncollected"}</div><div class="pmv" style="color:var(--purp)">$${f(p.autoCompound?cs.toPosition:p.uncollected)}</div><div class="pms">${p.autoCompound?"Compounds back in":"$"+f(p.uncollected)+" pending"}</div></div>
+        <div class="pm"><div class="pml">Rebal efficiency</div><div class="pmv">${re!==null?"$"+f(re):"—"}</div><div class="pms">${re!==null?"per rebalance ("+p.rebalances+"x)":"No rebalances yet"}</div></div>
+      </div>
+
       <div class="palrow">
         <div class="isl" style="margin-bottom:0">Token allocation</div>
         <div class="palseg-wrap">${pa.map(a=>`<div class="palseg" style="width:${a.p}%;background:${a.c}"></div>`).join("")}</div>
@@ -468,7 +546,33 @@ function posCard(p,sc){
   </div>`;
 }
 
+// Scenario engine
+function calcScen(scen,days,positions){
+  const s=SCEN[scen];
+  const perPos=positions.map(p=>{
+    const adjVal=p.value*(1+s.priceSh);
+    const adjDpd=p.dpd*s.feeMul*(1-s.oorPct);
+    const fees=p.earned+adjDpd*days;
+    const il=(calcIL(p).il||0)*s.ilMul;
+    const net=il+fees;
+    const pnl=adjVal+fees-p.value;
+    const cs=compoundSplit(p);
+    const toWallet=p.autoCompound?adjDpd*0.5*days:adjDpd*days;
+    const toPos=p.autoCompound?adjDpd*0.5*days:0;
+    return{...p,adjVal,adjDpd,fees,il,net,pnl,toWallet,toPos};
+  });
+  return{perPos,
+    totVal:perPos.reduce((a,p)=>a+p.adjVal,0),
+    totFees:perPos.reduce((a,p)=>a+p.fees,0),
+    totIL:perPos.reduce((a,p)=>a+p.il,0),
+    totPnL:perPos.reduce((a,p)=>a+p.pnl,0),
+    totWallet:perPos.reduce((a,p)=>a+p.toWallet,0),
+    totPos:perPos.reduce((a,p)=>a+p.toPos,0),
+  };
+}
+
 let POSITIONS=[],SCORES=[];
+let scen_current="base";
 
 function render(positions){
   POSITIONS=positions;
@@ -481,43 +585,59 @@ function render(positions){
   const wApr=E.reduce((s,p)=>s+p.value*p.apr,0)/totVal;
   const totNet=E.reduce((s,p)=>s+(p.il.net||0),0);
   const totIL=E.reduce((s,p)=>s+(p.il.il||0),0);
+  const totWallet=E.reduce((s,p)=>s+compoundSplit(p).toWallet,0);
+  const totComp=E.reduce((s,p)=>s+compoundSplit(p).toPosition,0);
   const byT={low:{val:0,dpd:0,cnt:0},mid:{val:0,dpd:0,cnt:0},high:{val:0,dpd:0,cnt:0}};
   E.forEach(p=>{byT[p.sc.tier].val+=p.value;byT[p.sc.tier].dpd+=p.dpd;byT[p.sc.tier].cnt++;});
+  const avgHealth=Math.round(E.reduce((s,p)=>s+healthScore(p,p.sc),0)/E.length);
+  const hCol=avgHealth>=75?"var(--green)":avgHealth>=50?"var(--amber)":"var(--red)";
+  const autoCount=E.filter(p=>p.autoCompound).length;
 
-  // OVERVIEW
+  // ── OVERVIEW ────────────────────────────────────────────────────────────
   document.getElementById("page-overview").innerHTML=`
     <div class="krow mb">
-      <div class="kpi"><div class="kl">Total value</div><div class="kv" style="color:var(--bludk)">$${f(totVal)}</div><div class="ks">${E.length} positions</div></div>
+      <div class="kpi"><div class="kl">Total value</div><div class="kv" style="color:var(--bludk)">$${f(totVal)}</div><div class="ks">${E.length} positions · Base chain</div></div>
       <div class="kpi"><div class="kl">Total earned</div><div class="kv" style="color:var(--green)">$${f(totEarn)}</div><div class="ks">$${f(totUncol)} pending</div></div>
-      <div class="kpi"><div class="kl">Proj $/day</div><div class="kv">$${f(totDpd)}</div><div class="ks">$${f(totDpd*365,0)}/yr</div></div>
+      <div class="kpi"><div class="kl">Proj $/day</div><div class="kv">$${f(totDpd)}</div><div class="ks">$${f(totDpd*365,0)}/yr est.</div></div>
       <div class="kpi"><div class="kl">Weighted APR</div><div class="kv" style="color:var(--green)">${fP(wApr)}</div><div class="ks">portfolio yield</div></div>
       <div class="kpi"><div class="kl">Net vs hold</div><div class="kv" style="color:${totNet>=0?"var(--green)":"var(--red)"}">${fS(totNet)}</div><div class="ks">${totNet>=0?"LP winning ✓":""}</div></div>
+      <div class="kpi"><div class="kl">Portfolio health</div><div class="kv" style="color:${hCol}">${avgHealth}/100</div><div class="ks">${avgHealth>=75?"Strong":avgHealth>=50?"Moderate":"Review needed"}</div></div>
+    </div>
+    <div class="krow mb">
+      <div class="kpi"><div class="kl">To wallet/day</div><div class="kv" style="color:var(--green)">$${f(totWallet)}</div><div class="ks">${autoCount} positions auto-compounding</div></div>
+      <div class="kpi"><div class="kl">Compounding/day</div><div class="kv" style="color:var(--purp)">$${f(totComp)}</div><div class="ks">Reinvested back into positions</div></div>
+      <div class="kpi"><div class="kl">Total IL</div><div class="kv" style="color:${totIL>=0?"var(--green)":"var(--red)"}">${fS(totIL)}</div><div class="ks">fees ${totEarn+totIL>=0?"covering IL ✓":"not covering IL"}</div></div>
+      <div class="kpi"><div class="kl">Rebalances</div><div class="kv">${E.reduce((s,p)=>s+p.rebalances,0)}</div><div class="ks">lifetime total</div></div>
     </div>
     <div class="g3 mb">
       <div class="card"><div class="slab">Portfolio allocation</div>
-        <div class="dwrap"><canvas id="d-port" width="130" height="130"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-port"></div><div class="dsub" id="donut-sub-d-port"></div></div></div>
+        <div class="dwrap"><canvas id="d-port" width="120" height="120" role="img" aria-label="Portfolio allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-port"></div><div class="dsub" id="donut-sub-d-port"></div></div></div>
         <div class="dleg" id="dleg-port"></div>
       </div>
       <div class="card"><div class="slab">Risk allocation</div>
-        <div class="dwrap"><canvas id="d-risk" width="130" height="130"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-risk"></div><div class="dsub" id="donut-sub-d-risk"></div></div></div>
+        <div class="dwrap"><canvas id="d-risk" width="120" height="120" role="img" aria-label="Risk allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-risk"></div><div class="dsub" id="donut-sub-d-risk"></div></div></div>
         <div class="dleg" id="dleg-risk"></div>
       </div>
       <div class="card"><div class="slab">Yield projection</div>
-        <table class="ytbl"><thead><tr><th>Period</th><th>Yield ($)</th><th>APR</th></tr></thead>
-        <tbody>${[["Daily",1],["Weekly",7],["Monthly",30.4],["Yearly",365]].map(([l,m])=>`<tr><td style="color:var(--txt2)">${l}</td><td><div class="yd">$${f(totDpd*m)}</div></td><td><div class="yp">${fP(totDpd*m/totVal*100)}</div></td></tr>`).join("")}</tbody></table>
+        <table class="dtbl">
+          <thead><tr><th>Period</th><th>Yield ($)</th><th>APR %</th></tr></thead>
+          <tbody>
+            ${[["Daily",1],["Weekly",7],["Monthly",30.4],["Yearly",365]].map(([l,m])=>`<tr><td style="color:var(--txt2)">${l}</td><td><span style="font-weight:600">$${f(totDpd*m)}</span></td><td style="color:var(--green)">${fP(totDpd*m/totVal*100)}</td></tr>`).join("")}
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="slab">All positions</div>
-    ${E.map(p=>{const rp=rngPct(p);const tc=p.inRange?"var(--blue)":"var(--red)";const nc=(p.il.net||0)>=0?"var(--green)":"var(--red)";
+    ${E.map(p=>{const rp=rngPct(p);const tc=p.inRange?"var(--blue)":"var(--red)";const nc=(p.il.net||0)>=0?"var(--green)":"var(--red)";const hs=healthScore(p,p.sc);const hc=hs>=75?"var(--green)":hs>=50?"var(--amber)":"var(--red)";
       return`<div class="card mb" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:140px">
           <div style="width:4px;height:36px;border-radius:2px;background:${RCOL[p.sc.tier]};flex-shrink:0"></div>
-          <div><div style="font-size:14px;font-weight:600">${p.pair}</div><div style="font-size:11px;color:var(--txt2)">${p.dex}</div></div>
+          <div><div style="font-size:14px;font-weight:600">${p.pair}${p.autoCompound?' <span style="font-size:10px;font-weight:500;color:var(--purp)">⟳</span>':''}</div><div style="font-size:11px;color:var(--txt2)">${p.dex}</div></div>
         </div>
         <div style="text-align:center;min-width:55px"><div style="font-size:10px;color:var(--txt2)">Value</div><div style="font-size:14px;font-weight:600">$${f(p.value)}</div></div>
         <div style="text-align:center;min-width:50px"><div style="font-size:10px;color:var(--txt2)">APR</div><div style="font-size:14px;font-weight:600;color:var(--green)">${fP(p.apr)}</div></div>
-        <div style="text-align:center;min-width:50px"><div style="font-size:10px;color:var(--txt2)">Earned</div><div style="font-size:14px;font-weight:600;color:var(--green)">$${f(p.earned)}</div></div>
-        <div style="text-align:center;min-width:60px"><div style="font-size:10px;color:var(--txt2)">Net vs hold</div><div style="font-size:13px;font-weight:600;color:${nc}">${fS(p.il.net)}</div></div>
+        <div style="text-align:center;min-width:55px"><div style="font-size:10px;color:var(--txt2)">Net vs hold</div><div style="font-size:13px;font-weight:600;color:${nc}">${fS(p.il.net)}</div></div>
+        <div style="text-align:center;min-width:50px"><div style="font-size:10px;color:var(--txt2)">Health</div><div style="font-size:14px;font-weight:600;color:${hc}">${hs}</div></div>
         <div style="min-width:100px"><div style="font-size:10px;color:var(--txt2);margin-bottom:3px">Range</div>
           <div style="height:4px;background:var(--bg2);border-radius:2px;position:relative">
             <div style="width:${rp.toFixed(1)}%;height:100%;background:var(--bbg);border-radius:2px"></div>
@@ -528,18 +648,57 @@ function render(positions){
       </div>`;
     }).join("")}`;
 
-  // POSITIONS
+  // ── POSITIONS ────────────────────────────────────────────────────────────
   document.getElementById("page-positions").innerHTML=`
     <div class="krow mb">
-      <div class="kpi"><div class="kl">Positions</div><div class="kv">${E.length}</div><div class="ks">active</div></div>
-      <div class="kpi"><div class="kl">Total IL</div><div class="kv" style="color:${totIL>=0?"var(--green)":"var(--red)"}">${fS(totIL)}</div><div class="ks">across all</div></div>
+      <div class="kpi"><div class="kl">Positions</div><div class="kv">${E.length}</div><div class="ks">${E.filter(p=>p.inRange).length} in range</div></div>
+      <div class="kpi"><div class="kl">Total IL</div><div class="kv" style="color:${totIL>=0?"var(--green)":"var(--red)"}">${fS(totIL)}</div><div class="ks">across all positions</div></div>
       <div class="kpi"><div class="kl">Total fees</div><div class="kv" style="color:var(--green)">$${f(totEarn)}</div><div class="ks">$${f(totUncol)} uncollected</div></div>
       <div class="kpi"><div class="kl">Net vs hold</div><div class="kv" style="color:${totNet>=0?"var(--green)":"var(--red)"}">${fS(totNet)}</div><div class="ks">${totNet>=0?"LP winning ✓":""}</div></div>
       <div class="kpi"><div class="kl">Rebalances</div><div class="kv">${E.reduce((s,p)=>s+p.rebalances,0)}</div><div class="ks">lifetime</div></div>
     </div>
     ${E.map((p,i)=>posCard(p,SCORES[i])).join("")}`;
 
-  // RISK
+  // ── CASHFLOW ─────────────────────────────────────────────────────────────
+  document.getElementById("page-cashflow").innerHTML=`
+    <div class="krow mb">
+      <div class="kpi"><div class="kl">Total $/day</div><div class="kv" style="color:var(--green)">$${f(totDpd)}</div><div class="ks">all positions</div></div>
+      <div class="kpi"><div class="kl">To wallet/day</div><div class="kv" style="color:var(--green)">$${f(totWallet)}</div><div class="ks">${autoCount} auto-compounding</div></div>
+      <div class="kpi"><div class="kl">Compounding/day</div><div class="kv" style="color:var(--purp)">$${f(totComp)}</div><div class="ks">reinvested into positions</div></div>
+      <div class="kpi"><div class="kl">Monthly cashflow</div><div class="kv" style="color:var(--green)">$${f(totWallet*30.4)}</div><div class="ks">wallet inflows (30d)</div></div>
+      <div class="kpi"><div class="kl">Annual est.</div><div class="kv" style="color:var(--bludk)">$${f(totDpd*365,0)}</div><div class="ks">${fP(totDpd*365/totVal*100)} APR</div></div>
+    </div>
+    <div class="card mb"><div class="slab">Cashflow by position — compounding breakdown</div>
+      <div style="overflow-x:auto"><table class="dtbl" style="min-width:520px">
+        <thead><tr><th>Position</th><th>$/day total</th><th>To wallet</th><th>To position</th><th>Auto-compound</th><th>Real APR</th><th>Capital eff.</th></tr></thead>
+        <tbody>${E.map((p,i)=>{const cs=compoundSplit(p);const re=rebalEfficiency(p);const bg=i%2===0?"var(--bg2)":"transparent";
+          return`<tr style="background:${bg}">
+            <td style="font-weight:600">${p.pair}</td>
+            <td style="color:var(--green)">$${f(p.dpd)}</td>
+            <td style="color:var(--green)">$${f(cs.toWallet)}</td>
+            <td style="color:var(--purp)">$${f(cs.toPosition)}</td>
+            <td>${p.autoCompound?'<span class="badge bp">Yes — 50/50</span>':'<span class="badge" style="background:var(--bg2);color:var(--txt2)">Manual</span>'}</td>
+            <td style="color:var(--green)">${p.daysOld>0&&p.earned>0?fP(p.earned/p.value/p.daysOld*365*100):"—"}</td>
+            <td>${fP(capitalEfficiency(p))}</td>
+          </tr>`;}).join("")}
+        </tbody>
+      </table></div>
+    </div>
+    <div class="g2 mb">
+      <div class="card"><div class="slab">Cumulative cashflow (to wallet)</div>
+        <div style="position:relative;height:200px"><canvas id="ch-cf" role="img" aria-label="Cumulative cashflow to wallet over 365 days">Cashflow chart.</canvas></div>
+        <div class="leg" id="leg-cf"></div>
+      </div>
+      <div class="card"><div class="slab">Fee APR vs shown APR — real vs projected</div>
+        <div style="position:relative;height:200px"><canvas id="ch-apr" role="img" aria-label="Grouped bar chart comparing real fee APR vs MaxFi shown APR per position">APR comparison.</canvas></div>
+        <div class="leg" id="leg-apr"></div>
+      </div>
+    </div>
+    <div class="note">
+      <strong>How compounding works:</strong> When Auto-Compound is enabled on a MaxFi position, 50% of earned fees flow to your wallet and 50% are reinvested back into the LP position. This means your "$/day to wallet" is half the total rate, but your position size grows over time — improving compounding. Manual positions send 100% to your wallet when you claim. The Real APR column uses your actual earned/days since opening vs the APR MaxFi projects from pool volume.
+    </div>`;
+
+  // ── RISK ─────────────────────────────────────────────────────────────────
   document.getElementById("page-risk").innerHTML=`
     <div class="rktier mb">
       ${["low","mid","high"].map(t=>`<div class="rktile" style="background:${RBGCOL[t]};border:0.5px solid ${RCOL[t]}40">
@@ -550,19 +709,25 @@ function render(positions){
     </div>
     <div class="g2 mb">
       <div class="card"><div class="slab">Capital by risk tier</div>
-        <div class="dwrap"><canvas id="d-rk" width="130" height="130"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-rk"></div><div class="dsub" id="donut-sub-d-rk"></div></div></div>
+        <div class="dwrap"><canvas id="d-rk" width="120" height="120" role="img" aria-label="Capital risk tier donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-rk"></div><div class="dsub" id="donut-sub-d-rk"></div></div></div>
         <div class="dleg" id="dleg-rk"></div>
       </div>
-      <div class="card"><div class="slab">Yield by risk tier</div>
-        <div class="dwrap"><canvas id="d-rky" width="130" height="130"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-rky"></div><div class="dsub" id="donut-sub-d-rky"></div></div></div>
-        <div class="dleg" id="dleg-rky"></div>
+      <div class="card"><div class="slab">Position health scores</div>
+        ${E.map(p=>{const hs=healthScore(p,p.sc);const hc=hs>=75?"var(--green)":hs>=50?"var(--amber)":"var(--red)";
+          return`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--bdr)">
+            <div style="width:3px;height:20px;background:${RCOL[p.sc.tier]};border-radius:2px;flex-shrink:0"></div>
+            <span style="flex:1;font-size:13px;font-weight:600">${p.pair}</span>
+            <div style="width:100px;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden"><div style="width:${hs}%;height:100%;background:${hc}"></div></div>
+            <span style="font-size:13px;font-weight:700;color:${hc};min-width:32px;text-align:right">${hs}</span>
+          </div>`;}).join("")}
+        <div style="font-size:11px;color:var(--txt2);margin-top:8px">Health = 100 − penalties for out-of-range, range proximity, IL, risk tier, age, uncollected fees.</div>
       </div>
     </div>
     <div class="card mb"><div class="slab">Position risk scorecard</div>
       ${E.map((p,i)=>{const sc=SCORES[i];const fkeys=["vol","il","rng","mat","net"];const fmax=[3,3,2,2,2];
         return`<div class="rsrow">
           <div class="rshead">
-            <div class="rsname">${p.pair} <span style="font-size:11px;font-weight:400;color:var(--txt2)">#${p.positionId} · ${p.dex}</span></div>
+            <div class="rsname">${p.pair} <span style="font-size:11px;font-weight:400;color:var(--txt2)">#${p.positionId}</span></div>
             <span style="font-size:18px;font-weight:700;color:${RCOL[sc.tier]}">${sc.score}</span><span style="font-size:11px;color:var(--txt2)">/12</span>
             ${badge(sc.tier)}
           </div>
@@ -577,52 +742,30 @@ function render(positions){
           </div>
         </div>`;}).join("")}
     </div>
-    <div class="card"><div class="slab">Scoring methodology</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:6px">
-        ${[["Volatility","0–3","Stable=0 · Blue chip=1 · Mid-cap=2 · Small-cap=3"],["IL exposure","0–3","Minimal=0 · Low=1 · Moderate=2 · High=3"],["Range proximity","0–2","Mid=0 · Within 20%=1 · Within 10%=2"],["Pool maturity","0–2","30d+=0 · 7-30d=1 · <7d=2"],["Net vs hold","0–2","Winning=0 · Close=1 · Behind=2"]].map(([t,r,d])=>`<div class="fbox"><strong>${t}</strong> (${r})<br>${d}</div>`).join("")}
+    <div class="card"><div class="slab">Scoring guide</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;margin-top:6px">
+        ${[["Volatility","0–3","Stable=0 · Blue chip=1 · Mid-cap=2 · Small-cap=3"],["IL exposure","0–3","<1%=0 · <5%=1 · <15%=2 · ≥15%=3"],["Range proximity","0–2","Mid=0 · Within 20%=1 · Within 10%=2"],["Pool maturity","0–2","30d+=0 · 7-30d=1 · <7d=2"],["Net vs hold","0–2","Winning=0 · Close=1 · Behind=2"]].map(([t,r,d])=>`<div class="fbox"><strong>${t}</strong> (${r})<br>${d}</div>`).join("")}
       </div>
       <div style="margin-top:8px;font-size:12px;color:var(--txt2)">0–4 = <strong style="color:var(--green)">Low</strong> · 5–7 = <strong style="color:var(--amber)">Mid</strong> · 8–12 = <strong style="color:var(--red)">High</strong></div>
     </div>`;
 
-  // YIELD
-  document.getElementById("page-yield").innerHTML=`
-    <div class="krow mb">
-      ${[["Daily","$"+f(totDpd)],["Weekly","$"+f(totDpd*7)],["Monthly","$"+f(totDpd*30.4)],["Yearly","$"+f(totDpd*365)],["Wt. APR",fP(wApr)]].map(([l,v])=>`<div class="kpi"><div class="kl">${l}</div><div class="kv" style="color:var(--green)">${v}</div></div>`).join("")}
-    </div>
-    <div class="card mb"><div class="slab">Per-position yield</div>
-      <div style="overflow-x:auto"><table style="width:100%;font-size:12px;border-collapse:collapse;min-width:480px">
-        <thead><tr>${["Pair","Value","APR","$/day","Annual $","Annual %","Monthly $","Monthly %"].map(h=>`<th style="font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;text-align:left;padding:4px 8px 6px 0;border-bottom:0.5px solid var(--bdr);letter-spacing:.04em">${h}</th>`).join("")}</tr></thead>
-        <tbody>${E.map((p,i)=>{const bg=i%2===0?"var(--bg2)":"transparent";const yr=p.dpd*365;const mo=p.dpd*30.4;
-          return`<tr style="background:${bg}"><td style="padding:7px 8px 7px 0;font-weight:600;border-bottom:0.5px solid var(--bdr)">${p.pair}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr)">$${f(p.value)}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr);color:var(--green)">${fP(p.apr)}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr)">$${f(p.dpd)}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr);font-weight:600;color:var(--bludk)">$${f(yr,0)}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr);color:var(--green)">${fP(yr/p.value*100)}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr)">$${f(mo)}</td><td style="padding:7px 8px 7px 0;border-bottom:0.5px solid var(--bdr);color:var(--green)">${fP(mo/p.value*100)}</td></tr>`;
-        }).join("")}</tbody>
-      </table></div>
-    </div>
-    <div class="card"><div class="slab">Cumulative yield (365 days)</div>
-      <div style="position:relative;width:100%;height:200px"><canvas id="ch-yield"></canvas></div>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:11px;color:var(--txt2)">
-        ${E.map(p=>`<span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:2px;background:${TCOLORS[p.tokenA.toUpperCase()]||"#8896A8"};display:inline-block;border-radius:1px"></span>${p.pair}</span>`).join("")}
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:3px;background:var(--txt);display:inline-block;border-radius:1px"></span>Total</span>
-      </div>
-    </div>`;
-
-  // ALLOCATION
-  const buckets={};
-  E.forEach(p=>Object.entries(portAlloc(p)).forEach(([k,pct])=>{buckets[k]=(buckets[k]||0)+(p.value*pct/100);}));
+  // ── ALLOCATION ───────────────────────────────────────────────────────────
+  const buckets={};E.forEach(p=>Object.entries(portAlloc(p)).forEach(([k,pct])=>{buckets[k]=(buckets[k]||0)+(p.value*pct/100);}));
   const tot2=Object.values(buckets).reduce((a,b)=>a+b,0);
   const entries=Object.entries(buckets).sort((a,b)=>b[1]-a[1]);
   document.getElementById("page-allocation").innerHTML=`
     <div class="g2 mb">
-      <div class="card"><div class="slab">Portfolio allocation</div>
-        <div class="dwrap"><canvas id="d-alloc" width="130" height="130"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-alloc"></div><div class="dsub" id="donut-sub-d-alloc"></div></div></div>
+      <div class="card"><div class="slab">Asset class allocation</div>
+        <div class="dwrap"><canvas id="d-alloc" width="120" height="120" role="img" aria-label="Portfolio allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-alloc"></div><div class="dsub" id="donut-sub-d-alloc"></div></div></div>
         <div class="dleg" id="dleg-alloc"></div>
       </div>
       <div class="card"><div class="slab">Breakdown</div>
         ${entries.map(([k,v])=>{const pct=(v/tot2*100);const c=ACOLORS[k]||"#8896A8";
-          return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="width:8px;height:8px;border-radius:50%;background:${c};flex-shrink:0"></span><span style="font-size:13px;font-weight:600;flex:1">${k}</span><span style="font-size:13px;font-weight:600">${pct.toFixed(1)}%</span><span style="font-size:11px;color:var(--txt2)">$${f(v)}</span></div><div style="height:5px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="width:${pct.toFixed(1)}%;height:100%;background:${c};border-radius:3px"></div></div></div>`;
+          return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="width:8px;height:8px;border-radius:50%;background:${c};flex-shrink:0"></span><span style="font-size:13px;font-weight:600;flex:1">${k}</span><span style="font-size:13px;font-weight:600">${pct.toFixed(1)}%</span><span style="font-size:11px;color:var(--txt2)">$${f(v)}</span></div><div style="height:5px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="width:${pct.toFixed(1)}%;height:100%;background:${c}"></div></div></div>`;
         }).join("")}
       </div>
     </div>
-    <div class="card"><div class="slab">Per-position token split</div>
+    <div class="card mb"><div class="slab">Per-position token split</div>
       ${E.map(p=>{const pa=posAlloc(p);return`<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--bdr)">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
           <div style="width:3px;height:22px;background:${RCOL[p.sc.tier]};border-radius:2px;flex-shrink:0"></div>
@@ -634,21 +777,197 @@ function render(positions){
       </div>`;}).join("")}
     </div>`;
 
+  // ── SCENARIOS ────────────────────────────────────────────────────────────
+  renderScenario("base",positions);
+
+  // Draw deferred charts
   setTimeout(()=>{
     const pb={};E.forEach(p=>Object.entries(portAlloc(p)).forEach(([k,pct])=>{pb[k]=(pb[k]||0)+(p.value*pct/100);}));
     const pt=Object.values(pb).reduce((a,b)=>a+b,0);
     donut("d-port",Object.entries(pb).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({l:k,v,c:ACOLORS[k]||"#8896A8"})),"$"+f(pt,0),"portfolio","dleg-port");
     donut("d-risk",[{l:"Low",v:byT.low.val,c:RCOL.low},{l:"Mid",v:byT.mid.val,c:RCOL.mid},{l:"High",v:byT.high.val,c:RCOL.high}].filter(x=>x.v>0),"$"+f(totVal,0),"by risk","dleg-risk");
-    if(document.getElementById("d-rk")){
-      donut("d-rk",[{l:"Low",v:byT.low.val,c:RCOL.low},{l:"Mid",v:byT.mid.val,c:RCOL.mid},{l:"High",v:byT.high.val,c:RCOL.high}].filter(x=>x.v>0),"$"+f(totVal,0),"total","dleg-rk");
-      donut("d-rky",[{l:"Low",v:byT.low.dpd,c:RCOL.low},{l:"Mid",v:byT.mid.dpd,c:RCOL.mid},{l:"High",v:byT.high.dpd,c:RCOL.high}].filter(x=>x.v>0),"$"+totDpd.toFixed(2),"/day","dleg-rky");
-    }
+    if(document.getElementById("d-rk"))donut("d-rk",[{l:"Low",v:byT.low.val,c:RCOL.low},{l:"Mid",v:byT.mid.val,c:RCOL.mid},{l:"High",v:byT.high.val,c:RCOL.high}].filter(x=>x.v>0),"$"+f(totVal,0),"total","dleg-rk");
     if(document.getElementById("d-alloc"))donut("d-alloc",entries.map(([k,v])=>({l:k,v,c:ACOLORS[k]||"#8896A8"})),"$"+f(tot2,0),"portfolio","dleg-alloc");
-    if(document.getElementById("ch-yield")){
-      const days=Array.from({length:13},(_,i)=>Math.round(i*30.4+1));
-      if(chartInstances["ch-yield"])chartInstances["ch-yield"].destroy();
-      chartInstances["ch-yield"]=new Chart(document.getElementById("ch-yield").getContext("2d"),{type:"line",data:{labels:days.map(d=>d===1?"Day 1":"Day "+d),datasets:[...E.map(p=>({label:p.pair,data:days.map(d=>+(p.dpd*d).toFixed(2)),borderColor:TCOLORS[p.tokenA.toUpperCase()]||"#8896A8",borderWidth:1.5,pointRadius:2,tension:.3,fill:false})),{label:"Total",data:days.map(d=>+(totDpd*d).toFixed(2)),borderColor:"var(--txt)",borderWidth:2.5,pointRadius:0,tension:.3,fill:false}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{color:"rgba(128,128,128,0.06)"},ticks:{font:{size:10},maxRotation:0,maxTicksLimit:7}},y:{grid:{color:"rgba(128,128,128,0.06)"},ticks:{font:{size:10},callback:v=>"$"+v}}},plugins:{legend:{display:false}}}});
+
+    // Cashflow chart
+    if(document.getElementById("ch-cf")){
+      const HZ=[30,60,90,180,365];const HL=["30d","60d","90d","180d","1yr"];
+      dc("ch-cf");
+      charts["ch-cf"]=new Chart(document.getElementById("ch-cf").getContext("2d"),{type:"line",
+        data:{labels:HL,datasets:[
+          {label:"To wallet",data:HZ.map(d=>+(totWallet*d).toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.08)",borderWidth:2,pointRadius:3,tension:.3,fill:true},
+          {label:"Compounding",data:HZ.map(d=>+(totComp*d).toFixed(2)),borderColor:"#534AB7",backgroundColor:"rgba(83,74,183,0.07)",borderWidth:1.5,pointRadius:3,tension:.3,fill:true,borderDash:[4,4]},
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+          scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>"$"+v}}}}
+      });
+      document.getElementById("leg-cf").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>To wallet</div><div class="leg-item"><span class="leg-sq" style="background:#534AB7"></span>Compounding into positions</div>`;
     }
+
+    // Real APR vs shown APR
+    if(document.getElementById("ch-apr")){
+      dc("ch-apr");
+      const realAprs=E.map(p=>p.daysOld>0&&p.earned>0?+(p.earned/p.value/p.daysOld*365*100).toFixed(1):0);
+      charts["ch-apr"]=new Chart(document.getElementById("ch-apr").getContext("2d"),{type:"bar",
+        data:{labels:E.map(p=>p.pair),datasets:[
+          {label:"Real APR",data:realAprs,backgroundColor:"#1D9E75",borderRadius:3},
+          {label:"Shown APR",data:E.map(p=>+p.apr.toFixed(1)),backgroundColor:"#85B7EB",borderRadius:3},
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},
+          scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:20}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>v+"%"}}}}
+      });
+      document.getElementById("leg-apr").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Real fee APR (earned/days)</div><div class="leg-item"><span class="leg-sq" style="background:#85B7EB"></span>MaxFi shown APR</div>`;
+    }
+  },80);
+}
+
+function renderScenario(scen,positions){
+  scen_current=scen;
+  const pos=positions||POSITIONS;
+  const s=SCEN[scen];
+  const HZ=[30,60,90,180,365];const HL=["30d","60d","90d","180d","1yr"];
+
+  const tabHtml=Object.entries(SCEN).map(([k,v])=>`<button class="stab ${scen_current===k?"a"+k:""}" onclick="renderScenario('${k}')">${{bear:"↓",base:"→",bull:"↑"}[k]} ${v.label}</button>`).join("");
+
+  const r90=calcScen(scen,90,pos);
+  const r365=calcScen(scen,365,pos);
+  const rNow=calcScen(scen,0,pos);
+
+  document.getElementById("page-scenarios").innerHTML=`
+    <div class="scen-tabs">${tabHtml}
+      <button class="stab ${scen_current==="all"?"aall":""}" onclick="renderScenAll()">Compare all</button>
+    </div>
+    <div class="krow mb">
+      <div class="kpi"><div class="kl" style="color:${s.ctxt}">${s.label} — value now</div><div class="kv" style="color:${s.color}">$${f(rNow.totVal)}</div><div class="ks">${s.priceSh>=0?"+":""}${(s.priceSh*100).toFixed(0)}% price shift</div></div>
+      <div class="kpi"><div class="kl" style="color:${s.ctxt}">Fees at 90 days</div><div class="kv" style="color:${s.color}">$${f(r90.totFees)}</div><div class="ks">$${f(r90.totWallet)} to wallet</div></div>
+      <div class="kpi"><div class="kl" style="color:${s.ctxt}">PnL at 90 days</div><div class="kv" style="color:${r90.totPnL>=0?s.color:"#E24B4A"}">${fS(r90.totPnL)}</div><div class="ks">${fP(r90.totPnL/rNow.totVal*100)} return</div></div>
+      <div class="kpi"><div class="kl" style="color:${s.ctxt}">IL scenario</div><div class="kv" style="color:${r90.totIL>=0?"var(--green)":"var(--red)"}">${fS(r90.totIL)}</div><div class="ks">net vs hold: ${fS(r90.totFees+r90.totIL)}</div></div>
+      <div class="kpi"><div class="kl" style="color:${s.ctxt}">1-year cashflow</div><div class="kv" style="color:${s.color}">$${f(r365.totFees)}</div><div class="ks">${fP(r365.totFees/rNow.totVal*100)} yield</div></div>
+    </div>
+    <div class="g2 mb">
+      <div class="card"><div class="slab">Cashflow vs compounding</div>
+        <div style="position:relative;height:200px"><canvas id="ch-scen-cf" role="img" aria-label="Scenario cashflow and compounding chart">Cashflow chart.</canvas></div>
+        <div class="leg" id="leg-scen-cf"></div>
+      </div>
+      <div class="card"><div class="slab">PnL trajectory</div>
+        <div style="position:relative;height:200px"><canvas id="ch-scen-pnl" role="img" aria-label="Scenario PnL chart">PnL chart.</canvas></div>
+        <div class="leg" id="leg-scen-pnl"></div>
+      </div>
+    </div>
+    <div class="card mb"><div class="slab">Per-position — 90-day scenario</div>
+      <div style="overflow-x:auto"><table class="dtbl" style="min-width:500px">
+        <thead><tr><th>Position</th><th>Value</th><th>Fees (90d)</th><th>To wallet</th><th>Compounding</th><th>IL</th><th>Net vs hold</th><th>1yr PnL</th></tr></thead>
+        <tbody>${r90.perPos.map((p,i)=>{const r1=r365.perPos[i];const nc=p.net>=0?"var(--green)":"var(--red)";const bg=i%2===0?"var(--bg2)":"transparent";
+          return`<tr style="background:${bg}">
+            <td style="font-weight:600">${p.pair}</td>
+            <td>$${f(p.adjVal)}</td>
+            <td style="color:${s.color}">$${f(p.fees)}</td>
+            <td style="color:var(--green)">$${f(p.toWallet)}</td>
+            <td style="color:var(--purp)">$${f(p.toPos)}</td>
+            <td style="color:${p.il>=0?"var(--green)":"var(--red)"}">${fS(p.il)}</td>
+            <td style="color:${nc};font-weight:600">${fS(p.net)}</td>
+            <td style="color:${r1.pnl>=0?"var(--green)":"var(--red)"};font-weight:600">${fS(r1.pnl)}</td>
+          </tr>`;}).join("")}
+        </tbody>
+      </table></div>
+    </div>
+    <div class="note"><strong>${s.label} assumptions:</strong> ${s.desc} · Fee multiplier ${(s.feeMul*100).toFixed(0)}% · IL multiplier ${(s.ilMul*100).toFixed(0)}% · Compounding split preserved (50/50 for auto-compound positions).</div>
+  `;
+
+  setTimeout(()=>{
+    dc("ch-scen-cf");
+    charts["ch-scen-cf"]=new Chart(document.getElementById("ch-scen-cf").getContext("2d"),{type:"line",
+      data:{labels:HL,datasets:[
+        {label:"Total fees",data:HZ.map(d=>+calcScen(scen,d,pos).totFees.toFixed(2)),borderColor:s.color,backgroundColor:s.cbg+"55",borderWidth:2,pointRadius:3,tension:.3,fill:true},
+        {label:"To wallet",data:HZ.map(d=>+calcScen(scen,d,pos).totWallet.toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.05)",borderWidth:1.5,pointRadius:2,tension:.3,fill:false,borderDash:[4,4]},
+        {label:"Compounding",data:HZ.map(d=>+calcScen(scen,d,pos).totPos.toFixed(2)),borderColor:"#534AB7",backgroundColor:"rgba(83,74,183,0.05)",borderWidth:1.5,pointRadius:2,tension:.3,fill:false,borderDash:[2,4]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+        scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>"$"+v}}}}
+    });
+    document.getElementById("leg-scen-cf").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:${s.color}"></span>Total fees</div><div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>To wallet</div><div class="leg-item"><span class="leg-sq" style="background:#534AB7"></span>Compounding</div>`;
+
+    dc("ch-scen-pnl");
+    charts["ch-scen-pnl"]=new Chart(document.getElementById("ch-scen-pnl").getContext("2d"),{type:"line",
+      data:{labels:HL,datasets:[
+        {label:"PnL",data:HZ.map(d=>+calcScen(scen,d,pos).totPnL.toFixed(2)),borderColor:s.color,backgroundColor:s.cbg+"44",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[5,4]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` PnL: $${c.raw.toFixed(2)}`}}},
+        scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v)}}}}
+    });
+    document.getElementById("leg-scen-pnl").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:${s.color}"></span>${s.label} portfolio PnL</div>`;
+  },80);
+}
+
+function renderScenAll(){
+  scen_current="all";
+  const pos=POSITIONS;
+  const HZ=[30,60,90,180,365];const HL=["30d","60d","90d","180d","1yr"];
+  const tabHtml=Object.entries(SCEN).map(([k,v])=>`<button class="stab" onclick="renderScenario('${k}')">${{bear:"↓",base:"→",bull:"↑"}[k]} ${v.label}</button>`).join("");
+  const rBear90=calcScen("bear",90,pos),rBase90=calcScen("base",90,pos),rBull90=calcScen("bull",90,pos);
+  const rBear365=calcScen("bear",365,pos),rBase365=calcScen("base",365,pos),rBull365=calcScen("bull",365,pos);
+
+  document.getElementById("page-scenarios").innerHTML=`
+    <div class="scen-tabs">${tabHtml}<button class="stab aall">Compare all</button></div>
+    <div class="krow mb">
+      <div class="kpi"><div class="kl" style="color:#A32D2D">↓ Bear — 90d fees</div><div class="kv" style="color:#E24B4A">$${f(rBear90.totFees)}</div><div class="ks">Wallet: $${f(rBear90.totWallet)}</div></div>
+      <div class="kpi"><div class="kl" style="color:#185FA5">→ Base — 90d fees</div><div class="kv" style="color:#378ADD">$${f(rBase90.totFees)}</div><div class="ks">Wallet: $${f(rBase90.totWallet)}</div></div>
+      <div class="kpi"><div class="kl" style="color:#0F6E56">↑ Bull — 90d fees</div><div class="kv" style="color:#1D9E75">$${f(rBull90.totFees)}</div><div class="ks">Wallet: $${f(rBull90.totWallet)}</div></div>
+      <div class="kpi"><div class="kl">1yr bear PnL</div><div class="kv" style="color:${rBear365.totPnL>=0?"var(--green)":"var(--red)"}">${fS(rBear365.totPnL)}</div><div class="ks">worst case</div></div>
+      <div class="kpi"><div class="kl">1yr bull PnL</div><div class="kv" style="color:var(--green)">${fS(rBull365.totPnL)}</div><div class="ks">best case</div></div>
+    </div>
+    <div class="g2 mb">
+      <div class="card"><div class="slab">Cumulative fees — all scenarios</div>
+        <div style="position:relative;height:210px"><canvas id="ch-all-cf" role="img" aria-label="All scenario cashflow comparison">Scenario cashflow comparison.</canvas></div>
+        <div class="leg" id="leg-all-cf"></div>
+      </div>
+      <div class="card"><div class="slab">Portfolio PnL — all scenarios</div>
+        <div style="position:relative;height:210px"><canvas id="ch-all-pnl" role="img" aria-label="All scenario PnL comparison">Scenario PnL comparison.</canvas></div>
+        <div class="leg" id="leg-all-pnl"></div>
+      </div>
+    </div>
+    <div class="card mb"><div class="slab">1-year PnL by position — scenario comparison</div>
+      <div style="position:relative;height:220px"><canvas id="ch-all-pos" role="img" aria-label="1-year PnL per position across all scenarios">Position PnL comparison.</canvas></div>
+      <div class="leg" id="leg-all-pos"></div>
+    </div>
+    <div class="note"><strong>Scenario range:</strong> Bearish (−20% price, 60% fee rate, 35% OOR) · Base (flat, 100%, 10% OOR) · Bullish (+25%, 150%, 5% OOR). Compounding split preserved throughout. All projections assume MaxFi continues auto-rebalancing.</div>`;
+
+  setTimeout(()=>{
+    dc("ch-all-cf");
+    charts["ch-all-cf"]=new Chart(document.getElementById("ch-all-cf").getContext("2d"),{type:"line",
+      data:{labels:HL,datasets:[
+        {label:"Bearish",data:HZ.map(d=>+calcScen("bear",d,pos).totFees.toFixed(2)),borderColor:"#E24B4A",backgroundColor:"rgba(226,75,74,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[5,5]},
+        {label:"Base",   data:HZ.map(d=>+calcScen("base",d,pos).totFees.toFixed(2)),borderColor:"#378ADD",backgroundColor:"rgba(55,138,221,0.07)",borderWidth:2.5,pointRadius:4,tension:.3,fill:true},
+        {label:"Bullish",data:HZ.map(d=>+calcScen("bull",d,pos).totFees.toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[3,3]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+        scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>"$"+v}}}}
+    });
+    document.getElementById("leg-all-cf").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>Bearish</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Base</div><div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Bullish</div>`;
+
+    dc("ch-all-pnl");
+    charts["ch-all-pnl"]=new Chart(document.getElementById("ch-all-pnl").getContext("2d"),{type:"line",
+      data:{labels:HL,datasets:[
+        {label:"Bearish",data:HZ.map(d=>+calcScen("bear",d,pos).totPnL.toFixed(2)),borderColor:"#E24B4A",backgroundColor:"rgba(226,75,74,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[5,5]},
+        {label:"Base",   data:HZ.map(d=>+calcScen("base",d,pos).totPnL.toFixed(2)),borderColor:"#378ADD",backgroundColor:"rgba(55,138,221,0.07)",borderWidth:2.5,pointRadius:4,tension:.3,fill:true},
+        {label:"Bullish",data:HZ.map(d=>+calcScen("bull",d,pos).totPnL.toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[3,3]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+        scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v)}}}}
+    });
+    document.getElementById("leg-all-pnl").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>Bearish</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Base</div><div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Bullish</div>`;
+
+    dc("ch-all-pos");
+    charts["ch-all-pos"]=new Chart(document.getElementById("ch-all-pos").getContext("2d"),{type:"bar",
+      data:{labels:pos.map(p=>p.pair),datasets:[
+        {label:"Bearish",data:rBear365.perPos.map(p=>+p.pnl.toFixed(2)),backgroundColor:"#F09595",borderRadius:3},
+        {label:"Base",   data:rBase365.perPos.map(p=>+p.pnl.toFixed(2)),backgroundColor:"#85B7EB",borderRadius:3},
+        {label:"Bullish",data:rBull365.perPos.map(p=>+p.pnl.toFixed(2)),backgroundColor:"#5DCAA5",borderRadius:3},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:20}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v)}}}}
+    });
+    document.getElementById("leg-all-pos").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#F09595"></span>Bearish 1yr</div><div class="leg-item"><span class="leg-sq" style="background:#85B7EB"></span>Base 1yr</div><div class="leg-item"><span class="leg-sq" style="background:#5DCAA5"></span>Bullish 1yr</div>`;
   },80);
 }
 
@@ -656,9 +975,11 @@ function showPage(id){
   document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
   document.querySelectorAll(".navbtn").forEach(el=>el.classList.remove("active"));
   document.getElementById("page-"+id).classList.add("active");
-  document.querySelectorAll(".navbtn").forEach(el=>{if(el.textContent.toLowerCase().startsWith(id))el.classList.add("active");});
-  if(POSITIONS.length>0)setTimeout(()=>render(POSITIONS),50);
+  document.querySelectorAll(".navbtn").forEach(el=>{if(el.textContent.toLowerCase().trim().startsWith(id.toLowerCase()))el.classList.add("active");});
+  if(POSITIONS.length>0&&id==="scenarios")renderScenario(scen_current);
+  if(POSITIONS.length>0&&["overview","positions","cashflow","risk","allocation"].includes(id))setTimeout(()=>render(POSITIONS),50);
 }
+
 function showDashboard(wLabel){
   document.getElementById("onboard-screen").style.display="none";
   document.getElementById("main-nav").style.display="flex";
@@ -674,9 +995,9 @@ function resetDashboard(){
   document.getElementById("parse-ok").style.display="none";
 }
 function loadDemo(){
-  document.getElementById("snapshot-input").value=JSON.stringify(DEMO_DATA,null,2);
+  document.getElementById("snapshot-input").value=JSON.stringify(DEMO,null,2);
   document.getElementById("parse-ok").style.display="block";
-  document.getElementById("parse-ok").textContent="Demo loaded (Kevin's Jun 25 data) — click Generate dashboard.";
+  document.getElementById("parse-ok").textContent="Demo loaded (Kevin's Jun 25 data with 5 positions) — click Generate dashboard.";
   document.getElementById("parse-err").style.display="none";
 }
 function parseAndRender(){
@@ -686,15 +1007,15 @@ function parseAndRender(){
   errEl.style.display="none";okEl.style.display="none";
   if(!raw){errEl.textContent="Please paste your position data first.";errEl.style.display="block";return;}
   let data;
-  try{data=JSON.parse(raw);}catch(e){errEl.textContent="JSON error: "+e.message+". Use the community Claude prompt to generate valid JSON automatically.";errEl.style.display="block";return;}
-  if(!Array.isArray(data)||data.length===0){errEl.textContent="Data must be a JSON array [ {...}, {...} ] with at least one position.";errEl.style.display="block";return;}
-  const required=["pair","value","earned","apr","dpd","tokenA","tokenB","qtyA","qtyB","rangeLower","rangeUpper","rangeCurrentPrice"];
+  try{data=JSON.parse(raw);}catch(e){errEl.textContent="JSON error: "+e.message+". Use the community Claude prompt to generate valid JSON.";errEl.style.display="block";return;}
+  if(!Array.isArray(data)||data.length===0){errEl.textContent="Data must be a JSON array [ {...}, {...} ].";errEl.style.display="block";return;}
+  const req=["pair","value","earned","apr","dpd","tokenA","tokenB","qtyA","qtyB","rangeLower","rangeUpper","rangeCurrentPrice"];
   for(let i=0;i<data.length;i++){
-    const p=data[i];
-    const missing=required.filter(k=>p[k]===undefined||p[k]==="");
-    if(missing.length>0){errEl.textContent=`Position ${i+1} (${p.pair||"unknown"}) missing: ${missing.join(", ")}`;errEl.style.display="block";return;}
-    p.positionId=p.positionId||("pos-"+(i+1));p.dex=p.dex||"Unknown";
-    p.daysOld=p.daysOld||0;p.rebalances=p.rebalances||0;p.inRange=p.inRange!==undefined?p.inRange:true;
+    const p=data[i];const miss=req.filter(k=>p[k]===undefined||p[k]==="");
+    if(miss.length>0){errEl.textContent=`Position ${i+1} (${p.pair||"?"}) missing: ${miss.join(", ")}`;errEl.style.display="block";return;}
+    p.positionId=p.positionId||"pos-"+(i+1);p.dex=p.dex||"Unknown";p.daysOld=p.daysOld||0;
+    p.rebalances=p.rebalances||0;p.inRange=p.inRange!==undefined?p.inRange:true;
+    p.autoCompound=p.autoCompound||false;
     p.uncollected=p.uncollected||0;p.collected=p.collected||0;
     p.entryPriceA=p.entryPriceA||0;p.entryPriceB=p.entryPriceB||0;
     p.currentPriceA=p.currentPriceA||0;p.currentPriceB=p.currentPriceB||0;
@@ -708,4 +1029,5 @@ function parseAndRender(){
 </script>
 </body>
 </html>
+
 

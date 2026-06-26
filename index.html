@@ -1507,6 +1507,36 @@ function buildPerformance(){
     </div>
 
 
+    <div class="g2 mb">
+      <div class="card">
+        <div class="slab">Fee APR &amp; $/day over time</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Real projected yield based on snapshot $/day rate. Shows when positions were newly opened (0) vs earning.</div>
+        <div style="position:relative;height:200px"><canvas id="ch-apr" role="img" aria-label="Fee APR over time">APR chart.</canvas></div>
+        <div class="leg" id="leg-apr"></div>
+      </div>
+      <div class="card">
+        <div class="slab">Cumulative fees earned (USD &amp; ETH)</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Total fees in USD (left axis) and ETH denomination (right axis).</div>
+        <div style="position:relative;height:200px"><canvas id="ch-fees" role="img" aria-label="Cumulative fees in USD and ETH">Fees chart.</canvas></div>
+        <div class="leg" id="leg-fees"></div>
+      </div>
+    </div>
+
+    <div class="g2 mb">
+      <div class="card">
+        <div class="slab">Range health — positions in range over time</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Positions in range = earning fees. Out of range = idle capital.</div>
+        <div style="position:relative;height:200px"><canvas id="ch-range" role="img" aria-label="In-range positions over time">Range health chart.</canvas></div>
+        <div class="leg" id="leg-range"></div>
+      </div>
+      <div class="card">
+        <div class="slab">ETH &amp; BTC price context (snapshot dates)</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Market backdrop. Your portfolio vsETH/vsBTC performance is read against these price moves.</div>
+        <div style="position:relative;height:200px"><canvas id="ch-prices" role="img" aria-label="ETH and BTC price history">Price chart.</canvas></div>
+        <div class="leg" id="leg-prices"></div>
+      </div>
+    </div>
+
     <!-- Denomination table -->
     <div class="card">
       <div class="slab">Snapshot table — all denominations</div>

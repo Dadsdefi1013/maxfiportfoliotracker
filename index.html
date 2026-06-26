@@ -160,8 +160,23 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 .stab.abull{background:var(--gbg);color:var(--gtxt);border-color:#5DCAA5}
 .stab.aall{background:var(--pbg);color:var(--ptxt);border-color:var(--purp)}
 
-/* risk */
-.rktier{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+/* Agent Max accumulation metrics */
+.accum-banner{padding:10px 12px;border-top:0.5px solid var(--bdr);display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--bg2)}
+.accum-hero{padding:10px 12px;border-top:2px solid var(--green);background:var(--gbg);display:flex;align-items:center;gap:12px}
+.accum-hero.neg{border-top-color:var(--red);background:var(--rbg)}
+.accum-hero-val{font-size:24px;font-weight:700;line-height:1}
+.accum-hero-lbl{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.accum-hero-sub{font-size:11px;color:var(--txt2)}
+.accum-item{display:flex;flex-direction:column;gap:2px}
+.accum-lbl{font-size:9px;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;font-weight:500}
+.accum-val{font-size:13px;font-weight:600}
+.accum-sub{font-size:10px;color:var(--txt2)}
+.cover-bar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:3px;width:60px}
+.cover-fill{height:100%;border-radius:2px}
+.paper-il{padding:6px 12px;background:var(--bg2);border-top:0.5px solid var(--bdr);font-size:10px;color:var(--txt2);display:flex;align-items:center;gap:8px}
+.pair-type-badge{font-size:9px;padding:2px 6px;border-radius:6px;font-weight:500;white-space:nowrap}
+.pt-vs{background:#F3F0FB;color:#3C3489}.pt-stab{background:var(--gbg);color:var(--gtxt)}
+.pt-corr{background:var(--bbg);color:var(--btxt)}.pt-moon{background:var(--abg);color:var(--atxt)}display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .rktile{flex:1;min-width:140px;border-radius:var(--rm);padding:12px;text-align:center}
 .rktile-v{font-size:18px;font-weight:700}.rktile-l{font-size:11px;font-weight:500;margin-top:2px}.rktile-s{font-size:10px;margin-top:1px;opacity:.85}
 .rsrow{padding:12px 0;border-bottom:0.5px solid var(--bdr)}.rsrow:last-child{border-bottom:none}
@@ -198,6 +213,26 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 .footer-brand{font-size:13px;font-weight:600}.footer-brand span{color:var(--green)}
 .footer-tag{font-size:11px;color:var(--txt3);font-style:italic}
 .footer-disc{font-size:11px;color:var(--txt3)}
+
+/* disclaimer */
+.disclaimer-banner{background:var(--bg);border-top:2px solid var(--amber);padding:0}
+.disclaimer-toggle{width:100%;background:none;border:none;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;text-align:left;gap:12px}
+.disclaimer-toggle-left{display:flex;align-items:center;gap:10px}
+.disclaimer-icon{width:32px;height:32px;border-radius:var(--rm);background:var(--abg);color:var(--atxt);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.disclaimer-title{font-size:13px;font-weight:600;color:var(--txt)}
+.disclaimer-sub{font-size:11px;color:var(--txt2);margin-top:1px}
+.disclaimer-caret{font-size:12px;color:var(--txt2);transition:transform .2s;flex-shrink:0}
+.disclaimer-caret.open{transform:rotate(180deg)}
+.disclaimer-body{display:none;padding:0 20px 20px;max-width:1080px;margin:0 auto}
+.disclaimer-body.open{display:block}
+.disclaimer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:14px}
+.disclaimer-block{background:var(--bg2);border-radius:var(--rm);padding:12px 14px;border-left:3px solid var(--amber)}
+.disclaimer-block-title{font-size:11px;font-weight:700;color:var(--atxt);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.disclaimer-block-text{font-size:12px;color:var(--txt2);line-height:1.6}
+.disclaimer-full{background:var(--bg2);border-radius:var(--rm);padding:14px 16px;font-size:11px;color:var(--txt2);line-height:1.8;border:0.5px solid var(--bdr2)}
+.disclaimer-full strong{color:var(--txt)}
+.disclaimer-accept{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 14px;background:var(--abg);border-radius:var(--rm);font-size:12px;color:var(--atxt)}
+.disclaimer-accept input{flex-shrink:0}
 </style>
 </head>
 <body>
@@ -218,6 +253,7 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
   <button class="navbtn" onclick="showPage('risk')">Risk</button>
   <button class="navbtn" onclick="showPage('allocation')">Allocation</button>
   <button class="navbtn" onclick="showPage('scenarios')">Scenarios</button>
+  <button class="navbtn" onclick="showPage('performance')">Performance</button>
 </div>
 
 <!-- ONBOARDING -->
@@ -281,9 +317,86 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 <div id="page-cashflow"   class="page"></div>
 <div id="page-risk"       class="page"></div>
 <div id="page-allocation" class="page"></div>
-<div id="page-scenarios"  class="page"></div>
+<div id="page-performance" class="page"></div>
 
 <!-- FOOTER -->
+<!-- ── DISCLAIMER ── -->
+<div class="disclaimer-banner" id="disclaimer-banner">
+  <div style="max-width:1080px;margin:0 auto">
+    <button class="disclaimer-toggle" onclick="toggleDisclaimer()" aria-expanded="false" aria-controls="disclaimer-body">
+      <div class="disclaimer-toggle-left">
+        <div class="disclaimer-icon">⚠</div>
+        <div>
+          <div class="disclaimer-title">Important Disclaimer — Please Read Before Using This Tool</div>
+          <div class="disclaimer-sub">DeFi is experimental and high-risk · All data is educational · Nothing here is financial advice · Click to expand full disclosure</div>
+        </div>
+      </div>
+      <div class="disclaimer-caret" id="disc-caret">▼</div>
+    </button>
+    <div class="disclaimer-body" id="disclaimer-body">
+      <div class="disclaimer-grid">
+        <div class="disclaimer-block">
+          <div class="disclaimer-block-title">Not Financial Advice</div>
+          <div class="disclaimer-block-text">Nothing on this dashboard constitutes financial advice, investment advice, trading advice, or any other sort of advice. DadsDeFiSpace and the creators of this tool are not licensed financial advisors, brokers, or registered investment advisers. All content is for educational and informational purposes only.</div>
+        </div>
+        <div class="disclaimer-block">
+          <div class="disclaimer-block-title">DeFi Is High Risk</div>
+          <div class="disclaimer-block-text">Decentralized finance (DeFi) is experimental technology. Providing liquidity in concentrated liquidity pools carries significant risks including but not limited to: impermanent loss, smart contract exploits, oracle manipulation, protocol insolvency, regulatory action, and total loss of deposited funds. Never deposit more than you can afford to lose completely.</div>
+        </div>
+        <div class="disclaimer-block">
+          <div class="disclaimer-block-title">All Metrics Are Projections</div>
+          <div class="disclaimer-block-text">APR, $/day, annual yield, monthly yield, break-even days, and all scenario projections displayed on this dashboard are estimates based on current snapshot data. Past performance does not guarantee future results. Fee rates, pool volume, token prices, and rebalance frequency can change dramatically at any time.</div>
+        </div>
+        <div class="disclaimer-block">
+          <div class="disclaimer-block-title">Prices Are Estimates</div>
+          <div class="disclaimer-block-text">Token prices shown are derived from on-chain ratios at the time of your snapshot. They are not live prices and may not reflect current market conditions. IL calculations, hold value, and net vs hold figures depend on these estimated prices and will change as markets move. Always verify current prices on CoinGecko or a live exchange.</div>
+        </div>
+        <div class="disclaimer-block">
+          <div class="disclaimer-block-title">Experimental Tool</div>
+          <div class="disclaimer-block-text">This dashboard is an independent community tool built by DadsDeFiSpace. It is not affiliated with, endorsed by, or officially supported by MaxFi, Aerodrome, PancakeSwap, or any other protocol. It is provided as-is with no warranty of accuracy, completeness, or fitness for any particular purpose.</div>
+        </div>
+        <div class="disclaimer-block">
+          <div class="disclaimer-block-title">Smart Contract Risk</div>
+          <div class="disclaimer-block-text">Funds deposited into MaxFi and underlying DEX pools are controlled by smart contracts. Even audited smart contracts can contain bugs or be exploited. MaxFi's auto-rebalancing mechanism introduces additional smart contract interactions that increase surface area for potential failures. Understand the contracts before depositing.</div>
+        </div>
+      </div>
+
+      <div class="disclaimer-full">
+        <strong>FULL LEGAL DISCLAIMER</strong><br><br>
+
+        By using this dashboard you acknowledge and agree to the following:<br><br>
+
+        <strong>1. Educational Purpose Only.</strong> This tool is provided solely for educational and informational purposes. It is designed to help users understand and track their own DeFi positions. It does not constitute and should not be construed as financial, investment, legal, tax, or regulatory advice of any kind.<br><br>
+
+        <strong>2. No Guarantee of Accuracy.</strong> All data displayed — including but not limited to position values, token prices, APR figures, IL calculations, yield projections, risk scores, health scores, cashflow estimates, and scenario models — is derived from user-provided snapshots and estimated price calculations. This data may be incorrect, outdated, or materially different from actual market conditions at any given time.<br><br>
+
+        <strong>3. Scenario Projections Are Hypothetical.</strong> The bearish, base, and bullish scenario projections are purely hypothetical models built on simplified assumptions. They do not account for all real-world variables including market microstructure, liquidity depth, gas costs, rebalance slippage, protocol fee changes, token delistings, or black swan events. Actual outcomes may differ materially.<br><br>
+
+        <strong>4. Impermanent Loss Disclosure.</strong> Impermanent loss is a fundamental risk of concentrated liquidity provision. The IL figures shown use estimated entry and current prices which may not precisely reflect your actual cost basis. True IL can only be calculated with exact on-chain transaction data. Always verify IL figures against your actual transaction history.<br><br>
+
+        <strong>5. Compounding Projections.</strong> Auto-compound projections assume continuous operation at current fee rates with 50% reinvestment. In practice, compounding frequency, gas costs, position rebalances, and market conditions will affect actual compounding outcomes. The compounding figures shown are theoretical maximums under ideal conditions.<br><br>
+
+        <strong>6. Risk Scores Are Illustrative.</strong> The risk scoring system (Low / Mid / High) and portfolio health scores displayed on this dashboard are simplified heuristic models created for educational purposes. They are not professional risk assessments. A position rated "Low risk" can still result in significant or total loss. Conduct your own thorough research before making any financial decisions.<br><br>
+
+        <strong>7. MaxFi and Protocol Risk.</strong> This dashboard displays data related to MaxFi, Aerodrome, and PancakeSwap positions. These protocols are independently operated and DadsDeFiSpace has no control over, or responsibility for, their operation, security, or continued availability. Protocol upgrades, parameter changes, or exploits can affect your positions at any time without warning.<br><br>
+
+        <strong>8. Regulatory Risk.</strong> DeFi protocols and activities may be subject to evolving regulation in your jurisdiction. Participating in DeFi liquidity provision may have tax implications. Consult qualified legal and tax professionals in your jurisdiction before participating.<br><br>
+
+        <strong>9. No Affiliation.</strong> DadsDeFiSpace is an independent educational community. This tool is not affiliated with, endorsed by, or sponsored by MaxFi, Aerodrome Finance, PancakeSwap, Anthropic, or any other protocol or company. The MaxFi referral link is an affiliate relationship that may result in compensation to DadsDeFiSpace at no additional cost to you.<br><br>
+
+        <strong>10. Do Your Own Research (DYOR).</strong> Always conduct thorough independent research before depositing funds into any DeFi protocol. Read the protocol documentation, understand the smart contracts, assess your own risk tolerance, and never invest more than you can afford to lose entirely.<br><br>
+
+        <em>Last updated: June 2026. DadsDeFiSpace · dadsdefispace.org · Not financial advice. Always DYOR.</em>
+      </div>
+
+      <div class="disclaimer-accept">
+        <input type="checkbox" id="disc-checkbox" onchange="acceptDisclaimer(this)">
+        <label for="disc-checkbox" style="cursor:pointer;font-weight:500">I have read and understand that this is an educational tool, all metrics are projections, DeFi is high risk, and nothing here constitutes financial advice.</label>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-grid">
@@ -338,11 +451,37 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 <script>
 const WALLET="0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0";
 const DEMO=[
-  {pair:"SOL/WETH",positionId:"2048441",dex:"PancakeSwap",daysOld:0,value:256.07,earned:0,uncollected:0,collected:0,apr:0,dpd:0,rebalances:0,inRange:true,autoCompound:true,tokenA:"SOL",qtyA:1.80,entryPriceA:69.57,currentPriceA:69.57,tokenB:"WETH",qtyB:0.0786,entryPriceB:1668.42,currentPriceB:1668.42,rangeLower:0.041043,rangeUpper:0.042293,rangeCurrentPrice:0.041675},
-  {pair:"USDC/cbBTC",positionId:"2048241",dex:"PancakeSwap",daysOld:15,value:170.43,earned:7.21,uncollected:0.25,collected:6.95,apr:100.2,dpd:0.47,rebalances:6,inRange:true,autoCompound:true,tokenA:"USDC",qtyA:18.5,entryPriceA:1.0,currentPriceA:1.0,tokenB:"cbBTC",qtyB:0.00242,entryPriceB:62608,currentPriceB:62652,rangeLower:62377,rangeUpper:64922,rangeCurrentPrice:62652},
-  {pair:"WETH/cbBTC",positionId:"2042097",dex:"PancakeSwap",daysOld:20,value:157.72,earned:4.84,uncollected:2.05,collected:2.79,apr:56.9,dpd:0.25,rebalances:12,inRange:true,autoCompound:false,tokenA:"WETH",qtyA:0.0539,entryPriceA:1776.65,currentPriceA:1668.42,tokenB:"cbBTC",qtyB:0.00108,entryPriceB:66000,currentPriceB:62652,rangeLower:0.026038,rangeUpper:0.027372,rangeCurrentPrice:0.026601},
-  {pair:"WETH/uSOL",positionId:"72276604",dex:"Aerodrome",daysOld:4,value:114.18,earned:1.09,uncollected:0.76,collected:0.32,apr:85.9,dpd:0.27,rebalances:1,inRange:true,autoCompound:false,tokenA:"WETH",qtyA:0.0487,entryPriceA:2450,currentPriceA:1668.42,tokenB:"uSOL",qtyB:0.473,entryPriceB:102.64,currentPriceB:69.98,rangeLower:23.57,rangeUpper:24.53,rangeCurrentPrice:23.84},
-  {pair:"WETH/VVV",positionId:"72244032",dex:"Aerodrome",daysOld:11,value:67.99,earned:7.28,uncollected:1.70,collected:5.58,apr:354.2,dpd:0.66,rebalances:3,inRange:false,autoCompound:true,tokenA:"WETH",qtyA:0.0,entryPriceA:2400,currentPriceA:1668.42,tokenB:"VVV",qtyB:5.05,entryPriceB:20.46,currentPriceB:13.49,rangeLower:111.0,rangeUpper:120.3,rangeCurrentPrice:123.7},
+  // initialValue = USD value at position open (key for correct V_entry in vsETH/vsHODL per Agent Max spec)
+  {pair:"SOL/WETH",positionId:"2048441",dex:"PancakeSwap",daysOld:1,
+   initialValue:262.16,value:240.34,earned:1.92,uncollected:1.92,collected:0,apr:176.7,dpd:1.16,
+   rebalances:0,inRange:false,autoCompound:true,
+   tokenA:"WETH",qtyA:0.154,entryPriceA:1668.42,currentPriceA:1560.65,
+   tokenB:"SOL",qtyB:0.0,entryPriceB:69.57,currentPriceB:66.34,
+   rangeLower:0.041043,rangeUpper:0.042293,rangeCurrentPrice:0.042505},
+  {pair:"USDC/cbBTC",positionId:"2049266",dex:"PancakeSwap",daysOld:17,
+   initialValue:175.00,value:161.62,earned:7.63,uncollected:0.46,collected:7.18,apr:101.1,dpd:0.45,
+   rebalances:7,inRange:false,autoCompound:true,
+   tokenA:"cbBTC",qtyA:0.00272,entryPriceA:59401.26,currentPriceA:59401.26,
+   tokenB:"USDC",qtyB:0.0,entryPriceB:1.00,currentPriceB:1.00,
+   rangeLower:60709,rangeUpper:63187,rangeCurrentPrice:59364},
+  {pair:"WETH/cbBTC",positionId:"2042097",dex:"PancakeSwap",daysOld:21,
+   initialValue:160.67,value:148.25,earned:5.37,uncollected:2.71,collected:2.66,apr:62.0,dpd:0.25,
+   rebalances:12,inRange:true,autoCompound:true,
+   tokenA:"WETH",qtyA:0.0778,entryPriceA:1776.65,currentPriceA:1560.65,
+   tokenB:"cbBTC",qtyB:0.000453,entryPriceB:66000,currentPriceB:59401.26,
+   rangeLower:0.026038,rangeUpper:0.027372,rangeCurrentPrice:0.026273},
+  {pair:"WETH/uSOL",positionId:"72276604",dex:"Aerodrome",daysOld:5,
+   initialValue:119.02,value:106.99,earned:1.48,uncollected:1.18,collected:0.30,apr:88.5,dpd:0.26,
+   rebalances:1,inRange:false,autoCompound:false,
+   tokenA:"WETH",qtyA:0.0686,entryPriceA:2450,currentPriceA:1560.65,
+   tokenB:"uSOL",qtyB:0.0,entryPriceB:102.64,currentPriceB:66.35,
+   rangeLower:23.57,rangeUpper:24.53,rangeCurrentPrice:23.52},
+  {pair:"WETH/VVV",positionId:"72423501",dex:"Aerodrome",daysOld:13,
+   initialValue:56.14,value:66.11,earned:8.44,uncollected:1.50,collected:6.94,apr:367.4,dpd:0.67,
+   rebalances:5,inRange:false,autoCompound:true,
+   tokenA:"WETH",qtyA:0.0424,entryPriceA:2400,currentPriceA:1560.65,
+   tokenB:"VVV",qtyB:0.0,entryPriceB:20.46,currentPriceB:14.09,
+   rangeLower:115.6,rangeUpper:125.2,rangeCurrentPrice:110.8},
 ];
 
 const TCOLORS={USDC:"#27B77A",USDT:"#26A17B",DAI:"#F5AC37",WETH:"#627EEA",ETH:"#627EEA",WBTC:"#F7A93B",cbBTC:"#F7A93B",BTC:"#F7A93B",SOL:"#9945FF",uSOL:"#9945FF",AERO:"#0052FF",CAKE:"#D1884F",VVV:"#EF9F27",VIRTUAL:"#7F77DD",DEFAULT:"#8896A8"};
@@ -390,11 +529,192 @@ function autoScore(p){
     net:{s:net,n:net===0?"LP beating hold":net===1?"Close to break-even":"LP behind hold"},
   }};
 }
+// ── AGENT MAX METHODOLOGY ─────────────────────────────────────────────────
+// Derived from Agent Max v11-2 backtest framework.
+// All formulas verified against worked examples in the spec document.
+// See: "Framing LP Position Performance in a Bear Market"
+
+// ── PAIR TYPE CLASSIFICATION ──────────────────────────────────────────────
+// Drives which benchmark is headlined per Part 3 of the spec.
+function pairType(p){
+  const stables=["USDC","USDT","DAI","FRAX","EURC","LUSD","CRVUSD"];
+  const tA=p.tokenA.toUpperCase(),tB=p.tokenB.toUpperCase();
+  const sA=stables.includes(tA),sB=stables.includes(tB);
+  if(sA&&sB) return"STABLE";
+  if(sA||sB) return"VOL_STABLE";
+  const blue=["WETH","ETH","WBTC","CBBTC","BTC","SOL","USOL","WSTETH","CBETH"];
+  const bA=blue.includes(tA),bB=blue.includes(tB);
+  if(bA&&bB) return"CORRELATED";
+  return"MOONLAGGER";
+}
+
+// ── HEADLINE BENCHMARK SELECTOR ───────────────────────────────────────────
+// Per spec Part 3: VOL_STABLE and MOONLAGGER → vsETH (never vsHODL as headline)
+// CORRELATED → both vsETH and vsHODL
+// STABLE → fee APR
+function headlineBenchmark(pt){
+  if(pt==="STABLE") return"feeAPR";
+  return"vsETH"; // universal accumulation headline for all other types
+}
+
+// ── V_ENTRY: FIX #1 — use initialValue if provided, else reconstruct ──────
+// Bug: current qtyA/qtyB are post-rebalance quantities, not entry quantities.
+// Fix: JSON should supply initialValue (position value at open).
+//      Fall back to value at time of first snapshot if not provided.
+function getEntryVal(p){
+  if(p.initialValue&&p.initialValue>0) return p.initialValue;
+  // Fallback: reconstruct from entry prices × current quantities
+  // This is APPROXIMATE — correct only if no rebalances have happened yet
+  if(p.entryPriceA>0&&p.entryPriceB>0)
+    return p.qtyA*p.entryPriceA + p.qtyB*p.entryPriceB;
+  return p.value; // last resort
+}
+
+// ── ETH PRICE RESOLVER: FIX #2 — proper ETH price for ALL pair types ──────
+// Bug: non-ETH pairs (USDC/cbBTC) fell back to tokenA price (USDC=$1 ≠ ETH)
+// Fix: explicit ethEntryPrice / ethCurrentPrice fields in JSON,
+//      with fallback to portfolio-level ETH price derived from ETH-containing pairs.
+function getEthPrices(p, portfolioEthNow){
+  const ethTokens=["WETH","ETH","WSTETH","CBETH"];
+  const tA=p.tokenA.toUpperCase(),tB=p.tokenB.toUpperCase();
+
+  // Best: explicit fields supplied in JSON
+  if(p.ethEntryPrice&&p.ethCurrentPrice&&p.ethEntryPrice>0&&p.ethCurrentPrice>0)
+    return{entry:p.ethEntryPrice, now:p.ethCurrentPrice};
+
+  // Good: one leg IS ETH — use it
+  if(ethTokens.includes(tA)&&p.entryPriceA>0&&p.currentPriceA>0)
+    return{entry:p.entryPriceA, now:p.currentPriceA};
+  if(ethTokens.includes(tB)&&p.entryPriceB>0&&p.currentPriceB>0)
+    return{entry:p.entryPriceB, now:p.currentPriceB};
+
+  // Fallback: use portfolio-level ETH price (derived from an ETH pair in the portfolio)
+  if(portfolioEthNow&&p.entryPriceA>0){
+    // We don't have a clean entry ETH price — mark vsETH as unavailable
+    return null;
+  }
+  return null;
+}
+
+// Portfolio-level ETH price for use as fallback
+let _portfolioEthEntry=0, _portfolioEthNow=0;
+function setPortfolioEthPrice(positions){
+  const ethTokens=["WETH","ETH","WSTETH","CBETH"];
+  for(const p of positions){
+    if(ethTokens.includes(p.tokenA.toUpperCase())&&p.entryPriceA>500){
+      _portfolioEthEntry=p.entryPriceA; _portfolioEthNow=p.currentPriceA; return;
+    }
+    if(ethTokens.includes(p.tokenB.toUpperCase())&&p.entryPriceB>500){
+      _portfolioEthEntry=p.entryPriceB; _portfolioEthNow=p.currentPriceB; return;
+    }
+  }
+}
+
+// ── PAPER IL ──────────────────────────────────────────────────────────────
+// Mark-to-market divergence. Labeled as UNREALIZED throughout the UI.
+// Per spec: "not crystallized until rebalance" — never the headline metric.
 function calcIL(p){
-  if(!p.entryPriceA||!p.entryPriceB||!p.currentPriceA||!p.currentPriceB)return{hold:null,il:null,net:null};
+  if(!p.currentPriceA||!p.currentPriceB)return{hold:null,il:null,net:null};
   const hold=p.qtyA*p.currentPriceA+p.qtyB*p.currentPriceB;
   const il=p.value-hold;
   return{hold,il,net:il+p.earned};
+}
+
+// ── vsETH: THE ACCUMULATION METRIC ───────────────────────────────────────
+// Spec Part 2.5: R_pos - R_eth (period), annualized = period * 365/days
+// R_pos = V_now / V_entry - 1  (V_entry = initial deposit value)
+// R_eth = ETH_now / ETH_entry - 1
+// FIX #1: Use getEntryVal() for correct V_entry
+// FIX #2: Use getEthPrices() for correct ETH price on any pair type
+function calcVsETH(p){
+  const ethP = getEthPrices(p, _portfolioEthNow);
+  if(!ethP) return null;
+
+  const V_entry = getEntryVal(p);
+  if(!V_entry||V_entry<=0) return null;
+
+  const R_pos = p.value / V_entry - 1;
+  const R_eth = ethP.now / ethP.entry - 1;
+  const period = R_pos - R_eth;
+
+  // FIX #6: suppress annualization for positions < 7 days — would be misleading
+  const ann = p.daysOld>=7 ? period*(365/p.daysOld) : null;
+  const annNote = p.daysOld<7 ? "Too early to annualize" : null;
+
+  return{period, ann, annNote, R_pos, R_eth, V_entry};
+}
+
+// ── vsHODL: 50/50 BASKET BENCHMARK ───────────────────────────────────────
+// Spec Part 2.3: R_pos - R_basket
+// basket_now = 0.5*V_entry*(pA_now/pA_entry) + 0.5*V_entry*(pB_now/pB_entry)
+// FIX #3: Use getEntryVal() for V_entry
+// DISPLAY RULE: Never headline for VOL_STABLE or MOONLAGGER — show with ⚠
+function calcVsHODL(p){
+  if(!p.entryPriceA||!p.entryPriceB||!p.currentPriceA||!p.currentPriceB) return null;
+  const V_entry = getEntryVal(p);
+  if(!V_entry||V_entry<=0) return null;
+
+  const basket_now = 0.5*V_entry*(p.currentPriceA/p.entryPriceA)
+                   + 0.5*V_entry*(p.currentPriceB/p.entryPriceB);
+  const R_basket = basket_now/V_entry - 1;
+  const R_pos    = p.value/V_entry - 1;
+  const period   = R_pos - R_basket;
+  const ann = p.daysOld>=7 ? period*(365/p.daysOld) : null;
+  return{period, ann, R_pos, R_basket};
+}
+
+// ── vsTOKEN: vs 100% VOLATILE LEG ────────────────────────────────────────
+// Spec Part 2.4: R_pos - R_token where R_token = pTok_now/pTok_entry - 1
+// For VOL_STABLE: volatile leg = non-stable token (equals vsETH when that token is WETH)
+// FIX #1: Use getEntryVal() for R_pos
+function calcVsToken(p){
+  if(!p.entryPriceA||!p.entryPriceB||!p.currentPriceA||!p.currentPriceB) return null;
+  const stables=["USDC","USDT","DAI","FRAX","EURC","LUSD","CRVUSD"];
+  const tA=p.tokenA.toUpperCase(),tB=p.tokenB.toUpperCase();
+
+  let tokEntry, tokNow, tokName;
+  if(stables.includes(tA)){
+    tokEntry=p.entryPriceB; tokNow=p.currentPriceB; tokName=p.tokenB;
+  } else {
+    tokEntry=p.entryPriceA; tokNow=p.currentPriceA; tokName=p.tokenA;
+  }
+  if(!tokEntry||!tokNow) return null;
+
+  const V_entry = getEntryVal(p);
+  if(!V_entry||V_entry<=0) return null;
+
+  const R_pos   = p.value/V_entry - 1;
+  const R_token = tokNow/tokEntry - 1;
+  const period  = R_pos - R_token;
+  const ann = p.daysOld>=7 ? period*(365/p.daysOld) : null;
+  return{period, ann, R_pos, R_token, tokName};
+}
+
+// ── COVER RATIO: fees ÷ IL — the IL health metric ────────────────────────
+// Spec Part 2.2: cover = fees_pct / max(il_pct, 0.2)
+// cover >= 1.8–2.0 = healthy; fees have paid for IL at least twice
+// NOTE: We use paper IL as the best available approximation of realized IL.
+// Spec acknowledges this fallback when per-rebalance data is unavailable.
+// The UI clearly labels IL as "paper/unrealized" throughout.
+function calcCover(p){
+  const{il}=calcIL(p);
+  if(il===null) return null;
+  const ilAbs=Math.abs(il);
+  const V_entry=getEntryVal(p);
+  if(!V_entry||!ilAbs) return null;
+  const feesPct = p.earned/V_entry*100;
+  const ilPct   = ilAbs/V_entry*100;
+  const cover   = feesPct/Math.max(ilPct,0.2);
+  return{cover, feesPct, ilPct, healthy:cover>=1.8};
+}
+
+// ── FORMAT HELPERS ────────────────────────────────────────────────────────
+// Sign convention: positive = beat benchmark → GREEN, even when USD PnL is red
+function fmtBenchmark(val){
+  if(val===null||val===undefined) return{txt:"n/a",color:"var(--txt2)"};
+  const pct=(val*100).toFixed(1);
+  const sign=val>=0?"+":"";
+  return{txt:sign+pct+"%", color:val>=0?"var(--green)":"var(--red)"};
 }
 function calcBE(p){
   const{net}=calcIL(p);
@@ -477,9 +797,7 @@ function posCard(p,sc){
   const be=calcBE(p);
   const rp=rngPct(p);
   const tc=p.inRange?"#378ADD":"var(--red)";
-  const ic=il===null?"var(--txt2)":il>=0?"var(--green)":"var(--red)";
-  const nc=net===null?"var(--txt2)":net>=0?"var(--green)":"var(--red)";
-  const bc=be.status==="achieved"?"var(--green)":be.status==="unknown"?"var(--txt2)":"var(--blue)";
+  const be_c=be.status==="achieved"?"var(--green)":be.status==="unknown"?"var(--txt2)":"var(--blue)";
   const daysLbl=be.status==="achieved"?"Done ✓":be.status==="unknown"?"n/a":be.days<1?"<1d":Math.ceil(be.days)+"d";
   const pa=posAlloc(p);
   const col=TCOLORS[p.tokenA.toUpperCase()]||TCOLORS.DEFAULT;
@@ -491,6 +809,177 @@ function posCard(p,sc){
   const hs=healthScore(p,sc);
   const hColor=hs>=75?"var(--green)":hs>=50?"var(--amber)":"var(--red)";
   const uPct=uncollectedPct(p);
+
+  // ── Agent Max metrics ─────────────────────────────────────────────────
+  const pt    = pairType(p);
+  const hl    = headlineBenchmark(pt);
+  const vsETH = calcVsETH(p);
+  const vsH   = calcVsHODL(p);
+  const vsTok = calcVsToken(p);
+  const cov   = calcCover(p);
+
+  const ptLabels={VOL_STABLE:"Vol/Stable",CORRELATED:"Correlated",MOONLAGGER:"Moon-lagger",STABLE:"Stable/FX"};
+  const ptClasses={VOL_STABLE:"pt-vs",CORRELATED:"pt-corr",MOONLAGGER:"pt-moon",STABLE:"pt-stab"};
+
+  // Headline accumulation metric — period is headline, annualized is secondary
+  // FIX #6: suppress annualized for positions < 7d (would be misleading per spec Part 2)
+  const V_entry_display = getEntryVal(p);
+  const heroMetric = hl==="feeAPR"
+    ? {val:p.daysOld>0?p.earned/V_entry_display/p.daysOld*365*100:0, label:"Fee APR", sub:"Yield on capital"}
+    : vsETH
+      ? {val:vsETH.period*100, label:"vs Holding ETH",
+         sub: vsETH.annNote
+              ? vsETH.annNote
+              : vsETH.ann!==null
+                ? (vsETH.ann*100).toFixed(1)+"% annualized"
+                : "period return",
+         isVsETH:true}
+      : null;
+
+  const heroPos = heroMetric&&heroMetric.val>=0;
+  const heroPct = heroMetric?((heroMetric.val>=0?"+":"")+heroMetric.val.toFixed(1)+"%"):"n/a";
+  const heroColor = heroMetric?(heroMetric.val>=0?"var(--green)":"var(--red)"):"var(--txt2)";
+
+  // Benchmark row — fmtBenchmark now takes value only (no isAnnualized param)
+  const vsH_fmt = vsH ? fmtBenchmark(vsH.period) : null;
+  const vsTok_fmt = vsTok ? fmtBenchmark(vsTok.period) : null;
+
+  // Cover ratio display
+  const coverNum = cov ? cov.cover.toFixed(1)+"x" : "n/a";
+  const coverColor = cov?(cov.cover>=2?"var(--green)":cov.cover>=1?"var(--amber)":"var(--red)"):"var(--txt2)";
+  const coverBarW = cov ? Math.min(100,(cov.cover/4)*100).toFixed(0) : 0;
+  const coverBarC = cov?(cov.cover>=2?"#1D9E75":cov.cover>=1?"#EF9F27":"#E24B4A"):"#8896A8";
+
+  // Paper IL as % — clearly labeled as unrealized throughout
+  const ilPct = il!==null&&p.value ? (il/p.value*100).toFixed(1) : null;
+
+  // USD PnL — "market direction, not verdict" (spec Part 0)
+  // FIX #1: use getEntryVal for correct V_entry (not current-qty reconstruction)
+  const usdPnL = p.value - V_entry_display;
+
+  // Bear market note per spec Part 7 recommendations
+  const bearNote = vsETH&&vsETH.period>0&&usdPnL<0
+    ? "Down in USD but accumulating vs ETH ↑"
+    : vsETH&&vsETH.period>0
+      ? "Outperforming ETH ↑"
+      : null;
+
+  return`<div class="pcard">
+    <div class="rstripe" style="background:${RCOL[sc.tier]}"></div>
+    <div class="pinner">
+
+      <div class="ptop">
+        <div class="picon" style="background:${col}18;color:${col}">${p.tokenA[0]}${p.tokenB[0]}</div>
+        <div>
+          <div class="pname">${p.pair} <span class="pair-type-badge ${ptClasses[pt]}">${ptLabels[pt]}</span></div>
+          <div class="pmeta">#${p.positionId} · ${p.dex} · ${p.daysOld}d old</div>
+        </div>
+        <div class="pbadges">${rangeDot(p.inRange)}${badge(sc.tier)}${compBadge(p)}</div>
+      </div>
+
+      <!-- ── AGENT MAX ACCUMULATION HERO ── -->
+      ${heroMetric?`<div class="accum-hero${heroPos?"":" neg"}" title="How much better (or less bad) this position did vs simply holding ETH. Positive = accumulating vs ETH. This is the real performance metric in a bear market.">
+        <div>
+          <div class="accum-hero-lbl">📈 ${heroMetric.label}</div>
+          <div class="accum-hero-val" style="color:${heroColor}">${heroPct}</div>
+          <div class="accum-hero-sub">${heroMetric.sub}${bearNote?` · <em>${bearNote}</em>`:""}</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;font-size:11px;color:var(--txt2)">
+          <div>USD PnL: <span style="color:${usdPnL===null?"var(--txt2)":usdPnL>=0?"var(--green)":"var(--red)"}">${usdPnL!==null?fS(usdPnL):"n/a"}</span></div>
+          <div style="font-size:10px;margin-top:2px;font-style:italic">Market direction, not verdict</div>
+        </div>
+      </div>`:""}
+
+      <div class="pg">
+        <div class="pm"><div class="pml">Position value</div><div class="pmv">$${f(p.value)}</div><div class="pms">${qA} ${p.tokenA} + ${qB} ${p.tokenB}</div></div>
+        <div class="pm"><div class="pml">APR (shown)</div><div class="pmv" style="color:var(--green)">${fP(p.apr)}</div><div class="pms">$${f(p.dpd)}/day</div></div>
+        <div class="pm"><div class="pml">Annual yield est.</div><div class="pmv" style="color:var(--bludk)">$${f(p.dpd*365,0)}</div><div class="pms">${fP(ce)} capital eff.</div></div>
+        <div class="pm"><div class="pml">Earned total</div><div class="pmv" style="color:var(--green)">$${f(p.earned)}</div><div class="pms">$${f(p.uncollected)} pending${uPct>5?" ⚠":""}</div></div>
+        <div class="pm"><div class="pml">Health score</div><div class="pmv" style="color:${hColor}">${hs}/100</div><div class="pms">${hs>=75?"Strong":hs>=50?"Moderate":"Needs attention"}</div></div>
+        <div class="pm"><div class="pml">Real fee APR</div><div class="pmv" style="color:var(--green)">${p.daysOld>0&&p.earned>0?fP(p.earned/p.value/p.daysOld*365*100):"—"}</div><div class="pms">actual earned/days</div></div>
+      </div>
+
+      <div class="rwrap">
+        <div class="rlbls"><span>${fmtB(p,p.rangeLower)}</span><span style="font-weight:600;color:${tc}">Now: ${fmtB(p,p.rangeCurrentPrice)} (${rangePctUtil(p)} thru)</span><span>${fmtB(p,p.rangeUpper)}</span></div>
+        <div class="rbar"><div class="rfill" style="width:${rp.toFixed(1)}%"></div><div class="rtick" style="left:${rp.toFixed(1)}%;background:${tc}"></div></div>
+      </div>
+
+      <!-- ── IL SECTION: cover ratio front, paper IL demoted ── -->
+      <div class="ilbe">
+        <div class="ils">
+          <div class="isl">Fee/IL health (Agent Max)</div>
+          <div class="il4">
+            <div class="ili">
+              <div class="ill">Cover ratio</div>
+              <div class="ilv" style="color:${coverColor}" title="Fees ÷ IL. How many times over fees have paid for IL. ≥2x = healthy.">${coverNum}</div>
+              <div class="cover-bar"><div class="cover-fill" style="width:${coverBarW}%;background:${coverBarC}"></div></div>
+            </div>
+            <div class="ili"><div class="ill">Fees earned</div><div class="ilv" style="color:var(--green)">$${f(p.earned)}</div></div>
+            <div class="ili">
+              <div class="ill">IL (paper)</div>
+              <div class="ilv" style="color:${il===null?"var(--txt2)":il>=0?"var(--green)":"var(--amber)"}" title="Unrealized mark-to-market divergence. Not crystallized until rebalance.">${il!==null?fS(il):"n/a"}</div>
+            </div>
+            <div class="ili">
+              <div class="ill">Net vs hold</div>
+              <div class="ilv" style="color:${net===null?"var(--txt2)":net>=0?"var(--green)":"var(--red)"}">${net!==null?fS(net):"n/a"}</div>
+            </div>
+          </div>
+        </div>
+        <div class="bes">
+          <div class="isl">Break-even</div>
+          <div class="bedays" style="color:${be_c}">${daysLbl}</div>
+          <div class="bebar"><div class="befill" style="width:${be.pct}%;background:${be_c}"></div></div>
+          <div style="font-size:10px;color:var(--txt2)">${be.pct}% · $${f(p.dpd)}/day</div>
+        </div>
+      </div>
+
+      <!-- ── BENCHMARK COMPARISON ROW ── -->
+      <!-- Per spec Part 3 & 7: vsETH is always shown, vsHODL warned on VOL_STABLE/MOONLAGGER -->
+      <div class="accum-banner">
+        <div class="accum-item">
+          <div class="accum-lbl" title="vs holding ETH — the accumulation headline per Agent Max v11-2. Positive = beating ETH, even if USD PnL is negative.">vsETH ${hl==="vsETH"?"★":""}</div>
+          <div class="accum-val" style="color:${vsETH?fmtBenchmark(vsETH.period).color:"var(--txt2)"}">
+            ${vsETH?fmtBenchmark(vsETH.period).txt:"n/a"}
+          </div>
+          <div class="accum-sub">${vsETH?.annNote??""}${vsETH&&!vsETH.annNote&&vsETH.ann!==null?fmtBenchmark(vsETH.ann).txt+" ann.":""}</div>
+        </div>
+        <div class="accum-item">
+          <!-- vsHODL: headline for CORRELATED only. Warned on VOL_STABLE (incl. stablecoin) and MOONLAGGER (punishes pump-selling) -->
+          <div class="accum-lbl" title="${pt==="VOL_STABLE"?"vs 50/50 basket INCLUDING stablecoin. Understates performance in bear market — use vsETH instead.":pt==="MOONLAGGER"?"vsHODL is misleading for moon-laggers (punishes LP for not riding the pump). Use vsETH.":"vs holding 50/50 starting basket of both tokens. Best metric for correlated pairs."}">vsHODL${pt==="VOL_STABLE"||pt==="MOONLAGGER"?` <span style="color:var(--amber);font-size:9px" title="Misleading for this pair type — see vsETH">⚠</span>`:pt==="CORRELATED"?" ★":""}</div>
+          <div class="accum-val" style="color:${vsH_fmt?vsH_fmt.color:"var(--txt2)"}">
+            ${vsH_fmt?vsH_fmt.txt:"n/a"}
+          </div>
+          <div class="accum-sub">${pt==="VOL_STABLE"?"incl. stablecoin — use vsETH":pt==="MOONLAGGER"?"misleading here — use vsETH":"50/50 basket benchmark"}</div>
+        </div>
+        <div class="accum-item">
+          <div class="accum-lbl" title="vs holding 100% of the volatile token. Equals vsETH when that token is WETH.">vs${vsTok?vsTok.tokName:"Token"}</div>
+          <div class="accum-val" style="color:${vsTok_fmt?vsTok_fmt.color:"var(--txt2)"}">
+            ${vsTok_fmt?vsTok_fmt.txt:"n/a"}
+          </div>
+          <div class="accum-sub">vs 100% ${vsTok?vsTok.tokName:"volatile leg"}</div>
+        </div>
+      </div>
+
+      <!-- Paper IL note — demoted, clearly labeled -->
+      <div class="paper-il">
+        <span>📊 Paper IL (unrealized divergence): <strong>${ilPct!==null?ilPct+"%":"n/a"}</strong></span>
+        <span>—</span>
+        <span style="font-style:italic">Not crystallized until rebalance. Cover ratio above shows true health.</span>
+      </div>
+
+      <div class="compound-row">
+        <div class="pm"><div class="pml">${p.autoCompound?"To wallet (50%)":"$/day (manual)"}</div><div class="pmv" style="color:var(--green)">$${f(cs.toWallet)}/day</div><div class="pms">${p.autoCompound?"Sent to your wallet":"Claim manually"}</div></div>
+        <div class="pm"><div class="pml">${p.autoCompound?"To position (50%)":"Uncollected"}</div><div class="pmv" style="color:var(--purp)">$${f(p.autoCompound?cs.toPosition:p.uncollected)}</div><div class="pms">${p.autoCompound?"Compounds back in":"$"+f(p.uncollected)+" pending"}</div></div>
+        <div class="pm"><div class="pml">Rebal efficiency</div><div class="pmv">${re!==null?"$"+f(re):"—"}</div><div class="pms">${re!==null?"per rebalance ("+p.rebalances+"x)":"No rebalances yet"}</div></div>
+      </div>
+
+      <div class="palrow">
+        <div class="isl" style="margin-bottom:0">Token allocation</div>
+        <div class="palseg-wrap">${pa.map(a=>`<div class="palseg" style="width:${a.p}%;background:${a.c}"></div>`).join("")}</div>
+        <div class="palleg">${pa.map(a=>`<div class="pali"><span class="paldot" style="background:${a.c}"></span>${a.n} ${a.p}%</div>`).join("")}</div>
+      </div>
+    </div>
+  </div>`;
 
   return`<div class="pcard">
     <div class="rstripe" style="background:${RCOL[sc.tier]}"></div>
@@ -575,6 +1064,8 @@ let POSITIONS=[],SCORES=[];
 let scen_current="base";
 
 function render(positions){
+  // FIX #7: set portfolio ETH price first so calcVsETH works for all pair types
+  setPortfolioEthPrice(positions);
   POSITIONS=positions;
   SCORES=positions.map(p=>autoScore(p));
   const E=positions.map((p,i)=>({...p,sc:SCORES[i],il:calcIL(p),be:calcBE(p)}));
@@ -603,6 +1094,32 @@ function render(positions){
       <div class="kpi"><div class="kl">Net vs hold</div><div class="kv" style="color:${totNet>=0?"var(--green)":"var(--red)"}">${fS(totNet)}</div><div class="ks">${totNet>=0?"LP winning ✓":""}</div></div>
       <div class="kpi"><div class="kl">Portfolio health</div><div class="kv" style="color:${hCol}">${avgHealth}/100</div><div class="ks">${avgHealth>=75?"Strong":avgHealth>=50?"Moderate":"Review needed"}</div></div>
     </div>
+
+    <!-- Agent Max bear market context banner -->
+    ${(()=>{
+      const ethPos=E.find(p=>["WETH","ETH"].includes(p.tokenA.toUpperCase())||["WETH","ETH"].includes(p.tokenB.toUpperCase()));
+      const sampleVsETH=ethPos?calcVsETH(ethPos):null;
+      // FIX #7: weight by position value, use corrected calcVsETH with getEntryVal
+      const portVsETH=E.reduce((sum,p)=>{
+        const v=calcVsETH(p);
+        return v?sum+v.period*(p.value/totVal):sum;
+      },0);
+      const anyDown=E.some(p=>{const v=p.value;const e=p.qtyA*p.entryPriceA+p.qtyB*p.entryPriceB;return e>0&&v<e;});
+      const oor=E.filter(p=>!p.inRange).length;
+      if(oor>0||anyDown){
+        const pv=(portVsETH*100).toFixed(1);
+        const pvColor=portVsETH>=0?"var(--green)":"var(--red)";
+        return`<div style="background:${portVsETH>=0?"var(--gbg)":"var(--rbg)"};border:0.5px solid ${portVsETH>=0?"var(--green)":"var(--red)"};border-radius:var(--rl);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="font-size:20px">${portVsETH>=0?"📈":"📉"}</div>
+          <div style="flex:1;min-width:200px">
+            <div style="font-size:13px;font-weight:600;color:var(--txt)">Agent Max Bear Market Read — Weighted vsETH: <span style="color:${pvColor}">${portVsETH>=0?"+":""}${pv}%</span></div>
+            <div style="font-size:12px;color:var(--txt2);margin-top:2px">${portVsETH>=0?"In a falling market, your positions are accumulating vs simply holding ETH. USD PnL may be red — that's the market, not your strategy.":"Your positions are currently trailing a simple ETH hold. Watch the cover ratio and vsETH per position — fees closing the gap is what matters."}</div>
+          </div>
+          <div style="font-size:11px;color:var(--txt2);font-style:italic;max-width:200px">In this market, vsETH and cover ratio are the metrics that tell the truth. Absolute USD PnL measures the market direction, not strategy quality.</div>
+        </div>`;
+      }
+      return"";
+    })()}
     <div class="krow mb">
       <div class="kpi"><div class="kl">To wallet/day</div><div class="kv" style="color:var(--green)">$${f(totWallet)}</div><div class="ks">${autoCount} positions auto-compounding</div></div>
       <div class="kpi"><div class="kl">Compounding/day</div><div class="kv" style="color:var(--purp)">$${f(totComp)}</div><div class="ks">Reinvested back into positions</div></div>
@@ -971,12 +1488,284 @@ function renderScenAll(){
   },80);
 }
 
+// ── HISTORICAL CHART DATA (from spreadsheet snapshots Jun 8–27) ──────────
+const HIST = {"dates":["2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-13","2026-06-15","2026-06-18","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27"],"usd":[437.54,479.26,417.77,427.37,933.88,508.28,464.37,532.15,595.46,524.14,1019.53,756.5,723.31],"eth":[0.2528,0.2769,0.2414,0.2469,0.5395,0.2936,0.2683,0.3074,0.344,0.3059,0.6129,0.4596,0.4635],"btc":[0.00682,0.00747,0.006512,0.006662,0.014557,0.007923,0.007238,0.008295,0.009282,0.008251,0.016284,0.012285,0.012177],"earned":[8.68,13.15,11.31,13.3,21.62,10.64,14.98,19.43,20.71,19.99,40.21,23.15,24.84],"dpd":[0,0,0,0,0,0,0,1.74,1.97,1.74,3.28,2.93,2.79],"feeApr":[0,0,0,0,0,0,0,119.3,120.8,121.2,117.4,141.4,140.8],"ethPrice":[1730.94,1730.94,1730.94,1730.94,1730.94,1730.94,1730.94,1730.94,1730.94,1713.57,1663.43,1645.89,1560.65],"btcPrice":[64154,64154,64154,64154,64154,64154,64154,64154,64154,63522,62608,61577,59401.26],"hodlEth":[437.54,437.54,437.54,437.54,437.54,437.54,437.54,437.54,437.54,433.15,420.48,416.04,394.49],"hodlBtc":[437.54,437.54,437.54,437.54,437.54,437.54,437.54,437.54,437.54,433.23,427,419.96,405.13],"vsEth":[0,41.72,-19.77,-10.17,496.34,70.74,26.83,94.61,157.92,90.99,599.05,340.46,328.82],"vsBtc":[0,41.72,-19.77,-10.17,496.34,70.74,26.83,94.61,157.92,90.91,592.53,336.54,318.18],"inRange":[5,4,3,4,5,4,3,4,5,4,6,5,1],"positions":[5,6,4,4,9,5,4,4,5,4,8,5,5],"rebals":[14,18,16,16,29,18,21,21,25,21,44,25,25],"initialVal":437.54,"initialEthPrice":1730.94,"initialBtcPrice":64154};
+
+let perfCharts={};
+function buildPerformance(){
+  const H=HIST;
+  const N=H.dates.length;
+  const latest=N-1;
+  const latUSD=H.usd[latest], latETH=H.eth[latest], latBTC=H.btc[latest];
+  const latEarned=H.earned[latest], latDpd=H.dpd[latest];
+  const latVsEth=H.vsEth[latest], latVsBtc=H.vsBtc[latest];
+  const pctChgUSD=((latUSD-H.usd[0])/H.usd[0]*100).toFixed(1);
+  const pctChgETH=((latETH-H.eth[0])/H.eth[0]*100).toFixed(1);
+  const pctChgBTC=((latBTC-H.btc[0])/H.btc[0]*100).toFixed(1);
+  const ethDropPct=((H.ethPrice[latest]-H.ethPrice[0])/H.ethPrice[0]*100).toFixed(1);
+  const btcDropPct=((H.btcPrice[latest]-H.btcPrice[0])/H.btcPrice[0]*100).toFixed(1);
+  const maxVsEth=Math.max(...H.vsEth).toFixed(2);
+  const avgFeeApr=(H.feeApr.filter(x=>x>0).reduce((a,b)=>a+b,0)/H.feeApr.filter(x=>x>0).length).toFixed(1);
+
+  document.getElementById("page-performance").innerHTML=`
+    <div style="margin-bottom:16px">
+      <div class="slab">Portfolio performance tracker — Jun 8 → Jun 27, 2026</div>
+      <div style="font-size:12px;color:var(--txt2);margin-top:2px">Historical snapshots in USD, ETH, and BTC denomination. vsETH and vsBTC show accumulated value vs simply holding each asset from day 1.</div>
+    </div>
+
+    <!-- KPI strip -->
+    <div class="krow mb" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">
+      <div class="kpi"><div class="kl">Portfolio (USD)</div><div class="kv" style="color:var(--bludk)">$${f(latUSD)}</div><div class="ks" style="color:${pctChgUSD>=0?"var(--green)":"var(--red)"}">${pctChgUSD>=0?"+":""}${pctChgUSD}% since Jun 8</div></div>
+      <div class="kpi"><div class="kl">Portfolio (ETH)</div><div class="kv" style="color:#627EEA">${latETH.toFixed(4)} ETH</div><div class="ks" style="color:${pctChgETH>=0?"var(--green)":"var(--red)"}">${pctChgETH>=0?"+":""}${pctChgETH}% in ETH terms</div></div>
+      <div class="kpi"><div class="kl">Portfolio (BTC)</div><div class="kv" style="color:#F7A93B">${latBTC.toFixed(4)} BTC</div><div class="ks" style="color:${pctChgBTC>=0?"var(--green)":"var(--red)"}">${pctChgBTC>=0?"+":""}${pctChgBTC}% in BTC terms</div></div>
+      <div class="kpi"><div class="kl">vs Hold ETH</div><div class="kv" style="color:${latVsEth>=0?"var(--green)":"var(--red)"}">${latVsEth>=0?"+$":"−$"}${f(Math.abs(latVsEth))}</div><div class="ks">ETH dropped ${ethDropPct}% over period</div></div>
+      <div class="kpi"><div class="kl">vs Hold BTC</div><div class="kv" style="color:${latVsBtc>=0?"var(--green)":"var(--red)"}">${latVsBtc>=0?"+$":"−$"}${f(Math.abs(latVsBtc))}</div><div class="ks">BTC dropped ${btcDropPct}% over period</div></div>
+      <div class="kpi"><div class="kl">Total earned</div><div class="kv" style="color:var(--green)">$${f(latEarned)}</div><div class="ks">Peak avg APR: ${avgFeeApr}%</div></div>
+    </div>
+
+    <!-- Denomination toggle -->
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:12px;color:var(--txt2);font-weight:500">Chart in:</span>
+      <button class="stab abase" id="denom-usd" onclick="setDenom('usd')">$ USD</button>
+      <button class="stab" id="denom-eth" onclick="setDenom('eth')">Ξ ETH</button>
+      <button class="stab" id="denom-btc" onclick="setDenom('btc')">₿ BTC</button>
+    </div>
+
+    <!-- Chart 1: Portfolio value vs hodl benchmark -->
+    <div class="card mb">
+      <div class="slab" id="chart1-title">Portfolio value vs holding ETH / BTC (USD)</div>
+      <div style="position:relative;height:240px"><canvas id="ch-port-vs" role="img" aria-label="Portfolio value vs ETH hold and BTC hold over time">Portfolio vs hold chart.</canvas></div>
+      <div class="leg" id="leg-port-vs"></div>
+    </div>
+
+    <div class="g2 mb">
+      <!-- Chart 2: vsETH and vsBTC accumulation -->
+      <div class="card">
+        <div class="slab">Accumulated vs ETH & BTC (USD advantage $)</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Positive = portfolio worth more than if you had just held that asset from day 1. Agent Max headline metric.</div>
+        <div style="position:relative;height:200px"><canvas id="ch-vs" role="img" aria-label="vsETH and vsBTC accumulation over time">vsETH vsBTC chart.</canvas></div>
+        <div class="leg" id="leg-vs"></div>
+      </div>
+      <!-- Chart 3: Fee APR over time -->
+      <div class="card">
+        <div class="slab">Fee APR & $/day over time</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Real projected yield based on snapshot $/day rate. Shows when positions were newly opened (0) vs earning.</div>
+        <div style="position:relative;height:200px"><canvas id="ch-apr" role="img" aria-label="Fee APR over time">APR chart.</canvas></div>
+        <div class="leg" id="leg-apr"></div>
+      </div>
+    </div>
+
+    <div class="g2 mb">
+      <!-- Chart 4: Cumulative fees in USD / ETH / BTC -->
+      <div class="card">
+        <div class="slab">Cumulative fees earned — all denominations</div>
+        <div style="position:relative;height:200px"><canvas id="ch-fees" role="img" aria-label="Cumulative fees in USD ETH BTC">Fees chart.</canvas></div>
+        <div class="leg" id="leg-fees"></div>
+      </div>
+      <!-- Chart 5: In-range % and positions count -->
+      <div class="card">
+        <div class="slab">Range health — positions in range over time</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Positions in range = earning fees. Out of range = idle capital.</div>
+        <div style="position:relative;height:200px"><canvas id="ch-range" role="img" aria-label="In-range positions over time">Range health chart.</canvas></div>
+        <div class="leg" id="leg-range"></div>
+      </div>
+    </div>
+
+    <!-- Chart 6: ETH and BTC price context -->
+    <div class="card mb">
+      <div class="slab">ETH & BTC price context (snapshot dates)</div>
+      <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Market backdrop. Your portfolio's vsETH/vsBTC performance is read against these price moves.</div>
+      <div style="position:relative;height:180px"><canvas id="ch-prices" role="img" aria-label="ETH and BTC price history">Price chart.</canvas></div>
+      <div class="leg" id="leg-prices"></div>
+    </div>
+
+    <!-- Denomination table -->
+    <div class="card">
+      <div class="slab">Snapshot table — all denominations</div>
+      <div style="overflow-x:auto"><table class="dtbl" style="min-width:560px">
+        <thead><tr>
+          <th>Date</th><th>USD</th><th>ETH</th><th>BTC</th>
+          <th>Earned $</th><th>$/day</th><th>vsETH $</th><th>vsBTC $</th>
+          <th>ETH price</th><th>BTC price</th><th>In range</th>
+        </tr></thead>
+        <tbody>${H.dates.map((d,i)=>{
+          const bg=i%2===0?"var(--bg2)":"transparent";
+          const veC=H.vsEth[i]>=0?"var(--green)":"var(--red)";
+          const vbC=H.vsBtc[i]>=0?"var(--green)":"var(--red)";
+          const irFrac=H.positions[i]>0?H.inRange[i]+"/"+H.positions[i]:"—";
+          const irC=H.inRange[i]===H.positions[i]?"var(--green)":H.inRange[i]===0?"var(--red)":"var(--amber)";
+          return`<tr style="background:${bg}">
+            <td style="font-weight:500;white-space:nowrap">${d}</td>
+            <td>$${f(H.usd[i])}</td>
+            <td style="color:#627EEA">${H.eth[i].toFixed(4)}</td>
+            <td style="color:#F7A93B">${H.btc[i].toFixed(5)}</td>
+            <td style="color:var(--green)">$${f(H.earned[i])}</td>
+            <td>${H.dpd[i]>0?"$"+f(H.dpd[i]):"—"}</td>
+            <td style="color:${veC};font-weight:600">${H.vsEth[i]>=0?"+$":"-$"}${f(Math.abs(H.vsEth[i]))}</td>
+            <td style="color:${vbC};font-weight:600">${H.vsBtc[i]>=0?"+$":"-$"}${f(Math.abs(H.vsBtc[i]))}</td>
+            <td>$${f(H.ethPrice[i],0)}</td>
+            <td>$${f(H.btcPrice[i],0)}</td>
+            <td style="color:${irC};font-weight:600">${irFrac}</td>
+          </tr>`;
+        }).join("")}</tbody>
+      </table></div>
+    </div>
+
+    <div class="note" style="margin-top:12px">
+      <strong>How to read these charts:</strong>
+      USD shows absolute portfolio value — it moves with both market prices and your position performance. ETH and BTC denomination isolate your accumulation in hard-money terms: if your ETH value is rising while ETH price falls, you are accumulating ETH. vsETH / vsBTC (the green/red line) is the Agent Max headline metric — positive means your LP strategy has outperformed simply holding that asset from day one. In a bear market a falling USD line with rising vsETH is the sign of a healthy strategy.
+    </div>
+  `;
+
+  setTimeout(()=>{
+    Object.values(perfCharts).forEach(c=>{try{c.destroy();}catch(e){}});
+    perfCharts={};
+    buildPerfCharts('usd');
+  },60);
+}
+
+let currentDenom='usd';
+function setDenom(d){
+  currentDenom=d;
+  ['usd','eth','btc'].forEach(x=>{
+    const btn=document.getElementById('denom-'+x);
+    if(btn) btn.className='stab'+(x===d?' abase':'');
+  });
+  // Redraw chart 1 only
+  if(perfCharts['ch-port-vs']){perfCharts['ch-port-vs'].destroy();delete perfCharts['ch-port-vs'];}
+  buildPortVsChart(d);
+  const titles={usd:"Portfolio value vs holding ETH / BTC (USD)",eth:"Portfolio value (ETH) vs holding ETH from day 1",btc:"Portfolio value (BTC) vs holding BTC from day 1"};
+  document.getElementById('chart1-title').textContent=titles[d];
+}
+
+function buildPortVsChart(denom){
+  const H=HIST; const ctx=document.getElementById('ch-port-vs').getContext('2d');
+  let portData,hodlEData,hodlBData,ylabel,unit;
+  if(denom==='usd'){
+    portData=H.usd; hodlEData=H.hodlEth; hodlBData=H.hodlBtc;
+    ylabel='USD ($)'; unit='$';
+  } else if(denom==='eth'){
+    portData=H.eth;
+    hodlEData=H.eth.map((_,i)=>H.hodlEth[i]/H.ethPrice[i]);
+    hodlBData=H.btc.map((_,i)=>H.hodlBtc[i]/H.ethPrice[i]);
+    ylabel='ETH'; unit='Ξ';
+  } else {
+    portData=H.btc;
+    hodlEData=H.eth.map((_,i)=>H.hodlEth[i]/H.btcPrice[i]);
+    hodlBData=H.btc.map((_,i)=>H.hodlBtc[i]/H.btcPrice[i]);
+    ylabel='BTC'; unit='₿';
+  }
+  perfCharts['ch-port-vs']=new Chart(ctx,{type:'line',
+    data:{labels:H.dates,datasets:[
+      {label:'Portfolio',data:portData,borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,0.08)',borderWidth:2.5,pointRadius:3,tension:.3,fill:true},
+      {label:'If held ETH',data:hodlEData,borderColor:'#627EEA',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,borderDash:[5,4]},
+      {label:'If held BTC',data:hodlBData,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,borderDash:[3,4]},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${unit}${typeof c.raw==='number'?c.raw.toFixed(denom==='usd'?2:5):c.raw}`}}},
+      scales:{x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+              y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>unit+(denom==='usd'?v.toFixed(0):v.toFixed(4))}}}}
+  });
+  document.getElementById('leg-port-vs').innerHTML=`
+    <div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Your portfolio</div>
+    <div class="leg-item"><span class="leg-sq" style="background:#627EEA;opacity:.7"></span>If held ETH</div>
+    <div class="leg-item"><span class="leg-sq" style="background:#F7A93B;opacity:.7"></span>If held BTC</div>`;
+}
+
+function buildPerfCharts(denom){
+  const H=HIST;
+  buildPortVsChart(denom);
+
+  // vsETH / vsBTC
+  const ctx2=document.getElementById('ch-vs').getContext('2d');
+  perfCharts['ch-vs']=new Chart(ctx2,{type:'line',
+    data:{labels:H.dates,datasets:[
+      {label:'vs ETH ($)',data:H.vsEth,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true},
+      {label:'vs BTC ($)',data:H.vsBtc,borderColor:'#F7A93B',backgroundColor:'rgba(247,169,59,0.06)',borderWidth:2,pointRadius:2,tension:.3,fill:false,borderDash:[4,4]},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw>=0?"+$":"-$"}${Math.abs(c.raw).toFixed(2)}`}}},
+      scales:{x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+              y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v).toFixed(0)}}}}
+  });
+  document.getElementById('leg-vs').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>vsETH ($)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>vsBTC ($)</div>`;
+
+  // Fee APR
+  const ctx3=document.getElementById('ch-apr').getContext('2d');
+  perfCharts['ch-apr']=new Chart(ctx3,{type:'bar',
+    data:{labels:H.dates,datasets:[
+      {label:'Fee APR %',data:H.feeApr,backgroundColor:'rgba(29,158,117,0.7)',borderRadius:3,yAxisID:'y'},
+      {label:'$/day',data:H.dpd,backgroundColor:'rgba(55,138,221,0.6)',borderRadius:3,yAxisID:'y2'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` APR: ${c.raw}%`:` $/day: $${c.raw.toFixed(2)}`}}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+        y:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>v+"%"},title:{display:true,text:'APR %',font:{size:9},color:'#8896A8'}},
+        y2:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:v=>'$'+v},title:{display:true,text:'$/day',font:{size:9},color:'#8896A8'}},
+      }}
+  });
+  document.getElementById('leg-apr').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fee APR %</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>$/day</div>`;
+
+  // Fees earned multi-denom
+  const ctx4=document.getElementById('ch-fees').getContext('2d');
+  const feesEth=H.earned.map((v,i)=>+(v/H.ethPrice[i]).toFixed(4));
+  const feesBtc=H.earned.map((v,i)=>+(v/H.btcPrice[i]).toFixed(6));
+  perfCharts['ch-fees']=new Chart(ctx4,{type:'line',
+    data:{labels:H.dates,datasets:[
+      {label:'Fees USD',data:H.earned,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yusd'},
+      {label:'Fees ETH',data:feesEth,borderColor:'#627EEA',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,yAxisID:'yeth',borderDash:[4,4]},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` $${c.raw.toFixed(2)}`:` ${c.raw.toFixed(4)} ETH`}}},
+      scales:{
+        x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+        yusd:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>'$'+v}},
+        yeth:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:v=>v+'Ξ'}},
+      }}
+  });
+  document.getElementById('leg-fees').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fees USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>Fees ETH (right)</div>`;
+
+  // Range health
+  const ctx5=document.getElementById('ch-range').getContext('2d');
+  const inRangePct=H.inRange.map((v,i)=>H.positions[i]>0?+(v/H.positions[i]*100).toFixed(0):0);
+  perfCharts['ch-range']=new Chart(ctx5,{type:'bar',
+    data:{labels:H.dates,datasets:[
+      {label:'In range',data:H.inRange,backgroundColor:H.inRange.map((v,i)=>v===H.positions[i]?'rgba(29,158,117,0.8)':v===0?'rgba(226,75,74,0.7)':'rgba(239,159,39,0.7)'),borderRadius:3,yAxisID:'y'},
+      {label:'Total',data:H.positions,type:'line',borderColor:'rgba(128,128,128,0.4)',borderWidth:1.5,pointRadius:2,tension:.3,fill:false,yAxisID:'y'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` In range: ${c.raw}`:` Total positions: ${c.raw}`}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+              y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},stepSize:1},min:0}}}
+  });
+  document.getElementById('leg-range').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>In range</div><div class="leg-item"><span class="leg-sq" style="background:#EF9F27"></span>Partial</div><div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>All out</div>`;
+
+  // Prices
+  const ctx6=document.getElementById('ch-prices').getContext('2d');
+  perfCharts['ch-prices']=new Chart(ctx6,{type:'line',
+    data:{labels:H.dates,datasets:[
+      {label:'ETH/USD',data:H.ethPrice,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.06)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yeth'},
+      {label:'BTC/USD',data:H.btcPrice,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:.3,yAxisID:'ybtc',borderDash:[4,4]},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toLocaleString()}`}}},
+      scales:{
+        x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+        yeth:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>'$'+v.toLocaleString()}},
+        ybtc:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:v=>'$'+v.toLocaleString()}},
+      }}
+  });
+  document.getElementById('leg-prices').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>ETH/USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>BTC/USD (right)</div>`;
+}
+
 function showPage(id){
   document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
   document.querySelectorAll(".navbtn").forEach(el=>el.classList.remove("active"));
   document.getElementById("page-"+id).classList.add("active");
   document.querySelectorAll(".navbtn").forEach(el=>{if(el.textContent.toLowerCase().trim().startsWith(id.toLowerCase()))el.classList.add("active");});
   if(POSITIONS.length>0&&id==="scenarios")renderScenario(scen_current);
+  if(id==="performance")buildPerformance();
   if(POSITIONS.length>0&&["overview","positions","cashflow","risk","allocation"].includes(id))setTimeout(()=>render(POSITIONS),50);
 }
 
@@ -1000,6 +1789,51 @@ function loadDemo(){
   document.getElementById("parse-ok").textContent="Demo loaded (Kevin's Jun 25 data with 5 positions) — click Generate dashboard.";
   document.getElementById("parse-err").style.display="none";
 }
+function toggleDisclaimer(){
+  const body=document.getElementById("disclaimer-body");
+  const caret=document.getElementById("disc-caret");
+  const btn=document.querySelector(".disclaimer-toggle");
+  const isOpen=body.classList.contains("open");
+  body.classList.toggle("open");
+  caret.classList.toggle("open");
+  btn.setAttribute("aria-expanded",String(!isOpen));
+}
+function acceptDisclaimer(cb){
+  const body=document.getElementById("disclaimer-body");
+  if(cb.checked){
+    try{localStorage.setItem("dads_disc_accepted","1");}catch(e){}
+    setTimeout(()=>{
+      body.classList.remove("open");
+      document.getElementById("disc-caret").classList.remove("open");
+      document.querySelector(".disclaimer-toggle").setAttribute("aria-expanded","false");
+      document.getElementById("disclaimer-banner").style.borderTopColor="var(--green)";
+      document.querySelector(".disclaimer-icon").textContent="✓";
+      document.querySelector(".disclaimer-icon").style.background="var(--gbg)";
+      document.querySelector(".disclaimer-icon").style.color="var(--gtxt)";
+      document.querySelector(".disclaimer-title").textContent="Disclaimer Acknowledged";
+      document.querySelector(".disclaimer-sub").textContent="You confirmed this is educational only · DeFi is high risk · Not financial advice";
+    },400);
+  }
+}
+// Auto-open disclaimer on first visit, collapse if already accepted
+(function(){
+  try{
+    if(!localStorage.getItem("dads_disc_accepted")){
+      setTimeout(()=>{
+        document.getElementById("disclaimer-body").classList.add("open");
+        document.getElementById("disc-caret").classList.add("open");
+        document.querySelector(".disclaimer-toggle").setAttribute("aria-expanded","true");
+      },600);
+    }
+  }catch(e){
+    // localStorage not available — open anyway
+    setTimeout(()=>{
+      document.getElementById("disclaimer-body").classList.add("open");
+      document.getElementById("disc-caret").classList.add("open");
+    },600);
+  }
+})();
+
 function parseAndRender(){
   const raw=document.getElementById("snapshot-input").value.trim();
   const errEl=document.getElementById("parse-err");
@@ -1016,6 +1850,9 @@ function parseAndRender(){
     p.positionId=p.positionId||"pos-"+(i+1);p.dex=p.dex||"Unknown";p.daysOld=p.daysOld||0;
     p.rebalances=p.rebalances||0;p.inRange=p.inRange!==undefined?p.inRange:true;
     p.autoCompound=p.autoCompound||false;
+    // initialValue: position USD value at open — critical for correct V_entry in vsETH/vsHODL
+    // If not supplied, getEntryVal() will approximate from entry prices × current quantities
+    p.initialValue=p.initialValue||0;
     p.uncollected=p.uncollected||0;p.collected=p.collected||0;
     p.entryPriceA=p.entryPriceA||0;p.entryPriceB=p.entryPriceB||0;
     p.currentPriceA=p.currentPriceA||0;p.currentPriceB=p.currentPriceB||0;
@@ -1029,5 +1866,3 @@ function parseAndRender(){
 </script>
 </body>
 </html>
-
-

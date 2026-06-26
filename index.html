@@ -981,60 +981,6 @@ function posCard(p,sc){
     </div>
   </div>`;
 
-  return`<div class="pcard">
-    <div class="rstripe" style="background:${RCOL[sc.tier]}"></div>
-    <div class="pinner">
-      <div class="ptop">
-        <div class="picon" style="background:${col}18;color:${col}">${p.tokenA[0]}${p.tokenB[0]}</div>
-        <div><div class="pname">${p.pair}</div><div class="pmeta">#${p.positionId} · ${p.dex} · ${p.daysOld}d old</div></div>
-        <div class="pbadges">${rangeDot(p.inRange)}${badge(sc.tier)}${compBadge(p)}</div>
-      </div>
-
-      <div class="pg">
-        <div class="pm"><div class="pml">Value</div><div class="pmv">$${f(p.value)}</div><div class="pms">${qA} ${p.tokenA} + ${qB} ${p.tokenB}</div></div>
-        <div class="pm"><div class="pml">APR (shown)</div><div class="pmv" style="color:var(--green)">${fP(p.apr)}</div><div class="pms">$${f(p.dpd)}/day total</div></div>
-        <div class="pm"><div class="pml">Annual yield</div><div class="pmv" style="color:var(--bludk)">$${f(p.dpd*365,0)}</div><div class="pms">${fP(ce)} capital eff.</div></div>
-        <div class="pm"><div class="pml">Monthly yield</div><div class="pmv">$${f(p.dpd*30.4)}</div><div class="pms">${fP(p.dpd*30.4/p.value*100)} APR</div></div>
-        <div class="pm"><div class="pml">Earned total</div><div class="pmv" style="color:var(--green)">$${f(p.earned)}</div><div class="pms">$${f(p.uncollected)} pending${uPct>5?" ⚠":""}</div></div>
-        <div class="pm"><div class="pml">Health score</div><div class="pmv" style="color:${hColor}">${hs}/100</div><div class="pms">${hs>=75?"Strong":hs>=50?"Moderate":"Needs attention"}</div></div>
-      </div>
-
-      <div class="rwrap">
-        <div class="rlbls"><span>${fmtB(p,p.rangeLower)}</span><span style="font-weight:600;color:${tc}">Now: ${fmtB(p,p.rangeCurrentPrice)} (${rangePctUtil(p)} thru)</span><span>${fmtB(p,p.rangeUpper)}</span></div>
-        <div class="rbar"><div class="rfill" style="width:${rp.toFixed(1)}%"></div><div class="rtick" style="left:${rp.toFixed(1)}%;background:${tc}"></div></div>
-      </div>
-
-      <div class="ilbe">
-        <div class="ils"><div class="isl">Impermanent loss</div>
-          <div class="il4">
-            <div class="ili"><div class="ill">Hold now</div><div class="ilv">${hold!==null?"$"+f(hold):"n/a"}</div></div>
-            <div class="ili"><div class="ill">IL ($)</div><div class="ilv" style="color:${ic}">${fS(il)}</div></div>
-            <div class="ili"><div class="ill">Fees</div><div class="ilv" style="color:var(--green)">$${f(p.earned)}</div></div>
-            <div class="ili"><div class="ill">Net vs hold</div><div class="ilv" style="color:${nc}">${fS(net)}</div></div>
-          </div>
-        </div>
-        <div class="bes"><div class="isl">Break-even</div>
-          <div class="bedays" style="color:${bc}">${daysLbl}</div>
-          <div class="bebar"><div class="befill" style="width:${be.pct}%;background:${bc}"></div></div>
-          <div style="font-size:10px;color:var(--txt2)">${be.pct}% of the way · $${f(p.dpd)}/day</div>
-        </div>
-      </div>
-
-      <div class="compound-row">
-        <div class="pm"><div class="pml">${p.autoCompound?"To wallet (50%)":"$/day (manual)"}</div><div class="pmv" style="color:var(--green)">$${f(cs.toWallet)}/day</div><div class="pms">${p.autoCompound?"Sent to your wallet":"Claim manually"}</div></div>
-        <div class="pm"><div class="pml">${p.autoCompound?"To position (50%)":"Uncollected"}</div><div class="pmv" style="color:var(--purp)">$${f(p.autoCompound?cs.toPosition:p.uncollected)}</div><div class="pms">${p.autoCompound?"Compounds back in":"$"+f(p.uncollected)+" pending"}</div></div>
-        <div class="pm"><div class="pml">Rebal efficiency</div><div class="pmv">${re!==null?"$"+f(re):"—"}</div><div class="pms">${re!==null?"per rebalance ("+p.rebalances+"x)":"No rebalances yet"}</div></div>
-      </div>
-
-      <div class="palrow">
-        <div class="isl" style="margin-bottom:0">Token allocation</div>
-        <div class="palseg-wrap">${pa.map(a=>`<div class="palseg" style="width:${a.p}%;background:${a.c}"></div>`).join("")}</div>
-        <div class="palleg">${pa.map(a=>`<div class="pali"><span class="paldot" style="background:${a.c}"></span>${a.n} ${a.p}%</div>`).join("")}</div>
-      </div>
-    </div>
-  </div>`;
-}
-
 // Scenario engine
 function calcScen(scen,days,positions){
   const s=SCEN[scen];

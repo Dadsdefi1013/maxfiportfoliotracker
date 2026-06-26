@@ -265,7 +265,7 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
     </div>
     <div class="ob-body">
       <div class="ob-step"><div class="ob-num">1</div><div class="ob-txt"><strong>Open MaxFi</strong> at <a href="https://www.maxfi.tech/deposit?ref=0x1b8021D5fb5fDcc7E1C084c042F7e765EC31a3E0" target="_blank">maxfi.tech</a> and go to your positions page.</div></div>
-      <div class="ob-step"><div class="ob-num">2</div><div class="ob-txt"><strong>Use the DadsDeFiSpace Claude prompt</strong> — screenshot or copy your position cards, paste into Claude with our community prompt, get back clean JSON automatically.</div></div>
+      <div class="ob-step"><div class="ob-num">2</div><div class="ob-txt"><strong>Use the DadsDeFiSpace Claude prompt</strong> — <a href="https://raw.githubusercontent.com/dadsdefi1013/maxfiportfoliotracker/main/DadsDeFiSpace_MaxFi_Community_Prompt.md" target="_blank" rel="noopener" style="font-weight:600;color:var(--blue)">Get the community prompt ↗</a> &middot; Screenshot or copy your MaxFi position cards, open <a href="https://claude.ai" target="_blank" rel="noopener">Claude.ai</a>, paste the prompt + your data, and Claude returns clean JSON automatically. Works with screenshots or copied text.</div></div>
       <div class="ob-step"><div class="ob-num">3</div><div class="ob-txt"><strong>Paste JSON below</strong> and hit Generate. Your IL, APR, cashflow, risk, scenarios, and allocation render instantly.</div></div>
       <div class="ob-step"><div class="ob-num">4</div><div class="ob-txt"><strong>Add compounding info</strong> — set <code>autoCompound: true</code> on positions that compound automatically. MaxFi compounds 50% to your wallet, 50% back into the position.</div></div>
       <div class="snapshot-area">
@@ -306,7 +306,7 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
         </div>
       </div>
       <div style="margin-top:14px;background:var(--bg2);border-radius:var(--rm);padding:12px;font-size:12px;color:var(--txt2);line-height:1.7">
-        <strong style="color:var(--txt)">Field reference:</strong> pair, positionId, dex, daysOld, value, earned, uncollected, collected, apr, dpd, rebalances, inRange, <strong style="color:var(--purp)">autoCompound</strong>, tokenA, qtyA, entryPriceA, currentPriceA, tokenB, qtyB, entryPriceB, currentPriceB, rangeLower, rangeUpper, rangeCurrentPrice. Get the community prompt in our <a href="https://t.me/DADSDefiSpace" target="_blank">Telegram</a>.
+        <strong style="color:var(--txt)">Field reference:</strong> pair, positionId, dex, daysOld, value, earned, uncollected, collected, apr, dpd, rebalances, inRange, <strong style="color:var(--purp)">autoCompound</strong>, tokenA, qtyA, entryPriceA, currentPriceA, tokenB, qtyB, entryPriceB, currentPriceB, rangeLower, rangeUpper, rangeCurrentPrice. Get the full <a href="https://raw.githubusercontent.com/dadsdefi1013/maxfiportfoliotracker/main/DadsDeFiSpace_MaxFi_Community_Prompt.md" target="_blank" rel="noopener" style="font-weight:600">community prompt here ↗</a> or in our <a href="https://t.me/DADSDefiSpace" target="_blank" rel="noopener">Telegram</a>.
       </div>
     </div>
   </div>
@@ -317,6 +317,7 @@ code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:11px;font
 <div id="page-cashflow"   class="page"></div>
 <div id="page-risk"       class="page"></div>
 <div id="page-allocation" class="page"></div>
+<div id="page-scenarios"  class="page"></div>
 <div id="page-performance" class="page"></div>
 
 <!-- FOOTER -->
@@ -781,15 +782,25 @@ function compBadge(p){return p.autoCompound?`<span class="badge bp">Auto-compoun
 
 let charts={};
 function dc(id){if(charts[id]){try{charts[id].destroy();}catch(e){}delete charts[id];}}
+// safeCtx: returns canvas 2d context or null — prevents "cannot read getContext of null" errors
+function safeCtx(id){const el=document.getElementById(id);return el?el.getContext('2d'):null;}
+// safeSet: sets innerHTML/textContent only if element exists
+function safeSet(id,prop,val){const el=document.getElementById(id);if(el)el[prop]=val;}
 
 function donut(canvasId,segs,total,sub,legId){
   dc(canvasId);
-  const ctx=document.getElementById(canvasId).getContext("2d");
+  const _canvas=document.getElementById(canvasId);
+  if(!_canvas)return;  // guard: element may not exist if page not rendered yet
+  const ctx=_canvas.getContext("2d");
   const tot=segs.reduce((s,x)=>s+x.v,0);
-  charts[canvasId]=new Chart(ctx,{type:"doughnut",data:{labels:segs.map(x=>x.l),datasets:[{data:segs.map(x=>x.v),backgroundColor:segs.map(x=>x.c),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.raw/tot*100).toFixed(1)}%`}}}}});
-  document.getElementById("donut-total-"+canvasId).textContent=total;
-  document.getElementById("donut-sub-"+canvasId).textContent=sub;
-  document.getElementById(legId).innerHTML=segs.map(x=>`<div class="dlegrow"><span class="dlegdot" style="background:${x.c}"></span><span class="dlegname">${x.l}</span><span class="dlegpct">${(x.v/tot*100).toFixed(1)}%</span></div>`).join("");
+  charts[canvasId]=new Chart(ctx,{type:"doughnut",data:{labels:segs.map(x=>x.l),datasets:[{data:segs.map(x=>x.v),backgroundColor:segs.map(x=>x.c),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.label+': '+(c.raw/tot*100).toFixed(1)+'%';}}}}}});
+  const _dt=document.getElementById("donut-total-"+canvasId);
+  const _ds=document.getElementById("donut-sub-"+canvasId);
+  const _dl=document.getElementById(legId);
+  if(!_dt||!_ds||!_dl)return;
+  _dt.textContent=total;
+  _ds.textContent=sub;
+  _dl.innerHTML=segs.map(x=>`<div class="dlegrow"><span class="dlegdot" style="background:${x.c}"></span><span class="dlegname">${x.l}</span><span class="dlegpct">${(x.v/tot*100).toFixed(1)}%</span></div>`).join("");
 }
 
 function posCard(p,sc){
@@ -941,7 +952,7 @@ function posCard(p,sc){
           <div class="accum-val" style="color:${vsETH?fmtBenchmark(vsETH.period).color:"var(--txt2)"}">
             ${vsETH?fmtBenchmark(vsETH.period).txt:"n/a"}
           </div>
-          <div class="accum-sub">${vsETH?.annNote??""}${vsETH&&!vsETH.annNote&&vsETH.ann!==null?fmtBenchmark(vsETH.ann).txt+" ann.":""}</div>
+          <div class="accum-sub">${vsETH&&vsETH.annNote?vsETH.annNote:vsETH&&!vsETH.annNote&&vsETH.ann!==null?fmtBenchmark(vsETH.ann).txt+" ann.":""}</div>
         </div>
         <div class="accum-item">
           <!-- vsHODL: headline for CORRELATED only. Warned on VOL_STABLE (incl. stablecoin) and MOONLAGGER (punishes pump-selling) -->
@@ -980,6 +991,7 @@ function posCard(p,sc){
       </div>
     </div>
   </div>`;
+}
 
 // Scenario engine
 function calcScen(scen,days,positions){
@@ -1256,12 +1268,12 @@ function render(positions){
     if(document.getElementById("ch-cf")){
       const HZ=[30,60,90,180,365];const HL=["30d","60d","90d","180d","1yr"];
       dc("ch-cf");
-      charts["ch-cf"]=new Chart(document.getElementById("ch-cf").getContext("2d"),{type:"line",
+      const _ctxCf=safeCtx("ch-cf");if(_ctxCf)charts["ch-cf"]=new Chart(_ctxCf,{type:"line",
         data:{labels:HL,datasets:[
           {label:"To wallet",data:HZ.map(d=>+(totWallet*d).toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.08)",borderWidth:2,pointRadius:3,tension:.3,fill:true},
           {label:"Compounding",data:HZ.map(d=>+(totComp*d).toFixed(2)),borderColor:"#534AB7",backgroundColor:"rgba(83,74,183,0.07)",borderWidth:1.5,pointRadius:3,tension:.3,fill:true,borderDash:[4,4]},
         ]},
-        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toFixed(2);}}}},
           scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>"$"+v}}}}
       });
       document.getElementById("leg-cf").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>To wallet</div><div class="leg-item"><span class="leg-sq" style="background:#534AB7"></span>Compounding into positions</div>`;
@@ -1271,12 +1283,12 @@ function render(positions){
     if(document.getElementById("ch-apr")){
       dc("ch-apr");
       const realAprs=E.map(p=>p.daysOld>0&&p.earned>0?+(p.earned/p.value/p.daysOld*365*100).toFixed(1):0);
-      charts["ch-apr"]=new Chart(document.getElementById("ch-apr").getContext("2d"),{type:"bar",
+      const _ctxApr=safeCtx("ch-apr");if(_ctxApr)charts["ch-apr"]=new Chart(_ctxApr,{type:"bar",
         data:{labels:E.map(p=>p.pair),datasets:[
           {label:"Real APR",data:realAprs,backgroundColor:"#1D9E75",borderRadius:3},
           {label:"Shown APR",data:E.map(p=>+p.apr.toFixed(1)),backgroundColor:"#85B7EB",borderRadius:3},
         ]},
-        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toFixed(1)}%`}}},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.raw.toFixed(1)+'%';}}}},
           scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:20}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>v+"%"}}}}
       });
       document.getElementById("leg-apr").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Real fee APR (earned/days)</div><div class="leg-item"><span class="leg-sq" style="background:#85B7EB"></span>MaxFi shown APR</div>`;
@@ -1339,26 +1351,25 @@ function renderScenario(scen,positions){
 
   setTimeout(()=>{
     dc("ch-scen-cf");
-    charts["ch-scen-cf"]=new Chart(document.getElementById("ch-scen-cf").getContext("2d"),{type:"line",
+    const _sc1=safeCtx("ch-scen-cf");if(_sc1)charts["ch-scen-cf"]=new Chart(_sc1,{type:"line",
       data:{labels:HL,datasets:[
         {label:"Total fees",data:HZ.map(d=>+calcScen(scen,d,pos).totFees.toFixed(2)),borderColor:s.color,backgroundColor:s.cbg+"55",borderWidth:2,pointRadius:3,tension:.3,fill:true},
         {label:"To wallet",data:HZ.map(d=>+calcScen(scen,d,pos).totWallet.toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.05)",borderWidth:1.5,pointRadius:2,tension:.3,fill:false,borderDash:[4,4]},
         {label:"Compounding",data:HZ.map(d=>+calcScen(scen,d,pos).totPos.toFixed(2)),borderColor:"#534AB7",backgroundColor:"rgba(83,74,183,0.05)",borderWidth:1.5,pointRadius:2,tension:.3,fill:false,borderDash:[2,4]},
       ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toFixed(2);}}}},
         scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>"$"+v}}}}
     });
     document.getElementById("leg-scen-cf").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:${s.color}"></span>Total fees</div><div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>To wallet</div><div class="leg-item"><span class="leg-sq" style="background:#534AB7"></span>Compounding</div>`;
 
     dc("ch-scen-pnl");
-    charts["ch-scen-pnl"]=new Chart(document.getElementById("ch-scen-pnl").getContext("2d"),{type:"line",
+    const _sc2=safeCtx("ch-scen-pnl");if(!_sc2)return;charts["ch-scen-pnl"]=new Chart(_sc2,{type:"line",
       data:{labels:HL,datasets:[
         {label:"PnL",data:HZ.map(d=>+calcScen(scen,d,pos).totPnL.toFixed(2)),borderColor:s.color,backgroundColor:s.cbg+"44",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[5,4]},
       ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` PnL: $${c.raw.toFixed(2)}`}}},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' PnL: $'+c.raw.toFixed(2);}}}},
         scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v)}}}}
-    });
-    document.getElementById("leg-scen-pnl").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:${s.color}"></span>${s.label} portfolio PnL</div>`;
+    });  document.getElementById("leg-scen-pnl").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:${s.color}"></span>${s.label} portfolio PnL</div>`;
   },80);
 }
 
@@ -1397,37 +1408,37 @@ function renderScenAll(){
 
   setTimeout(()=>{
     dc("ch-all-cf");
-    charts["ch-all-cf"]=new Chart(document.getElementById("ch-all-cf").getContext("2d"),{type:"line",
+    const _sc3=safeCtx("ch-all-cf");if(_sc3)charts["ch-all-cf"]=new Chart(_sc3,{type:"line",
       data:{labels:HL,datasets:[
         {label:"Bearish",data:HZ.map(d=>+calcScen("bear",d,pos).totFees.toFixed(2)),borderColor:"#E24B4A",backgroundColor:"rgba(226,75,74,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[5,5]},
         {label:"Base",   data:HZ.map(d=>+calcScen("base",d,pos).totFees.toFixed(2)),borderColor:"#378ADD",backgroundColor:"rgba(55,138,221,0.07)",borderWidth:2.5,pointRadius:4,tension:.3,fill:true},
         {label:"Bullish",data:HZ.map(d=>+calcScen("bull",d,pos).totFees.toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[3,3]},
       ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toFixed(2);}}}},
         scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>"$"+v}}}}
     });
     document.getElementById("leg-all-cf").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>Bearish</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Base</div><div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Bullish</div>`;
 
     dc("ch-all-pnl");
-    charts["ch-all-pnl"]=new Chart(document.getElementById("ch-all-pnl").getContext("2d"),{type:"line",
+    const _sc4=safeCtx("ch-all-pnl");if(!_sc4)return;charts["ch-all-pnl"]=new Chart(_sc4,{type:"line",
       data:{labels:HL,datasets:[
         {label:"Bearish",data:HZ.map(d=>+calcScen("bear",d,pos).totPnL.toFixed(2)),borderColor:"#E24B4A",backgroundColor:"rgba(226,75,74,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[5,5]},
         {label:"Base",   data:HZ.map(d=>+calcScen("base",d,pos).totPnL.toFixed(2)),borderColor:"#378ADD",backgroundColor:"rgba(55,138,221,0.07)",borderWidth:2.5,pointRadius:4,tension:.3,fill:true},
         {label:"Bullish",data:HZ.map(d=>+calcScen("bull",d,pos).totPnL.toFixed(2)),borderColor:"#1D9E75",backgroundColor:"rgba(29,158,117,0.06)",borderWidth:2,pointRadius:3,tension:.3,fill:true,borderDash:[3,3]},
       ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toFixed(2);}}}},
         scales:{x:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10}}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v)}}}}
     });
     document.getElementById("leg-all-pnl").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>Bearish</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Base</div><div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Bullish</div>`;
 
     dc("ch-all-pos");
-    charts["ch-all-pos"]=new Chart(document.getElementById("ch-all-pos").getContext("2d"),{type:"bar",
+    const _sc5=safeCtx("ch-all-pos");if(!_sc5)return;charts["ch-all-pos"]=new Chart(_sc5,{type:"bar",
       data:{labels:pos.map(p=>p.pair),datasets:[
         {label:"Bearish",data:rBear365.perPos.map(p=>+p.pnl.toFixed(2)),backgroundColor:"#F09595",borderRadius:3},
         {label:"Base",   data:rBase365.perPos.map(p=>+p.pnl.toFixed(2)),backgroundColor:"#85B7EB",borderRadius:3},
         {label:"Bullish",data:rBull365.perPos.map(p=>+p.pnl.toFixed(2)),backgroundColor:"#5DCAA5",borderRadius:3},
       ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toFixed(2)}`}}},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+c.raw.toFixed(2);}}}},
         scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:20}},y:{grid:{color:"rgba(128,128,128,0.07)"},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v)}}}}
     });
     document.getElementById("leg-all-pos").innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#F09595"></span>Bearish 1yr</div><div class="leg-item"><span class="leg-sq" style="background:#85B7EB"></span>Base 1yr</div><div class="leg-item"><span class="leg-sq" style="background:#5DCAA5"></span>Bullish 1yr</div>`;
@@ -1492,38 +1503,9 @@ function buildPerformance(){
         <div style="position:relative;height:200px"><canvas id="ch-vs" role="img" aria-label="vsETH and vsBTC accumulation over time">vsETH vsBTC chart.</canvas></div>
         <div class="leg" id="leg-vs"></div>
       </div>
-      <!-- Chart 3: Fee APR over time -->
-      <div class="card">
-        <div class="slab">Fee APR & $/day over time</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Real projected yield based on snapshot $/day rate. Shows when positions were newly opened (0) vs earning.</div>
-        <div style="position:relative;height:200px"><canvas id="ch-apr" role="img" aria-label="Fee APR over time">APR chart.</canvas></div>
-        <div class="leg" id="leg-apr"></div>
-      </div>
+      
     </div>
 
-    <div class="g2 mb">
-      <!-- Chart 4: Cumulative fees in USD / ETH / BTC -->
-      <div class="card">
-        <div class="slab">Cumulative fees earned — all denominations</div>
-        <div style="position:relative;height:200px"><canvas id="ch-fees" role="img" aria-label="Cumulative fees in USD ETH BTC">Fees chart.</canvas></div>
-        <div class="leg" id="leg-fees"></div>
-      </div>
-      <!-- Chart 5: In-range % and positions count -->
-      <div class="card">
-        <div class="slab">Range health — positions in range over time</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Positions in range = earning fees. Out of range = idle capital.</div>
-        <div style="position:relative;height:200px"><canvas id="ch-range" role="img" aria-label="In-range positions over time">Range health chart.</canvas></div>
-        <div class="leg" id="leg-range"></div>
-      </div>
-    </div>
-
-    <!-- Chart 6: ETH and BTC price context -->
-    <div class="card mb">
-      <div class="slab">ETH & BTC price context (snapshot dates)</div>
-      <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Market backdrop. Your portfolio's vsETH/vsBTC performance is read against these price moves.</div>
-      <div style="position:relative;height:180px"><canvas id="ch-prices" role="img" aria-label="ETH and BTC price history">Price chart.</canvas></div>
-      <div class="leg" id="leg-prices"></div>
-    </div>
 
     <!-- Denomination table -->
     <div class="card">
@@ -1567,7 +1549,7 @@ function buildPerformance(){
     Object.values(perfCharts).forEach(c=>{try{c.destroy();}catch(e){}});
     perfCharts={};
     buildPerfCharts('usd');
-  },60);
+  },200);
 }
 
 let currentDenom='usd';
@@ -1581,11 +1563,12 @@ function setDenom(d){
   if(perfCharts['ch-port-vs']){perfCharts['ch-port-vs'].destroy();delete perfCharts['ch-port-vs'];}
   buildPortVsChart(d);
   const titles={usd:"Portfolio value vs holding ETH / BTC (USD)",eth:"Portfolio value (ETH) vs holding ETH from day 1",btc:"Portfolio value (BTC) vs holding BTC from day 1"};
-  document.getElementById('chart1-title').textContent=titles[d];
+  const _ct=document.getElementById('chart1-title');if(_ct)_ct.textContent=titles[d];
 }
 
 function buildPortVsChart(denom){
-  const H=HIST; const ctx=document.getElementById('ch-port-vs').getContext('2d');
+  const H=HIST; const ctx=safeCtx('ch-port-vs');
+  if(!ctx)return; // canvas not in DOM yet — called before buildPerformance innerHTML
   let portData,hodlEData,hodlBData,ylabel,unit;
   if(denom==='usd'){
     portData=H.usd; hodlEData=H.hodlEth; hodlBData=H.hodlBtc;
@@ -1608,7 +1591,7 @@ function buildPortVsChart(denom){
       {label:'If held BTC',data:hodlBData,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,borderDash:[3,4]},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${unit}${typeof c.raw==='number'?c.raw.toFixed(denom==='usd'?2:5):c.raw}`}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': '+unit+(typeof c.raw==='number'?c.raw.toFixed(denom==='usd'?2:5):c.raw);}}}},
       scales:{x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
               y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>unit+(denom==='usd'?v.toFixed(0):v.toFixed(4))}}}}
   });
@@ -1622,93 +1605,115 @@ function buildPerfCharts(denom){
   const H=HIST;
   buildPortVsChart(denom);
 
-  // vsETH / vsBTC
-  const ctx2=document.getElementById('ch-vs').getContext('2d');
-  perfCharts['ch-vs']=new Chart(ctx2,{type:'line',
-    data:{labels:H.dates,datasets:[
-      {label:'vs ETH ($)',data:H.vsEth,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true},
-      {label:'vs BTC ($)',data:H.vsBtc,borderColor:'#F7A93B',backgroundColor:'rgba(247,169,59,0.06)',borderWidth:2,pointRadius:2,tension:.3,fill:false,borderDash:[4,4]},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw>=0?"+$":"-$"}${Math.abs(c.raw).toFixed(2)}`}}},
-      scales:{x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-              y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>(v>=0?"$":"-$")+Math.abs(v).toFixed(0)}}}}
-  });
-  document.getElementById('leg-vs').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>vsETH ($)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>vsBTC ($)</div>`;
+  // Chart 2: vsETH / vsBTC
+  const ctx2=safeCtx('ch-vs');
+  if(ctx2){
+    perfCharts['ch-vs']=new Chart(ctx2,{type:'line',
+      data:{labels:H.dates,datasets:[
+        {label:'vs ETH ($)',data:H.vsEth,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true},
+        {label:'vs BTC ($)',data:H.vsBtc,borderColor:'#F7A93B',backgroundColor:'rgba(247,169,59,0.06)',borderWidth:2,pointRadius:2,tension:.3,fill:false,borderDash:[4,4]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': '+(c.raw>=0?'+$':'-$')+Math.abs(c.raw).toFixed(2);}}}},
+        scales:{
+          x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+          y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:function(v){return(v>=0?'$':'-$')+Math.abs(v).toFixed(0);}}}
+        }
+      }
+    });
+    var _lv=document.getElementById('leg-vs');
+    if(_lv)_lv.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>vsETH ($)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>vsBTC ($)</div>';
+  }
 
-  // Fee APR
-  const ctx3=document.getElementById('ch-apr').getContext('2d');
-  perfCharts['ch-apr']=new Chart(ctx3,{type:'bar',
-    data:{labels:H.dates,datasets:[
-      {label:'Fee APR %',data:H.feeApr,backgroundColor:'rgba(29,158,117,0.7)',borderRadius:3,yAxisID:'y'},
-      {label:'$/day',data:H.dpd,backgroundColor:'rgba(55,138,221,0.6)',borderRadius:3,yAxisID:'y2'},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` APR: ${c.raw}%`:` $/day: $${c.raw.toFixed(2)}`}}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-        y:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>v+"%"},title:{display:true,text:'APR %',font:{size:9},color:'#8896A8'}},
-        y2:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:v=>'$'+v},title:{display:true,text:'$/day',font:{size:9},color:'#8896A8'}},
-      }}
-  });
-  document.getElementById('leg-apr').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fee APR %</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>$/day</div>`;
+  // Chart 3: Fee APR & $/day
+  var ctx3=safeCtx('ch-apr');
+  if(ctx3){
+    perfCharts['ch-apr']=new Chart(ctx3,{type:'bar',
+      data:{labels:H.dates,datasets:[
+        {label:'Fee APR %',data:H.feeApr,backgroundColor:'rgba(29,158,117,0.7)',borderRadius:3,yAxisID:'y'},
+        {label:'$/day',data:H.dpd,backgroundColor:'rgba(55,138,221,0.6)',borderRadius:3,yAxisID:'y2'},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.datasetIndex===0?' APR: '+c.raw+'%':' $/day: $'+c.raw.toFixed(2);}}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+          y:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:function(v){return v+'%';}},title:{display:true,text:'APR %',font:{size:9},color:'#8896A8'}},
+          y2:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:function(v){return '$'+v;}},title:{display:true,text:'$/day',font:{size:9},color:'#8896A8'}}
+        }
+      }
+    });
+    var _la=document.getElementById('leg-apr');
+    if(_la)_la.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fee APR %</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>$/day</div>';
+  }
 
-  // Fees earned multi-denom
-  const ctx4=document.getElementById('ch-fees').getContext('2d');
-  const feesEth=H.earned.map((v,i)=>+(v/H.ethPrice[i]).toFixed(4));
-  const feesBtc=H.earned.map((v,i)=>+(v/H.btcPrice[i]).toFixed(6));
-  perfCharts['ch-fees']=new Chart(ctx4,{type:'line',
-    data:{labels:H.dates,datasets:[
-      {label:'Fees USD',data:H.earned,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yusd'},
-      {label:'Fees ETH',data:feesEth,borderColor:'#627EEA',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,yAxisID:'yeth',borderDash:[4,4]},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` $${c.raw.toFixed(2)}`:` ${c.raw.toFixed(4)} ETH`}}},
-      scales:{
-        x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-        yusd:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>'$'+v}},
-        yeth:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:v=>v+'Ξ'}},
-      }}
-  });
-  document.getElementById('leg-fees').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fees USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>Fees ETH (right)</div>`;
+  // Chart 4: Cumulative fees multi-denom
+  var ctx4=safeCtx('ch-fees');
+  if(ctx4){
+    var feesEth=H.earned.map(function(v,i){return +(v/H.ethPrice[i]).toFixed(4);});
+    perfCharts['ch-fees']=new Chart(ctx4,{type:'line',
+      data:{labels:H.dates,datasets:[
+        {label:'Fees USD',data:H.earned,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yusd'},
+        {label:'Fees ETH',data:feesEth,borderColor:'#627EEA',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,fill:false,borderDash:[4,4],yAxisID:'yeth'},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.datasetIndex===0?' $'+c.raw.toFixed(2):' '+c.raw.toFixed(4)+' ETH';}}}},
+        scales:{
+          x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+          yusd:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:function(v){return '$'+v;}}},
+          yeth:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:function(v){return v+'\u039E';}}}
+        }
+      }
+    });
+    var _lf=document.getElementById('leg-fees');
+    if(_lf)_lf.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fees USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>Fees ETH (right)</div>';
+  }
 
-  // Range health
-  const ctx5=document.getElementById('ch-range').getContext('2d');
-  const inRangePct=H.inRange.map((v,i)=>H.positions[i]>0?+(v/H.positions[i]*100).toFixed(0):0);
-  perfCharts['ch-range']=new Chart(ctx5,{type:'bar',
-    data:{labels:H.dates,datasets:[
-      {label:'In range',data:H.inRange,backgroundColor:H.inRange.map((v,i)=>v===H.positions[i]?'rgba(29,158,117,0.8)':v===0?'rgba(226,75,74,0.7)':'rgba(239,159,39,0.7)'),borderRadius:3,yAxisID:'y'},
-      {label:'Total',data:H.positions,type:'line',borderColor:'rgba(128,128,128,0.4)',borderWidth:1.5,pointRadius:2,tension:.3,fill:false,yAxisID:'y'},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?` In range: ${c.raw}`:` Total positions: ${c.raw}`}}},
-      scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-              y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},stepSize:1},min:0}}}
-  });
-  document.getElementById('leg-range').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>In range</div><div class="leg-item"><span class="leg-sq" style="background:#EF9F27"></span>Partial</div><div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>All out</div>`;
+  // Chart 5: Range health
+  var ctx5=safeCtx('ch-range');
+  if(ctx5){
+    perfCharts['ch-range']=new Chart(ctx5,{type:'bar',
+      data:{labels:H.dates,datasets:[
+        {label:'In range',data:H.inRange,backgroundColor:H.inRange.map(function(v,i){return v===H.positions[i]?'rgba(29,158,117,0.8)':v===0?'rgba(226,75,74,0.7)':'rgba(239,159,39,0.7)';}),borderRadius:3},
+        {label:'Total',data:H.positions,type:'line',borderColor:'rgba(128,128,128,0.4)',borderWidth:1.5,pointRadius:2,tension:.3,fill:false},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.datasetIndex===0?' In range: '+c.raw:' Total positions: '+c.raw;}}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+          y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},stepSize:1},min:0}
+        }
+      }
+    });
+    var _lr=document.getElementById('leg-range');
+    if(_lr)_lr.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>In range</div><div class="leg-item"><span class="leg-sq" style="background:#EF9F27"></span>Partial</div><div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>All out</div>';
+  }
 
-  // Prices
-  const ctx6=document.getElementById('ch-prices').getContext('2d');
-  perfCharts['ch-prices']=new Chart(ctx6,{type:'line',
-    data:{labels:H.dates,datasets:[
-      {label:'ETH/USD',data:H.ethPrice,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.06)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yeth'},
-      {label:'BTC/USD',data:H.btcPrice,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:.3,yAxisID:'ybtc',borderDash:[4,4]},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.raw.toLocaleString()}`}}},
-      scales:{
-        x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-        yeth:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:v=>'$'+v.toLocaleString()}},
-        ybtc:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:v=>'$'+v.toLocaleString()}},
-      }}
-  });
-  document.getElementById('leg-prices').innerHTML=`<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>ETH/USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>BTC/USD (right)</div>`;
+  // Chart 6: ETH & BTC price context
+  var ctx6=safeCtx('ch-prices');
+  if(ctx6){
+    perfCharts['ch-prices']=new Chart(ctx6,{type:'line',
+      data:{labels:H.dates,datasets:[
+        {label:'ETH/USD',data:H.ethPrice,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.06)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yeth'},
+        {label:'BTC/USD',data:H.btcPrice,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:.3,fill:false,borderDash:[4,4],yAxisID:'ybtc'},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+Number(c.raw).toLocaleString();}}}},
+        scales:{
+          x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
+          yeth:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:function(v){return '$'+Number(v).toLocaleString();}}},
+          ybtc:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:function(v){return '$'+Number(v).toLocaleString();}}}
+        }
+      }
+    });
+    var _lp=document.getElementById('leg-prices');
+    if(_lp)_lp.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>ETH/USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>BTC/USD (right)</div>';
+  }
 }
 
 function showPage(id){
   document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
   document.querySelectorAll(".navbtn").forEach(el=>el.classList.remove("active"));
-  document.getElementById("page-"+id).classList.add("active");
+  const _pg=document.getElementById("page-"+id);if(_pg)_pg.classList.add("active");
   document.querySelectorAll(".navbtn").forEach(el=>{if(el.textContent.toLowerCase().trim().startsWith(id.toLowerCase()))el.classList.add("active");});
   if(POSITIONS.length>0&&id==="scenarios")renderScenario(scen_current);
   if(id==="performance")buildPerformance();
@@ -1739,6 +1744,7 @@ function toggleDisclaimer(){
   const body=document.getElementById("disclaimer-body");
   const caret=document.getElementById("disc-caret");
   const btn=document.querySelector(".disclaimer-toggle");
+  if(!body||!caret||!btn)return; // guard: elements may not exist in some contexts
   const isOpen=body.classList.contains("open");
   body.classList.toggle("open");
   caret.classList.toggle("open");
@@ -1751,32 +1757,30 @@ function acceptDisclaimer(cb){
     setTimeout(()=>{
       body.classList.remove("open");
       document.getElementById("disc-caret").classList.remove("open");
-      document.querySelector(".disclaimer-toggle").setAttribute("aria-expanded","false");
-      document.getElementById("disclaimer-banner").style.borderTopColor="var(--green)";
-      document.querySelector(".disclaimer-icon").textContent="✓";
-      document.querySelector(".disclaimer-icon").style.background="var(--gbg)";
-      document.querySelector(".disclaimer-icon").style.color="var(--gtxt)";
-      document.querySelector(".disclaimer-title").textContent="Disclaimer Acknowledged";
-      document.querySelector(".disclaimer-sub").textContent="You confirmed this is educational only · DeFi is high risk · Not financial advice";
+      const _dt=document.querySelector(".disclaimer-toggle");if(_dt)_dt.setAttribute("aria-expanded","false");
+      const _db=document.getElementById("disclaimer-banner");if(_db)_db.style.borderTopColor="var(--green)";
+      const _di=document.querySelector(".disclaimer-icon");if(_di){_di.textContent="✓";_di.style.background="var(--gbg)";_di.style.color="var(--gtxt)";}
+      const _dti=document.querySelector(".disclaimer-title");if(_dti)_dti.textContent="Disclaimer Acknowledged";
+      const _dsu=document.querySelector(".disclaimer-sub");if(_dsu)_dsu.textContent="You confirmed this is educational only · DeFi is high risk · Not financial advice";
     },400);
   }
 }
 // Auto-open disclaimer on first visit, collapse if already accepted
 (function(){
+  function openDisclaimer(){
+    const b=document.getElementById("disclaimer-body");
+    const c=document.getElementById("disc-caret");
+    const t=document.querySelector(".disclaimer-toggle");
+    if(b)b.classList.add("open");
+    if(c)c.classList.add("open");
+    if(t)t.setAttribute("aria-expanded","true");
+  }
   try{
     if(!localStorage.getItem("dads_disc_accepted")){
-      setTimeout(()=>{
-        document.getElementById("disclaimer-body").classList.add("open");
-        document.getElementById("disc-caret").classList.add("open");
-        document.querySelector(".disclaimer-toggle").setAttribute("aria-expanded","true");
-      },600);
+      setTimeout(openDisclaimer,600);
     }
   }catch(e){
-    // localStorage not available — open anyway
-    setTimeout(()=>{
-      document.getElementById("disclaimer-body").classList.add("open");
-      document.getElementById("disc-caret").classList.add("open");
-    },600);
+    setTimeout(openDisclaimer,600);
   }
 })();
 

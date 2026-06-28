@@ -1084,6 +1084,46 @@ function render(positions){
       <div class="kpi"><div class="kl">Total IL</div><div class="kv" style="color:${totIL>=0?"var(--green)":"var(--red)"}">${fS(totIL)}</div><div class="ks">fees ${totEarn+totIL>=0?"covering IL ✓":"not covering IL"}</div></div>
       <div class="kpi"><div class="kl">Rebalances</div><div class="kv">${E.reduce((s,p)=>s+p.rebalances,0)}</div><div class="ks">lifetime total</div></div>
     </div>
+
+    <!-- ETH / BTC performance metrics from HIST data -->
+    ${(()=>{
+      var H=HIST;
+      var N=H.dates.length-1;
+      var latETH=H.eth[N], initETH=H.eth[0];
+      var latBTC=H.btc[N], initBTC=H.btc[0];
+      var pctETH=((latETH-initETH)/initETH*100).toFixed(1);
+      var pctBTC=((latBTC-initBTC)/initBTC*100).toFixed(1);
+      var vsEth=H.vsEth[N], vsBtc=H.vsBtc[N];
+      var ethDrop=((H.ethPrice[N]-H.ethPrice[0])/H.ethPrice[0]*100).toFixed(1);
+      var btcDrop=((H.btcPrice[N]-H.btcPrice[0])/H.btcPrice[0]*100).toFixed(1);
+      var veC=vsEth>=0?'var(--green)':'var(--red)';
+      var vbC=vsBtc>=0?'var(--green)':'var(--red)';
+      var eC=parseFloat(pctETH)>=0?'var(--green)':'var(--red)';
+      var bC=parseFloat(pctBTC)>=0?'var(--green)':'var(--red)';
+      return '<div class="krow mb">'
+        +'<div class="kpi" style="border-left:3px solid #627EEA;padding-left:11px">'
+          +'<div class="kl" style="color:#627EEA">Portfolio in ETH</div>'
+          +'<div class="kv" style="color:#627EEA">'+latETH.toFixed(4)+' ETH</div>'
+          +'<div class="ks" style="color:'+eC+'">'+(parseFloat(pctETH)>=0?'+':'')+pctETH+'% since Jun 8</div>'
+        +'</div>'
+        +'<div class="kpi" style="border-left:3px solid #F7A93B;padding-left:11px">'
+          +'<div class="kl" style="color:#F7A93B">Portfolio in BTC</div>'
+          +'<div class="kv" style="color:#F7A93B">'+latBTC.toFixed(5)+' BTC</div>'
+          +'<div class="ks" style="color:'+bC+'">'+(parseFloat(pctBTC)>=0?'+':'')+pctBTC+'% since Jun 8</div>'
+        +'</div>'
+        +'<div class="kpi" style="border-left:3px solid var(--green);padding-left:11px">'
+          +'<div class="kl">vs Hold ETH ($)</div>'
+          +'<div class="kv" style="color:'+veC+'">'+(vsEth>=0?'+$':'-$')+f(Math.abs(vsEth))+'</div>'
+          +'<div class="ks">ETH '+ethDrop+'% · LP advantage</div>'
+        +'</div>'
+        +'<div class="kpi" style="border-left:3px solid var(--amber);padding-left:11px">'
+          +'<div class="kl">vs Hold BTC ($)</div>'
+          +'<div class="kv" style="color:'+vbC+'">'+(vsBtc>=0?'+$':'-$')+f(Math.abs(vsBtc))+'</div>'
+          +'<div class="ks">BTC '+btcDrop+'% · LP advantage</div>'
+        +'</div>'
+      +'</div>';
+    })()}
+
     <div class="g3 mb">
       <div class="card"><div class="slab">Portfolio allocation</div>
         <div class="dwrap"><canvas id="d-port" width="120" height="120" role="img" aria-label="Portfolio allocation donut"></canvas><div class="dcenter"><div class="dtotal" id="donut-total-d-port"></div><div class="dsub" id="donut-sub-d-port"></div></div></div>
@@ -1466,112 +1506,137 @@ function buildPerformance(){
 
   document.getElementById("page-performance").innerHTML=`
     <div style="margin-bottom:16px">
-      <div class="slab">Portfolio performance tracker — Jun 8 → Jun 27, 2026</div>
-      <div style="font-size:12px;color:var(--txt2);margin-top:2px">Historical snapshots in USD, ETH, and BTC denomination. vsETH and vsBTC show accumulated value vs simply holding each asset from day 1.</div>
+      <div class="slab">Portfolio performance — Jun 8 → Jun 27, 2026</div>
+      <div style="font-size:12px;color:var(--txt2);margin-top:2px">Is your portfolio growing in ETH and BTC terms? These charts answer that. vsETH and vsBTC show how much better (or worse) your LP did vs simply holding each asset from day 1.</div>
     </div>
 
     <!-- KPI strip -->
-    <div class="krow mb" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">
-      <div class="kpi"><div class="kl">Portfolio (USD)</div><div class="kv" style="color:var(--bludk)">$${f(latUSD)}</div><div class="ks" style="color:${pctChgUSD>=0?"var(--green)":"var(--red)"}">${pctChgUSD>=0?"+":""}${pctChgUSD}% since Jun 8</div></div>
-      <div class="kpi"><div class="kl">Portfolio (ETH)</div><div class="kv" style="color:#627EEA">${latETH.toFixed(4)} ETH</div><div class="ks" style="color:${pctChgETH>=0?"var(--green)":"var(--red)"}">${pctChgETH>=0?"+":""}${pctChgETH}% in ETH terms</div></div>
-      <div class="kpi"><div class="kl">Portfolio (BTC)</div><div class="kv" style="color:#F7A93B">${latBTC.toFixed(4)} BTC</div><div class="ks" style="color:${pctChgBTC>=0?"var(--green)":"var(--red)"}">${pctChgBTC>=0?"+":""}${pctChgBTC}% in BTC terms</div></div>
-      <div class="kpi"><div class="kl">vs Hold ETH</div><div class="kv" style="color:${latVsEth>=0?"var(--green)":"var(--red)"}">${latVsEth>=0?"+$":"−$"}${f(Math.abs(latVsEth))}</div><div class="ks">ETH dropped ${ethDropPct}% over period</div></div>
-      <div class="kpi"><div class="kl">vs Hold BTC</div><div class="kv" style="color:${latVsBtc>=0?"var(--green)":"var(--red)"}">${latVsBtc>=0?"+$":"−$"}${f(Math.abs(latVsBtc))}</div><div class="ks">BTC dropped ${btcDropPct}% over period</div></div>
-      <div class="kpi"><div class="kl">Total earned</div><div class="kv" style="color:var(--green)">$${f(latEarned)}</div><div class="ks">Peak avg APR: ${avgFeeApr}%</div></div>
+    <div class="krow mb">
+      <div class="kpi">
+        <div class="kl">Portfolio (USD)</div>
+        <div class="kv" style="color:var(--bludk)">$${f(latUSD)}</div>
+        <div class="ks" style="color:${pctChgUSD>=0?'var(--green)':'var(--red)'}">
+          ${pctChgUSD>=0?'+':''}${pctChgUSD}% since Jun 8
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Portfolio in ETH</div>
+        <div class="kv" style="color:#627EEA">${latETH.toFixed(4)} ETH</div>
+        <div class="ks" style="color:${pctChgETH>=0?'var(--green)':'var(--red)'}">
+          ${pctChgETH>=0?'+':''}${pctChgETH}% in ETH terms
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Portfolio in BTC</div>
+        <div class="kv" style="color:#F7A93B">${latBTC.toFixed(5)} BTC</div>
+        <div class="ks" style="color:${pctChgBTC>=0?'var(--green)':'var(--red)'}">
+          ${pctChgBTC>=0?'+':''}${pctChgBTC}% in BTC terms
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kl">vs Hold ETH ($)</div>
+        <div class="kv" style="color:${latVsEth>=0?'var(--green)':'var(--red)'}">
+          ${latVsEth>=0?'+$':'-$'}${f(Math.abs(latVsEth))}
+        </div>
+        <div class="ks">ETH fell ${ethDropPct}% · LP held value better</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">vs Hold BTC ($)</div>
+        <div class="kv" style="color:${latVsBtc>=0?'var(--green)':'var(--red)'}">
+          ${latVsBtc>=0?'+$':'-$'}${f(Math.abs(latVsBtc))}
+        </div>
+        <div class="ks">BTC fell ${btcDropPct}% · your LP advantage</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Total fees earned</div>
+        <div class="kv" style="color:var(--green)">$${f(latEarned)}</div>
+        <div class="ks">Peak avg APR: ${avgFeeApr}%</div>
+      </div>
     </div>
 
     <!-- Denomination toggle -->
     <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
-      <span style="font-size:12px;color:var(--txt2);font-weight:500">Chart in:</span>
+      <span style="font-size:12px;color:var(--txt2);font-weight:500">Chart 1 in:</span>
       <button class="stab abase" id="denom-usd" onclick="setDenom('usd')">$ USD</button>
       <button class="stab" id="denom-eth" onclick="setDenom('eth')">Ξ ETH</button>
       <button class="stab" id="denom-btc" onclick="setDenom('btc')">₿ BTC</button>
     </div>
 
-    <!-- Chart 1: Portfolio value vs hodl benchmark -->
+    <!-- Chart 1: Portfolio vs holding ETH/BTC (denomination switchable) -->
     <div class="card mb">
       <div class="slab" id="chart1-title">Portfolio value vs holding ETH / BTC (USD)</div>
-      <div style="position:relative;height:240px"><canvas id="ch-port-vs" role="img" aria-label="Portfolio value vs ETH hold and BTC hold over time">Portfolio vs hold chart.</canvas></div>
+      <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">
+        Your portfolio (blue) vs what you would have if you had simply held ETH (purple dashed) or BTC (orange dashed) from Jun 8. When your line is above theirs, your LP is winning.
+      </div>
+      <div style="position:relative;height:240px"><canvas id="ch-port-vs"></canvas></div>
       <div class="leg" id="leg-port-vs"></div>
     </div>
 
-    <div class="g2 mb">
-      <!-- Chart 2: vsETH and vsBTC accumulation -->
-      <div class="card">
-        <div class="slab">Accumulated vs ETH & BTC (USD advantage $)</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Positive = portfolio worth more than if you had just held that asset from day 1. Agent Max headline metric.</div>
-        <div style="position:relative;height:200px"><canvas id="ch-vs" role="img" aria-label="vsETH and vsBTC accumulation over time">vsETH vsBTC chart.</canvas></div>
-        <div class="leg" id="leg-vs"></div>
+    <!-- Chart 2: vsETH and vsBTC accumulation — the key metric -->
+    <div class="card mb">
+      <div class="slab">ETH &amp; BTC accumulation advantage ($)</div>
+      <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">
+        <strong style="color:var(--txt)">This is the core question: is your portfolio growing in hard-money terms?</strong>
+        Positive = your LP is worth more than if you had just held that asset. Negative = you fell behind. In a falling market, staying positive here means your fees more than covered what you gave up to IL.
       </div>
-      
+      <div style="position:relative;height:220px"><canvas id="ch-vs"></canvas></div>
+      <div class="leg" id="leg-vs"></div>
     </div>
 
-
+    <!-- Charts 3 & 4: Fee APR + Cumulative fees -->
     <div class="g2 mb">
       <div class="card">
         <div class="slab">Fee APR &amp; $/day over time</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Real projected yield based on snapshot $/day rate. Shows when positions were newly opened (0) vs earning.</div>
-        <div style="position:relative;height:200px"><canvas id="ch-apr" role="img" aria-label="Fee APR over time">APR chart.</canvas></div>
-        <div class="leg" id="leg-apr"></div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">
+          Your real yield rate at each snapshot. Zero = position newly opened that day. The jump after Jun 22 shows when SOL/WETH came online.
+        </div>
+        <div style="position:relative;height:200px"><canvas id="ch-perf-apr"></canvas></div>
+        <div class="leg" id="leg-perf-apr"></div>
       </div>
       <div class="card">
-        <div class="slab">Cumulative fees earned (USD &amp; ETH)</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Total fees in USD (left axis) and ETH denomination (right axis).</div>
-        <div style="position:relative;height:200px"><canvas id="ch-fees" role="img" aria-label="Cumulative fees in USD and ETH">Fees chart.</canvas></div>
-        <div class="leg" id="leg-fees"></div>
+        <div class="slab">Cumulative fees (USD &amp; ETH)</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">
+          Total fees earned in USD (left axis) and ETH denomination (right axis). ETH-denominated fees rising = accumulating real ETH value through LP activity.
+        </div>
+        <div style="position:relative;height:200px"><canvas id="ch-perf-fees"></canvas></div>
+        <div class="leg" id="leg-perf-fees"></div>
       </div>
     </div>
 
-    <div class="g2 mb">
-      <div class="card">
-        <div class="slab">Range health — positions in range over time</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Positions in range = earning fees. Out of range = idle capital.</div>
-        <div style="position:relative;height:200px"><canvas id="ch-range" role="img" aria-label="In-range positions over time">Range health chart.</canvas></div>
-        <div class="leg" id="leg-range"></div>
-      </div>
-      <div class="card">
-        <div class="slab">ETH &amp; BTC price context (snapshot dates)</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Market backdrop. Your portfolio vsETH/vsBTC performance is read against these price moves.</div>
-        <div style="position:relative;height:200px"><canvas id="ch-prices" role="img" aria-label="ETH and BTC price history">Price chart.</canvas></div>
-        <div class="leg" id="leg-prices"></div>
-      </div>
-    </div>
-
-    <!-- Denomination table -->
+    <!-- Snapshot table -->
     <div class="card">
-      <div class="slab">Snapshot table — all denominations</div>
-      <div style="overflow-x:auto"><table class="dtbl" style="min-width:560px">
+      <div class="slab">Snapshot table — USD / ETH / BTC / vsETH / vsBTC</div>
+      <div style="overflow-x:auto"><table class="dtbl" style="min-width:580px">
         <thead><tr>
-          <th>Date</th><th>USD</th><th>ETH</th><th>BTC</th>
-          <th>Earned $</th><th>$/day</th><th>vsETH $</th><th>vsBTC $</th>
-          <th>ETH price</th><th>BTC price</th><th>In range</th>
+          <th>Date</th>
+          <th>USD $</th>
+          <th style="color:#627EEA">ETH Ξ</th>
+          <th style="color:#F7A93B">BTC ₿</th>
+          <th>Earned $</th>
+          <th>$/day</th>
+          <th style="color:#627EEA">vsETH $</th>
+          <th style="color:#F7A93B">vsBTC $</th>
         </tr></thead>
         <tbody>${H.dates.map((d,i)=>{
-          const bg=i%2===0?"var(--bg2)":"transparent";
-          const veC=H.vsEth[i]>=0?"var(--green)":"var(--red)";
-          const vbC=H.vsBtc[i]>=0?"var(--green)":"var(--red)";
-          const irFrac=H.positions[i]>0?H.inRange[i]+"/"+H.positions[i]:"—";
-          const irC=H.inRange[i]===H.positions[i]?"var(--green)":H.inRange[i]===0?"var(--red)":"var(--amber)";
-          return`<tr style="background:${bg}">
-            <td style="font-weight:500;white-space:nowrap">${d}</td>
-            <td>$${f(H.usd[i])}</td>
-            <td style="color:#627EEA">${H.eth[i].toFixed(4)}</td>
-            <td style="color:#F7A93B">${H.btc[i].toFixed(5)}</td>
-            <td style="color:var(--green)">$${f(H.earned[i])}</td>
-            <td>${H.dpd[i]>0?"$"+f(H.dpd[i]):"—"}</td>
-            <td style="color:${veC};font-weight:600">${H.vsEth[i]>=0?"+$":"-$"}${f(Math.abs(H.vsEth[i]))}</td>
-            <td style="color:${vbC};font-weight:600">${H.vsBtc[i]>=0?"+$":"-$"}${f(Math.abs(H.vsBtc[i]))}</td>
-            <td>$${f(H.ethPrice[i],0)}</td>
-            <td>$${f(H.btcPrice[i],0)}</td>
-            <td style="color:${irC};font-weight:600">${irFrac}</td>
-          </tr>`;
-        }).join("")}</tbody>
+          const bg=i%2===0?'var(--bg2)':'transparent';
+          const veC=H.vsEth[i]>=0?'var(--green)':'var(--red)';
+          const vbC=H.vsBtc[i]>=0?'var(--green)':'var(--red)';
+          return '<tr style="background:'+bg+'">'+
+            '<td style="font-weight:500;white-space:nowrap">'+d+'</td>'+
+            '<td>$'+f(H.usd[i])+'</td>'+
+            '<td style="color:#627EEA">'+H.eth[i].toFixed(4)+'</td>'+
+            '<td style="color:#F7A93B">'+H.btc[i].toFixed(5)+'</td>'+
+            '<td style="color:var(--green)">$'+f(H.earned[i])+'</td>'+
+            '<td>'+(H.dpd[i]>0?'$'+f(H.dpd[i]):'—')+'</td>'+
+            '<td style="color:'+veC+';font-weight:600">'+(H.vsEth[i]>=0?'+$':'-$')+f(Math.abs(H.vsEth[i]))+'</td>'+
+            '<td style="color:'+vbC+';font-weight:600">'+(H.vsBtc[i]>=0?'+$':'-$')+f(Math.abs(H.vsBtc[i]))+'</td>'+
+          '</tr>';
+        }).join('')}</tbody>
       </table></div>
     </div>
 
     <div class="note" style="margin-top:12px">
-      <strong>How to read these charts:</strong>
-      USD shows absolute portfolio value — it moves with both market prices and your position performance. ETH and BTC denomination isolate your accumulation in hard-money terms: if your ETH value is rising while ETH price falls, you are accumulating ETH. vsETH / vsBTC (the green/red line) is the Agent Max headline metric — positive means your LP strategy has outperformed simply holding that asset from day one. In a bear market a falling USD line with rising vsETH is the sign of a healthy strategy.
+      <strong>How to read ETH/BTC growth:</strong> If your ETH column is rising over time, your LP is accumulating ETH — meaning even in a falling market, you end up holding more ETH value than you started with. vsETH positive = LP beat simply holding ETH. That is the core goal.
     </div>
   `;
 
@@ -1632,11 +1697,11 @@ function buildPortVsChart(denom){
 }
 
 function buildPerfCharts(denom){
-  const H=HIST;
+  var H=HIST;
   buildPortVsChart(denom);
 
   // Chart 2: vsETH / vsBTC
-  const ctx2=safeCtx('ch-vs');
+  var ctx2=safeCtx('ch-vs');
   if(ctx2){
     perfCharts['ch-vs']=new Chart(ctx2,{type:'line',
       data:{labels:H.dates,datasets:[
@@ -1655,10 +1720,10 @@ function buildPerfCharts(denom){
     if(_lv)_lv.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>vsETH ($)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>vsBTC ($)</div>';
   }
 
-  // Chart 3: Fee APR & $/day
-  var ctx3=safeCtx('ch-apr');
+  // Chart 3: Fee APR & $/day — uses ch-perf-apr to avoid collision with Cashflow tab
+  var ctx3=safeCtx('ch-perf-apr');
   if(ctx3){
-    perfCharts['ch-apr']=new Chart(ctx3,{type:'bar',
+    perfCharts['ch-perf-apr']=new Chart(ctx3,{type:'bar',
       data:{labels:H.dates,datasets:[
         {label:'Fee APR %',data:H.feeApr,backgroundColor:'rgba(29,158,117,0.7)',borderRadius:3,yAxisID:'y'},
         {label:'$/day',data:H.dpd,backgroundColor:'rgba(55,138,221,0.6)',borderRadius:3,yAxisID:'y2'},
@@ -1672,15 +1737,15 @@ function buildPerfCharts(denom){
         }
       }
     });
-    var _la=document.getElementById('leg-apr');
+    var _la=document.getElementById('leg-perf-apr');
     if(_la)_la.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fee APR %</div><div class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>$/day</div>';
   }
 
-  // Chart 4: Cumulative fees multi-denom
-  var ctx4=safeCtx('ch-fees');
+  // Chart 4: Cumulative fees — uses ch-perf-fees to avoid collision
+  var ctx4=safeCtx('ch-perf-fees');
   if(ctx4){
     var feesEth=H.earned.map(function(v,i){return +(v/H.ethPrice[i]).toFixed(4);});
-    perfCharts['ch-fees']=new Chart(ctx4,{type:'line',
+    perfCharts['ch-perf-fees']=new Chart(ctx4,{type:'line',
       data:{labels:H.dates,datasets:[
         {label:'Fees USD',data:H.earned,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yusd'},
         {label:'Fees ETH',data:feesEth,borderColor:'#627EEA',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,fill:false,borderDash:[4,4],yAxisID:'yeth'},
@@ -1690,53 +1755,12 @@ function buildPerfCharts(denom){
         scales:{
           x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
           yusd:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:function(v){return '$'+v;}}},
-          yeth:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:function(v){return v+'\u039E';}}}
+          yeth:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:function(v){return v+'Ξ';}}}
         }
       }
     });
-    var _lf=document.getElementById('leg-fees');
+    var _lf=document.getElementById('leg-perf-fees');
     if(_lf)_lf.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>Fees USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>Fees ETH (right)</div>';
-  }
-
-  // Chart 5: Range health
-  var ctx5=safeCtx('ch-range');
-  if(ctx5){
-    perfCharts['ch-range']=new Chart(ctx5,{type:'bar',
-      data:{labels:H.dates,datasets:[
-        {label:'In range',data:H.inRange,backgroundColor:H.inRange.map(function(v,i){return v===H.positions[i]?'rgba(29,158,117,0.8)':v===0?'rgba(226,75,74,0.7)':'rgba(239,159,39,0.7)';}),borderRadius:3},
-        {label:'Total',data:H.positions,type:'line',borderColor:'rgba(128,128,128,0.4)',borderWidth:1.5,pointRadius:2,tension:.3,fill:false},
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.datasetIndex===0?' In range: '+c.raw:' Total positions: '+c.raw;}}}},
-        scales:{
-          x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-          y:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},stepSize:1},min:0}
-        }
-      }
-    });
-    var _lr=document.getElementById('leg-range');
-    if(_lr)_lr.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#1D9E75"></span>In range</div><div class="leg-item"><span class="leg-sq" style="background:#EF9F27"></span>Partial</div><div class="leg-item"><span class="leg-sq" style="background:#E24B4A"></span>All out</div>';
-  }
-
-  // Chart 6: ETH & BTC price context
-  var ctx6=safeCtx('ch-prices');
-  if(ctx6){
-    perfCharts['ch-prices']=new Chart(ctx6,{type:'line',
-      data:{labels:H.dates,datasets:[
-        {label:'ETH/USD',data:H.ethPrice,borderColor:'#627EEA',backgroundColor:'rgba(98,126,234,0.06)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'yeth'},
-        {label:'BTC/USD',data:H.btcPrice,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:.3,fill:false,borderDash:[4,4],yAxisID:'ybtc'},
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': $'+Number(c.raw).toLocaleString();}}}},
-        scales:{
-          x:{grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},maxRotation:30,maxTicksLimit:8}},
-          yeth:{position:'left',grid:{color:'rgba(128,128,128,0.07)'},ticks:{font:{size:10},callback:function(v){return '$'+Number(v).toLocaleString();}}},
-          ybtc:{position:'right',grid:{display:false},ticks:{font:{size:10},callback:function(v){return '$'+Number(v).toLocaleString();}}}
-        }
-      }
-    });
-    var _lp=document.getElementById('leg-prices');
-    if(_lp)_lp.innerHTML='<div class="leg-item"><span class="leg-sq" style="background:#627EEA"></span>ETH/USD (left)</div><div class="leg-item"><span class="leg-sq" style="background:#F7A93B"></span>BTC/USD (right)</div>';
   }
 }
 

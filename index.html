@@ -1154,12 +1154,12 @@ function render(positions){
         +'<div class="kpi" style="border-left:3px solid #627EEA;padding-left:11px">'
           +'<div class="kl" style="color:#627EEA">Portfolio in ETH</div>'
           +'<div class="kv" style="color:#627EEA">'+latETH.toFixed(4)+' ETH</div>'
-          +'<div class="ks" style="color:'+eC+'">'+(parseFloat(pctETH)>=0?'+':'')+pctETH+'% since Jun 8</div>'
+          +'<div class="ks" style="color:'+eC+'">'+(parseFloat(pctETH)>=0?'+':'')+pctETH+'% since ${H.dates[0]}</div>'
         +'</div>'
         +'<div class="kpi" style="border-left:3px solid #F7A93B;padding-left:11px">'
           +'<div class="kl" style="color:#F7A93B">Portfolio in BTC</div>'
           +'<div class="kv" style="color:#F7A93B">'+latBTC.toFixed(5)+' BTC</div>'
-          +'<div class="ks" style="color:'+bC+'">'+(parseFloat(pctBTC)>=0?'+':'')+pctBTC+'% since Jun 8</div>'
+          +'<div class="ks" style="color:'+bC+'">'+(parseFloat(pctBTC)>=0?'+':'')+pctBTC+'% since ${H.dates[0]}</div>'
         +'</div>'
         +'<div class="kpi" style="border-left:3px solid var(--green);padding-left:11px">'
           +'<div class="kl">vs Hold ETH ($)</div>'
@@ -1559,7 +1559,7 @@ function buildPerformance(){
 
   document.getElementById("page-performance").innerHTML=`
     <div style="margin-bottom:16px">
-      <div class="slab">Portfolio performance — Jun 8 → Jun 27, 2026</div>
+      <div class="slab">Portfolio performance — ${H.dates[0]} → ${H.dates[H.dates.length-1]}</div>
       <div style="font-size:12px;color:var(--txt2);margin-top:2px">Is your portfolio growing in ETH and BTC terms? These charts answer that. vsETH and vsBTC show how much better (or worse) your LP did vs simply holding each asset from day 1.</div>
     </div>
 
@@ -1569,7 +1569,7 @@ function buildPerformance(){
         <div class="kl">Portfolio (USD)</div>
         <div class="kv" style="color:var(--bludk)">$${f(latUSD)}</div>
         <div class="ks" style="color:${pctChgUSD>=0?'var(--green)':'var(--red)'}">
-          ${pctChgUSD>=0?'+':''}${pctChgUSD}% since Jun 8
+          ${pctChgUSD>=0?'+':''}${pctChgUSD}% since ${H.dates[0]}
         </div>
       </div>
       <div class="kpi">
@@ -1619,7 +1619,7 @@ function buildPerformance(){
     <div class="card mb">
       <div class="slab" id="chart1-title">Portfolio value vs holding ETH / BTC (USD)</div>
       <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">
-        Your portfolio (blue) vs what you would have if you had simply held ETH (purple dashed) or BTC (orange dashed) from Jun 8. When your line is above theirs, your LP is winning.
+        Your portfolio (blue) vs what you would have if you had simply held ETH (purple dashed) or BTC (orange dashed) from ${H.dates[0]}. When your line is above theirs, your LP is winning.
       </div>
       <div style="position:relative;height:240px"><canvas id="ch-port-vs"></canvas></div>
       <div class="leg" id="leg-port-vs"></div>
@@ -1641,7 +1641,7 @@ function buildPerformance(){
       <div class="card">
         <div class="slab">Fee APR &amp; $/day over time</div>
         <div style="font-size:11px;color:var(--txt2);margin-bottom:8px">
-          Your real yield rate at each snapshot. Zero = position newly opened that day. The jump after Jun 22 shows when SOL/WETH came online.
+          Your real yield rate at each snapshot. Zero = position newly opened that day. The jump mid-June shows when new positions came online.
         </div>
         <div style="position:relative;height:200px"><canvas id="ch-perf-apr"></canvas></div>
         <div class="leg" id="leg-perf-apr"></div>
@@ -1906,6 +1906,84 @@ function acceptDisclaimer(cb){
   }
 })();
 
+
+function updateHistFromSnapshot(positions){
+  var H = HIST;
+  var today = new Date().toISOString().slice(0,10); // "2026-07-10"
+
+  // Compute portfolio-level metrics from positions
+  var totVal   = positions.reduce(function(s,p){return s+p.value;},0);
+  var totEarn  = positions.reduce(function(s,p){return s+p.earned;},0);
+  var totDpd   = positions.reduce(function(s,p){return s+p.dpd;},0);
+  var inRangeCt= positions.filter(function(p){return p.inRange;}).length;
+  var nPos     = positions.length;
+
+  // Derive ETH price — prefer WETH/cbBTC position, fall back to any WETH position
+  var ethPx = 0, btcPx = 0;
+  positions.forEach(function(p){
+    if(p.tokenA==='WETH' && p.currentPriceA>0 && !ethPx) ethPx=p.currentPriceA;
+    if(p.tokenB==='WETH' && p.currentPriceB>0 && !ethPx) ethPx=p.currentPriceB;
+    if(p.tokenA==='cbBTC' && p.currentPriceA>0 && !btcPx) btcPx=p.currentPriceA;
+    if(p.tokenB==='cbBTC' && p.currentPriceB>0 && !btcPx) btcPx=p.currentPriceB;
+  });
+  // If still 0, try to derive from USDC/cbBTC rangeCurrentPrice
+  if(!btcPx){
+    positions.forEach(function(p){
+      if(p.pair==='USDC/cbBTC' && p.rangeCurrentPrice>1000) btcPx=p.rangeCurrentPrice;
+    });
+  }
+
+  // hodlEth/hodlBtc: what initial capital would be worth if held
+  var hodlEth = btcPx>0 ? +(H.initialVal/H.initialEthPrice*ethPx).toFixed(2) : 0;
+  var hodlBtc = btcPx>0 ? +(H.initialVal/H.initialBtcPrice*btcPx).toFixed(2) : 0;
+
+  // Compute derived fields
+  var ethVal  = ethPx>0 ? +(totVal/ethPx).toFixed(4) : H.eth[H.eth.length-1];
+  var btcVal  = btcPx>0 ? +(totVal/btcPx).toFixed(5) : H.btc[H.btc.length-1];
+  var vsEth   = hodlEth>0 ? +(totVal-hodlEth).toFixed(2) : H.vsEth[H.vsEth.length-1];
+  var vsBtc   = hodlBtc>0 ? +(totVal-hodlBtc).toFixed(2) : H.vsBtc[H.vsBtc.length-1];
+  var feeApr  = totVal>0 ? +(totDpd*365/totVal*100).toFixed(1) : 0;
+  var rebals  = positions.reduce(function(s,p){return s+(p.rebalances||0);},0);
+
+  // Check if today already has an entry — update it; otherwise append
+  var lastIdx = H.dates.length-1;
+  if(H.dates[lastIdx]===today){
+    // Overwrite last entry
+    H.usd[lastIdx]      = +totVal.toFixed(2);
+    H.eth[lastIdx]      = ethVal;
+    H.btc[lastIdx]      = btcVal;
+    H.earned[lastIdx]   = +totEarn.toFixed(2);
+    H.dpd[lastIdx]      = +totDpd.toFixed(2);
+    H.feeApr[lastIdx]   = feeApr;
+    H.ethPrice[lastIdx] = ethPx;
+    H.btcPrice[lastIdx] = btcPx;
+    H.hodlEth[lastIdx]  = hodlEth;
+    H.hodlBtc[lastIdx]  = hodlBtc;
+    H.vsEth[lastIdx]    = vsEth;
+    H.vsBtc[lastIdx]    = vsBtc;
+    H.inRange[lastIdx]  = inRangeCt;
+    H.positions[lastIdx]= nPos;
+    H.rebals[lastIdx]   = rebals;
+  } else {
+    // Append new entry
+    H.dates.push(today);
+    H.usd.push(+totVal.toFixed(2));
+    H.eth.push(ethVal);
+    H.btc.push(btcVal);
+    H.earned.push(+totEarn.toFixed(2));
+    H.dpd.push(+totDpd.toFixed(2));
+    H.feeApr.push(feeApr);
+    H.ethPrice.push(ethPx);
+    H.btcPrice.push(btcPx);
+    H.hodlEth.push(hodlEth);
+    H.hodlBtc.push(hodlBtc);
+    H.vsEth.push(vsEth);
+    H.vsBtc.push(vsBtc);
+    H.inRange.push(inRangeCt);
+    H.positions.push(nPos);
+    H.rebals.push(rebals);
+  }
+}
 function parseAndRender(){
   const raw=document.getElementById("snapshot-input").value.trim();
   const errEl=document.getElementById("parse-err");
@@ -1933,6 +2011,7 @@ function parseAndRender(){
   okEl.textContent=`${data.length} position${data.length>1?"s":""} parsed — rendering dashboard...`;
   okEl.style.display="block";
   render(data);
+  updateHistFromSnapshot(data);
   showDashboard(wLabel);
 }
 </script>

@@ -1552,6 +1552,13 @@ function buildPerformance(){
   const pctChgUSD=((latUSD-H.usd[0])/H.usd[0]*100).toFixed(1);
   const pctChgETH=((latETH-H.eth[0])/H.eth[0]*100).toFixed(1);
   const pctChgBTC=((latBTC-H.btc[0])/H.btc[0]*100).toFixed(1);
+  // Cost basis in hard-money terms
+  const costBasisETH=(H.initialVal/H.initialEthPrice).toFixed(4);  // ETH at open
+  const costBasisBTC=(H.initialVal/H.initialBtcPrice).toFixed(5);  // BTC at open
+  const gainETH=(latETH - H.initialVal/H.initialEthPrice).toFixed(4);
+  const gainBTC=(latBTC - H.initialVal/H.initialBtcPrice).toFixed(5);
+  const pctGainETH=((latETH - H.initialVal/H.initialEthPrice)/(H.initialVal/H.initialEthPrice)*100).toFixed(1);
+  const pctGainBTC=((latBTC - H.initialVal/H.initialBtcPrice)/(H.initialVal/H.initialBtcPrice)*100).toFixed(1);
   const ethDropPct=((H.ethPrice[latest]-H.ethPrice[0])/H.ethPrice[0]*100).toFixed(1);
   const btcDropPct=((H.btcPrice[latest]-H.btcPrice[0])/H.btcPrice[0]*100).toFixed(1);
   const maxVsEth=Math.max(...H.vsEth).toFixed(2);
@@ -1572,18 +1579,20 @@ function buildPerformance(){
           ${pctChgUSD>=0?'+':''}${pctChgUSD}% since ${H.dates[0]}
         </div>
       </div>
-      <div class="kpi">
+      <div class="kpi" style="border-left:3px solid #627EEA;padding-left:11px">
         <div class="kl">Portfolio in ETH</div>
-        <div class="kv" style="color:#627EEA">${latETH.toFixed(4)} ETH</div>
-        <div class="ks" style="color:${pctChgETH>=0?'var(--green)':'var(--red)'}">
-          ${pctChgETH>=0?'+':''}${pctChgETH}% in ETH terms
+        <div class="kv" style="color:#627EEA">${latETH.toFixed(4)} Ξ</div>
+        <div class="ks" style="color:var(--txt2)">Cost basis: ${costBasisETH} Ξ</div>
+        <div class="ks" style="color:${gainETH>=0?'var(--green)':'var(--red)'}">
+          ${gainETH>=0?'+':''}${gainETH} Ξ gained (${pctGainETH>=0?'+':''}${pctGainETH}%)
         </div>
       </div>
-      <div class="kpi">
+      <div class="kpi" style="border-left:3px solid #F7A93B;padding-left:11px">
         <div class="kl">Portfolio in BTC</div>
-        <div class="kv" style="color:#F7A93B">${latBTC.toFixed(5)} BTC</div>
-        <div class="ks" style="color:${pctChgBTC>=0?'var(--green)':'var(--red)'}">
-          ${pctChgBTC>=0?'+':''}${pctChgBTC}% in BTC terms
+        <div class="kv" style="color:#F7A93B">${latBTC.toFixed(5)} ₿</div>
+        <div class="ks" style="color:var(--txt2)">Cost basis: ${costBasisBTC} ₿</div>
+        <div class="ks" style="color:${gainBTC>=0?'var(--green)':'var(--red)'}">
+          ${gainBTC>=0?'+':''}${gainBTC} ₿ gained (${pctGainBTC>=0?'+':''}${pctGainBTC}%)
         </div>
       </div>
       <div class="kpi">
@@ -1732,8 +1741,17 @@ function buildPortVsChart(denom){
     hodlBData=H.btc.map((_,i)=>H.hodlBtc[i]/H.btcPrice[i]);
     ylabel='BTC'; unit='₿';
   }
+  // Cost basis flat reference line in current denomination
+  var basisVal=denom==='usd'?H.dates.map(function(){return H.initialVal;})
+    :denom==='eth'?H.dates.map(function(){return +(H.initialVal/H.initialEthPrice);})
+    :H.dates.map(function(){return +(H.initialVal/H.initialBtcPrice);});
+  var basisLbl=denom==='usd'?'Cost basis $'+H.initialVal.toFixed(0)
+    :denom==='eth'?'Cost basis '+(H.initialVal/H.initialEthPrice).toFixed(4)+'Ξ'
+    :'Cost basis '+(H.initialVal/H.initialBtcPrice).toFixed(5)+'₿';
+
   perfCharts['ch-port-vs']=new Chart(ctx,{type:'line',
     data:{labels:H.dates,datasets:[
+      {label:basisLbl,data:basisVal,borderColor:'rgba(150,150,150,0.65)',borderWidth:1.5,borderDash:[4,4],pointRadius:0,fill:false,tension:0,order:10},
       {label:'Portfolio',data:portData,borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,0.08)',borderWidth:2.5,pointRadius:3,tension:.3,fill:true},
       {label:'If held ETH',data:hodlEData,borderColor:'#627EEA',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,borderDash:[5,4]},
       {label:'If held BTC',data:hodlBData,borderColor:'#F7A93B',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:.3,borderDash:[3,4]},

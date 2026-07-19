@@ -1941,8 +1941,8 @@ function updateHistFromSnapshot(positions){
   positions.forEach(function(p){
     if(p.tokenA==='WETH' && p.currentPriceA>0 && !ethPx) ethPx=p.currentPriceA;
     if(p.tokenB==='WETH' && p.currentPriceB>0 && !ethPx) ethPx=p.currentPriceB;
-    if(p.tokenA==='cbBTC' && p.currentPriceA>0 && !btcPx) btcPx=p.currentPriceA;
-    if(p.tokenB==='cbBTC' && p.currentPriceB>0 && !btcPx) btcPx=p.currentPriceB;
+    if(p.tokenA==='cbBTC' && p.currentPriceA>1000 && !btcPx) btcPx=p.currentPriceA;
+    if(p.tokenB==='cbBTC' && p.currentPriceB>1000 && !btcPx) btcPx=p.currentPriceB;
   });
   // If still 0, try to derive from USDC/cbBTC rangeCurrentPrice
   if(!btcPx){
@@ -1952,6 +1952,18 @@ function updateHistFromSnapshot(positions){
   }
 
   // hodlEth/hodlBtc: what initial capital would be worth if held
+  // Final fallback: if btcPx still unreliable, use last known good HIST value
+  if(btcPx < 1000 && H.btcPrice && H.btcPrice.length > 0){
+    // Find last btcPrice > 1000 in history
+    for(var _bi=H.btcPrice.length-1; _bi>=0; _bi--){
+      if(H.btcPrice[_bi]>1000){ btcPx=H.btcPrice[_bi]; break; }
+    }
+  }
+  if(ethPx < 100 && H.ethPrice && H.ethPrice.length > 0){
+    for(var _ei=H.ethPrice.length-1; _ei>=0; _ei--){
+      if(H.ethPrice[_ei]>100){ ethPx=H.ethPrice[_ei]; break; }
+    }
+  }
   var hodlEth = btcPx>0 ? +(H.initialVal/H.initialEthPrice*ethPx).toFixed(2) : 0;
   var hodlBtc = btcPx>0 ? +(H.initialVal/H.initialBtcPrice*btcPx).toFixed(2) : 0;
 
